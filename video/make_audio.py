@@ -104,8 +104,10 @@ def build_sfx():
         put(s, pop(520 + 40 * (i % 5), .08, up=True), t0 - .02, .22, (-1) ** i * .15)
     # sania se strică
     put(s, pop(700, .14), T['sputter'] + .15, .5)
-    put(s, engine(T['touch'] - T['sputter'] + .2, 120, 46), T['sputter'], .5)
-    for t0 in (2.45, 2.85, 3.2, 3.7, 4.1, 4.5): put(s, fftf(noise(.18), 150, 1400) * env(.18, .005, .18, 2), t0, .35)
+    # sania nu are motor: clopoțeii se împiedică, se rărește sunetul și se stinge (fără sunet de motor)
+    for k, t0 in enumerate((2.2, 2.42, 2.7, 3.05, 3.5, 4.05)):
+        put(s, sparkle(.5, 5, 84 - 3 * k, 96 - 4 * k), t0, .4 - .05 * k, (-1) ** k * .3)
+    put(s, glide(700, 180, 1.0, 1.3) * env(1.0, .02, .98, 1.5), 2.3, .22)
     put(s, glide(1100, 220, 1.6, 1.4) * env(1.6, .05, 1.5, 1.2), T['descend'], .13)
     put(s, thump(120, 34, .8), T['touch'], .95); put(s, crunch(.7), T['touch'], .5)
     for t0, m in ((4.58, 84), (4.88, 79), (5.28, 88), (5.62, 83)):      # cadourile aterizează în zăpadă

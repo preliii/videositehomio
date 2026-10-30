@@ -457,37 +457,37 @@ function sleighGroup(c, t, st) {
 }
 // poziția sanie în timp (coordonate ecran, centrul reniului din spate)
 const GROUND_A = 1430;
-const Y_REST = 1112;
+const Y_REST = 1352;
 function sleighState(t) {
-  const sc = 1.12, fly = 850;
+  const sc = 1.0, fly = 850;
   let x, y = fly, rot = 0, amp = 1, broken = 0, tired = 0;
   const e = E.outCubic(prog(t, 0, 1.5));
-  x = lerp(-420, 560, e);
+  x = lerp(-420, 640, e);
   y = fly + Math.sin(t * 2.6) * 18 * e;
   rot = Math.sin(t * 2.6 + 1) * .03;
   if (t > TL.sputter) {
     broken = 1;
     const s = prog(t, TL.sputter, TL.descend);
-    x = 560 + Math.sin(t * 45) * 4 * s;
+    x = 640 + Math.sin(t * 45) * 4 * s;
     y = fly + Math.sin(t * 2.6) * 18 + (Math.sin(t * 22) > 0 ? 1 : -1) * 10 * s + 50 * E.inOut(s);
     rot = .03 + s * .05; amp = lerp(1, .7, s);
   }
   if (t > TL.descend) {
     const d = prog(t, TL.descend, TL.touch), dd = d * d;
     y = lerp(fly + 50, Y_REST, dd) + Math.sin(t * 22) * 6 * (1 - d);
-    rot = lerp(.08, .13, dd); x = 560 + 30 * d; amp = lerp(.7, 1.2, d);
+    rot = lerp(.08, .17, dd); x = 640 + 30 * d; amp = lerp(.7, 1.2, d);
   }
   if (t > TL.touch) {
     const a = t - TL.touch, k = prog(t, TL.touch, TL.stopA), decay = Math.exp(-a * 3.2);
-    x = 590 + 22 * E.outQuart(k);
-    y = Y_REST - 44 * Math.sin(a * 9) * decay + 16 * E.outCubic(prog(a, 0, .9));
-    rot = .13 - .09 * E.outCubic(prog(a, 0, 1)) + .05 * Math.sin(a * 8) * decay;
+    x = 670 + 14 * E.outQuart(k);
+    y = Y_REST - 30 * Math.sin(a * 9) * decay + 14 * E.outCubic(prog(a, 0, .9));
+    rot = .17 - .14 * E.outCubic(prog(a, 0, 1)) + .05 * Math.sin(a * 8) * decay;
     amp = 0; tired = 1;
   }
   return { x: x + 24 * sc, y, sc, rot, ph: t * 13, amp, broken, tired };
 }
 function scrollA(t) {
-  const v = 460, t1 = TL.descend + .6, t2 = TL.stopA;
+  const v = 460, t1 = TL.touch, t2 = TL.stopA;
   if (t <= t1) return v * t;
   const p = prog(t, t1, t2), len = t2 - t1;
   return v * t1 + v * len * (1 - Math.pow(1 - p, 3)) / 3;
@@ -498,7 +498,7 @@ function giftState(i, t) {
   const s0 = sleighState(g.tf), lx = g.x + g.w / 2 - 330, ly = g.y + g.h / 2 + 18, cs = Math.cos(s0.rot), sn = Math.sin(s0.rot);
   let x = s0.x + s0.sc * (cs * lx - sn * ly), y = s0.y + s0.sc * (sn * lx + cs * ly);
   let vx = g.vx, vy = g.vy, ang = g.rot + s0.rot, w = g.w0, rest = false;
-  const gy = 1412 - g.h / 2, dt = 1 / 120, n = Math.floor((t - g.tf) / dt); let tc = g.tf;
+  const gy = 1432 - g.h / 2, dt = 1 / 120, n = Math.floor((t - g.tf) / dt); let tc = g.tf;
   for (let k = 0; k < n; k++) {
     const dsc = scrollA(tc + dt) - scrollA(tc); tc += dt;
     if (rest) { x -= dsc; continue; }
@@ -510,59 +510,57 @@ function giftState(i, t) {
 function drawFallenGifts(c, t) {
   GIFTS.forEach((g, i) => {
     const s = giftState(i, t); if (!s) return;
-    if (s.rest || s.y > 1300) { c.fillStyle = 'rgba(8,14,50,.35)'; c.beginPath(); c.ellipse(s.x, 1416, g.w * .6, 10, 0, 0, TAU); c.fill(); }
+    if (s.rest || s.y > 1340) { c.fillStyle = 'rgba(8,14,50,.35)'; c.beginPath(); c.ellipse(s.x, 1438, g.w * .6, 10, 0, 0, TAU); c.fill(); }
     c.save(); c.translate(s.x, s.y); c.rotate(s.ang); giftBoxLocal(c, g.w, g.h, g.col, g.rb); c.restore();
   });
 }
-// brazi mari în care aterizează sania
-const TREES = [
-  { x: 110, apex: 1215, w: 230 }, { x: 270, apex: 1160, w: 250 }, { x: 430, apex: 1130, w: 262 },
-  { x: 600, apex: 1135, w: 262 }, { x: 770, apex: 1160, w: 250 }, { x: 945, apex: 1220, w: 230 }
-];
-function bigPine(c, x, apex, base, w, rot) {
-  const Hh = base - apex, tiers = 5;
-  c.save(); c.translate(x, base); c.rotate(rot);
-  c.fillStyle = 'rgba(8,14,50,.35)'; c.beginPath(); c.ellipse(0, -4, w * .55, 22, 0, 0, TAU); c.fill();
-  c.fillStyle = '#1b0f08'; c.fillRect(-w * .05, -Hh * .14, w * .1, Hh * .16);
-  for (let k = 0; k < tiers; k++) {
-    const yb = -Hh * (.07 + .155 * k), yt = yb - Hh * .3, hw = w / 2 * (1 - k * .17);
-    const g = c.createLinearGradient(-hw, 0, hw, 0); g.addColorStop(0, '#08262f'); g.addColorStop(.55, '#145560'); g.addColorStop(1, '#0a2c38');
-    c.fillStyle = g; c.beginPath(); c.moveTo(0, yt); c.lineTo(hw, yb);
-    for (let j = 1; j <= 5; j++) c.quadraticCurveTo(hw - (j - .5) * 2 * hw / 5, yb + 20, hw - j * 2 * hw / 5, yb - 2);
-    c.closePath(); c.fill();
-    const s = hw * .62, ys = yt + (yb - yt) * .46;
-    c.fillStyle = '#e7f0ff'; c.beginPath(); c.moveTo(0, yt); c.lineTo(s, ys);
-    for (let j = 1; j <= 4; j++) c.quadraticCurveTo(s - (j - .5) * 2 * s / 4, ys + 18, s - j * 2 * s / 4, ys - 3);
-    c.closePath(); c.fill();
+// sania aterizează în zăpadă: urmă (brazdă), troian din jurul ei și stropi de zăpadă
+const gY = (x, sc) => GROUND_A + Math.sin((x + sc) * .012) * 12 + Math.sin((x + sc) * .031) * 5;
+function furrow(c, t) {
+  if (t < TL.touch) return;
+  const sc = scrollA(t), s0 = sleighState(TL.touch), st = sleighState(t);
+  const xs = (s0.x - 490 * s0.sc) - (sc - scrollA(TL.touch)), xe = st.x + 200, len = xe - xs; if (len < 4) return;
+  const grow = E.outCubic(prog(t, TL.touch, TL.touch + .35));
+  const top = [], bot = [];
+  for (let x = xs; x <= xe; x += 12) {
+    const u = (x - xs) / len, depth = Math.min(1, (x - xs) / 70) * grow, y = gY(x, sc);
+    top.push([x, y + 6 + 3 * Math.sin(x * .09)]); bot.push([x, y + 6 + 8 + 26 * depth]);
   }
+  c.save();
+  // groapa
+  const g = c.createLinearGradient(0, GROUND_A, 0, GROUND_A + 50); g.addColorStop(0, '#8fa3d8'); g.addColorStop(1, '#4a5fae');
+  c.fillStyle = g; c.beginPath(); top.forEach(([x, y], i) => i ? c.lineTo(x, y) : c.moveTo(x, y)); for (let i = bot.length - 1; i >= 0; i--) c.lineTo(bot[i][0], bot[i][1]); c.closePath(); c.fill();
+  // marginile albe, scoase afară de patine
+  c.strokeStyle = '#ffffff'; c.lineWidth = 7; c.lineCap = 'round'; c.beginPath(); top.forEach(([x, y], i) => i ? c.lineTo(x, y - 2) : c.moveTo(x, y - 2)); c.stroke();
+  c.strokeStyle = 'rgba(40,60,130,.5)'; c.lineWidth = 3; c.beginPath(); bot.forEach(([x, y], i) => i ? c.lineTo(x, y - 6) : c.moveTo(x, y - 6)); c.stroke();
+  for (let i = 0; i < top.length; i += 3) { c.fillStyle = '#fff'; c.beginPath(); c.arc(top[i][0], top[i][1] - 6 - (i % 2) * 3, 5 + (i % 4), 0, TAU); c.fill(); }
   c.restore();
 }
-function crashTrees(c, t) {
-  const sc = scrollA(t), end = scrollA(TL.stopA);
-  TREES.forEach((tr, i) => {
-    const x = tr.x + end - sc; if (x < -240 || x > W + 300) return;
-    const tc = TL.touch - .1 + Math.abs(tr.x - 560) / 1400, a = t - tc, decay = a > 0 ? Math.exp(-a * 2.6) : 0;
-    const rot = Math.sin(t * 1.3 + i) * .006 + (a > 0 ? Math.sin(a * 11 + i) * .05 * decay : 0);
-    const sink = a > 0 ? 30 * E.outCubic(prog(a, 0, .6)) * (1 - Math.abs(tr.x - 560) / 900) + Math.sin(a * 13) * 10 * decay : 0;
-    bigPine(c, x, tr.apex + sink, 1560, tr.w, rot);
-  });
+function snowBank(c, t, st) {
+  const k = E.outBack(prog(t, TL.touch - .05, TL.touch + .5), 1.3); if (k <= 0) return;
+  const sc = scrollA(t), x0 = st.x - 470 * st.sc, x1 = st.x + 360 * st.sc, L = x1 - x0;
+  const top = x => { const u = (x - x0) / L, f = Math.pow(Math.sin(Math.PI * clamp(u)), .6); return gY(x, sc) - (36 * f + Math.sin(x * .05 + 1.5) * 9 * f) * k; };
+  const g = c.createLinearGradient(0, GROUND_A - 60, 0, GROUND_A + 90); g.addColorStop(0, 'rgba(246,249,255,1)'); g.addColorStop(.4, 'rgba(200,214,245,.95)'); g.addColorStop(1, 'rgba(150,170,225,0)');
+  c.fillStyle = g; c.beginPath(); for (let x = x0; x <= x1; x += 14) x === x0 ? c.moveTo(x, top(x)) : c.lineTo(x, top(x));
+  for (let x = x1; x >= x0; x -= 14) c.lineTo(x, gY(x, sc) + 90); c.closePath(); c.fill();
+  c.strokeStyle = 'rgba(255,255,255,.95)'; c.lineWidth = 6; c.lineJoin = 'round'; c.beginPath(); for (let x = x0; x <= x1; x += 14) { const y = top(x) + 2; x === x0 ? c.moveTo(x, y) : c.lineTo(x, y); } c.stroke();
+  for (let i = 0; i < 18; i++) { const r = rng(i * 7 + 1), x = x0 + r() * L, y = top(x) + 12 + r() * 40; c.globalAlpha = .4 + .6 * Math.abs(Math.sin(t * 2 + i)); sparkle(c, x, y, 4 + r() * 5, 0, '#fff'); } c.globalAlpha = 1;
 }
-// zăpada scuturată din brazi + nori de praf alb
 function crashSnow(c, t) {
-  const t0 = TL.touch - .1, a = t - t0; if (a < 0 || a > 3.2) return;
-  const r = rng(5); c.save();
-  for (let i = 0; i < 30; i++) {
-    const delay = r() * .4, x0 = 80 + r() * 920, y0 = 1130 + r() * 110, vx = (r() - .5) * 280, vy = -140 - r() * 420, rad = 14 + r() * 34, life = 1.3 + r() * 1.2;
+  const t0 = TL.touch - .05, a = t - t0; if (a < 0 || a > 3.4) return;
+  const s0 = sleighState(TL.touch), r = rng(5); c.save();
+  for (let i = 0; i < 48; i++) {
+    const delay = r() * .5, fx = r(), x0 = s0.x - 500 + fx * 860, y0 = 1395 + r() * 30, vx = (r() - .4) * 340 + (fx - .5) * 160, vy = -280 - r() * 720, rad = 12 + r() * 30, life = 1.1 + r() * 1.2;
     const aa = a - delay; if (aa < 0 || aa > life) continue; const u = aa / life;
-    const px = x0 + vx * aa - (scrollA(t) - scrollA(t0 + delay)), py = y0 + vy * aa + .5 * 950 * aa * aa, rr = rad * (1 + u * .7);
+    const px = x0 + vx * aa - (scrollA(t) - scrollA(t0 + delay)), py = y0 + vy * aa + .5 * 1150 * aa * aa, rr = rad * (1 + u * .7);
     const gg = c.createRadialGradient(px, py, 0, px, py, rr); gg.addColorStop(0, 'rgba(255,255,255,.95)'); gg.addColorStop(.6, 'rgba(232,240,255,.55)'); gg.addColorStop(1, 'rgba(232,240,255,0)');
     c.globalAlpha = .95 * (1 - u * u); c.fillStyle = gg; c.beginPath(); c.arc(px, py, rr, 0, TAU); c.fill();
   }
-  for (let i = 0; i < 10; i++) {
-    const delay = i * .04, aa = a - delay; if (aa < 0 || aa > 2.4) continue; const u = aa / 2.4, x0 = 60 + i * 105, rr = 70 + u * 110;
-    const px = x0 - (scrollA(t) - scrollA(t0 + delay)) * .6, py = 1170 - 120 * E.outCubic(u) + (i % 2) * 20;
-    const gg = c.createRadialGradient(px, py, 0, px, py, rr); gg.addColorStop(0, 'rgba(240,246,255,.55)'); gg.addColorStop(1, 'rgba(240,246,255,0)');
-    c.globalAlpha = (1 - u) * .8; c.fillStyle = gg; c.beginPath(); c.arc(px, py, rr, 0, TAU); c.fill();
+  for (let i = 0; i < 12; i++) {
+    const delay = i * .05, aa = a - delay; if (aa < 0 || aa > 2.6) continue; const u = aa / 2.6, x0 = s0.x - 540 + i * 85, rr = 80 + u * 120;
+    const px = x0 - (scrollA(t) - scrollA(t0 + delay)) * .7 - u * 120, py = 1380 - 150 * E.outCubic(u) - (i % 3) * 18;
+    const gg = c.createRadialGradient(px, py, 0, px, py, rr); gg.addColorStop(0, 'rgba(240,246,255,.6)'); gg.addColorStop(1, 'rgba(240,246,255,0)');
+    c.globalAlpha = (1 - u) * .85; c.fillStyle = gg; c.beginPath(); c.arc(px, py, rr, 0, TAU); c.fill();
   }
   c.restore();
 }
@@ -577,6 +575,7 @@ function worldA(c, t) {
   drawTile(c, CITY_A[2], sc);
   ground(c, GROUND_A, sc, t);
   pines(c, sc, GROUND_A + 40, 1.25, 4, 1.1);
+  furrow(c, t);
   const st = sleighState(t);
   // urmă de scântei
   trail(c, t, {
@@ -584,19 +583,13 @@ function worldA(c, t) {
     pos: tb => { const s = sleighState(tb); return { x: s.x - 360 * s.sc, y: s.y + 20, sc: scrollA(tb) }; },
     draw: (cc, p, a, k) => { const r = rng(k * 7 + 3); cc.save(); cc.globalCompositeOperation = 'lighter'; cc.globalAlpha = 1 - a; sparkle(cc, p.x - (scrollA(t) - p.sc) + (r() - .5) * 40, p.y + (r() - .5) * 60 + a * 50, 12 + r() * 14, a * 5, ['#ffe27a', '#fff', '#7fd4ff'][k % 3]); cc.restore(); }
   });
-  // fum (după ce se strică)
-  trail(c, t, {
-    t0: TL.sputter, t1: 99, rate: 26, life: 1.9,
-    pos: tb => { const s = sleighState(tb); return { x: s.x - 300 * s.sc, y: s.y - 40 * s.sc, sc: scrollA(tb) }; },
-    draw: (cc, p, a, k) => { const r = rng(k * 5 + 1); cc.fillStyle = `rgba(${34 + a * 40},${34 + a * 40},${52 + a * 40},${.75 * (1 - a)})`; cc.beginPath(); cc.arc(p.x - (scrollA(t) - p.sc) - a * 90 + (r() - .5) * 30, p.y - a * 230, 18 + a * 64, 0, TAU); cc.fill(); }
-  });
   sleighGroup(c, t, st);
-  crashTrees(c, t);                       // sania cade în vârfurile brazilor
+  snowBank(c, t, st);                     // sania se înfige în zăpadă
   drawFallenGifts(c, t);
   // praf de zăpadă sub sanie, cât timp alunecă prin ramuri
   trail(c, t, {
     t0: TL.touch - .15, t1: TL.touch + 1.3, rate: 38, life: 1.1,
-    pos: tb => { const s = sleighState(tb); return { x: s.x, y: s.y + 100 * s.sc, sc: scrollA(tb) }; },
+    pos: tb => { const s = sleighState(tb); return { x: s.x, y: s.y + 80 * s.sc, sc: scrollA(tb) }; },
     draw: (cc, p, a, k) => { const r = rng(k * 9 + 2), rr = 26 + a * 70; const px = p.x + (r() - .5) * 760 - a * 140 - (scrollA(t) - p.sc), py = p.y + 20 - a * 90 - r() * 30;
       const gg = cc.createRadialGradient(px, py, 0, px, py, rr); gg.addColorStop(0, 'rgba(255,255,255,.8)'); gg.addColorStop(1, 'rgba(255,255,255,0)'); cc.globalAlpha = (1 - a) * .9; cc.fillStyle = gg; cc.beginPath(); cc.arc(px, py, rr, 0, TAU); cc.fill(); cc.globalAlpha = 1; }
   });
