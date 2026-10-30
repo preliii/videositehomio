@@ -5,22 +5,18 @@ import sys, wave, subprocess, os
 import numpy as np
 
 SR = 44100
-DUR = 28.8
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import timing
+DUR = timing.DURATION
 N = int(SR * DUR)
 rng = np.random.default_rng(7)
 OUT = sys.argv[1]
 VOICE_DIR = sys.argv[2]            # director cu linie_1.mp3 … linie_6.mp3
 os.makedirs(OUT, exist_ok=True)
 
-# ───────── timpii (copiați din TL) ─────────
-A = [0, 0.65, 3.0, 8.75, 15.0, 19.8, 24.0]
-T = dict(
-    hook=[0.67, 0.93, 1.45], l1=[3.15, 3.55, 3.82, 4.22, 4.42], l2=[5.6, 6.0, 6.28, 6.56], stitch=7.48,
-    sputter=2.2, descend=3.4, touch=5.0, pause=8.85, cursor1=10.5, cursor2=10.88, no=12.42, panelOut=12.72,
-    slam=13.24, slam2=13.88, slam3=14.26, irisA=14.55, irisB=15.1, vanIn=14.7, vanStop=15.9, homio=15.08,
-    door=16.0, prod0=16.2, gap=0.38, cad=[16.08, 16.58], deliv=[17.28, 17.67, 17.81], rom=18.15, vanOut=18.45,
-    pushA=19.0, pushB=19.6, giftIn=19.7, gaugeIn=20.65, gaugeDown=21.6, gaugeZero=22.5, open=22.25,
-    flashA=23.4, logo=24.0, tag1=[25.09, 25.82], tag2=27.11, url=27.5)
+# ───────── timpii: aceeași sursă ca anim.js (timing.py) ─────────
+TLD = timing.tl(); LAY = timing.layout()
+T = dict(TLD); T['gap'] = TLD['prodGap']
 
 # ───────── unelte ─────────
 def buf(): return np.zeros((N, 2), np.float32)
@@ -105,14 +101,14 @@ def build_sfx():
     # sania se strică
     put(s, pop(700, .14), T['sputter'] + .15, .5)
     # sania nu are motor: clopoțeii se împiedică, se rărește sunetul și se stinge (fără sunet de motor)
-    for k, t0 in enumerate((2.2, 2.42, 2.7, 3.05, 3.5, 4.05)):
+    for k, t0 in enumerate([T['sputter'] + d for d in (0, .22, .5, .85, 1.3, 1.85)]):
         put(s, sparkle(.5, 5, 84 - 3 * k, 96 - 4 * k), t0, .4 - .05 * k, (-1) ** k * .3)
-    put(s, glide(700, 180, 1.0, 1.3) * env(1.0, .02, .98, 1.5), 2.3, .22)
+    put(s, glide(700, 180, 1.0, 1.3) * env(1.0, .02, .98, 1.5), T['sputter'] + .1, .22)
     put(s, glide(1100, 220, 1.6, 1.4) * env(1.6, .05, 1.5, 1.2), T['descend'], .13)
     put(s, thump(120, 34, .8), T['touch'], .95); put(s, crunch(.7), T['touch'], .5)
-    for t0, m in ((4.58, 84), (4.88, 79), (5.28, 88), (5.62, 83)):      # cadourile aterizează în zăpadă
+    for t0, m in ((T['touch'] - .45, 84), (T['touch'] - .15, 79), (T['touch'] + .25, 88), (T['touch'] + .6, 83)):      # cadourile aterizează în zăpadă
         put(s, thump(170, 70, .22), t0, .5); put(s, crunch(.22, 2000), t0, .22); put(s, ping(midi(m), .3, .3), t0 + .02, .2)
-    for t0 in (3.72, 4.02, 4.42, 4.78): put(s, whoosh(.3, 400, 2500), t0, .18)      # cad din sanie
+    for t0 in (T['touch'] - 1.3, T['touch'] - 1.0, T['touch'] - .6, T['touch'] - .25): put(s, whoosh(.3, 400, 2500), t0, .18)      # cad din sanie
     put(s, crunch(1.0, 900), T['touch'] + .1, .35); put(s, whoosh(1.1, 600, 5000, .4), T['touch'] + .05, .25)   # zăpada se scutură din brazi
     # Stitch?
     put(s, sparkle(1.0), T['stitch'], .35); put(s, thump(150, 55, .4), T['stitch'], .5); put(s, whoosh(.6, 3000, 400), T['stitch'] - .1, .3)
@@ -124,7 +120,7 @@ def build_sfx():
     put(s, buzzer(.38), T['no'], .6); put(s, thump(110, 50, .35), T['no'], .5)
     put(s, whoosh(.3, 3500, 400), T['panelOut'], .3)
     # SLAM
-    put(s, riser(T['slam'] - 12.55, 250, 7000), 12.55, .55)
+    put(s, riser(.7, 250, 7000), T['slam'] - .7, .55)
     put(s, thump(90, 28, 1.3), T['slam'], 1.0); put(s, crunch(.5, 400) * .6, T['slam'], .6); put(s, sparkle(1.1), T['slam'] + .02, .3)
     for t0 in (T['slam2'], T['slam3']): put(s, thump(130, 38, .7), t0, .85); put(s, crunch(.35, 800), t0, .4)
     # iris → scena 4
@@ -142,14 +138,14 @@ def build_sfx():
     put(s, whoosh(.9, 3500, 300), T['vanOut'], .45); put(s, engine(.9, 80, 150, False) * .6, T['vanOut'], .25)
     # push + camera
     put(s, whoosh(.65, 300, 5000), T['pushA'], .45)
-    for t0, g in ((19.96, .8), (20.26, .4), (20.48, .22)): put(s, thump(110, 45, .35), t0, g)
+    for t0, g in ((T['giftIn'] + .26, .8), (T['giftIn'] + .56, .4), (T['giftIn'] + .78, .22)): put(s, thump(110, 45, .35), t0, g)
     put(s, glide(400, 900, .16) * env(.16, .003, .16), T['gaugeIn'], .35); put(s, ping(midi(88), .4), T['gaugeIn'], .25)
-    t0 = 20.9; per = .13
-    while t0 < T['open']: put(s, tick(1100 + 700 * (t0 - 20.9), .015), t0, .22 + .3 * (t0 - 20.9) / 1.4); per = max(.035, per * .93); t0 += per
+    W0 = T['giftIn'] + 1.2; t0 = W0; per = .13
+    while t0 < T['open']: put(s, tick(1100 + 700 * (t0 - W0), .015), t0, .22 + .3 * (t0 - W0) / max(.5, T['open'] - W0)); per = max(.035, per * .93); t0 += per
     put(s, glide(900, 380, T['gaugeZero'] - T['gaugeDown'], 1.3) * env(T['gaugeZero'] - T['gaugeDown'], .05, 1.2, 1.2), T['gaugeDown'], .09)
     put(s, pop(420, .18, up=True), T['open'] - .02, .8); put(s, whoosh(.5, 400, 6000), T['open'], .5); put(s, sparkle(1.4, 24), T['open'] + .03, .5); put(s, thump(140, 50, .5), T['open'], .6)
     for k, m in enumerate((72, 76, 79, 84, 88)): put(s, ping(midi(m), .9), T['gaugeZero'] + k * .07, .38, (k - 2) * .3)
-    for t0 in (23.0, 23.25, 23.55): put(s, ping(midi(91 + int(t0 * 3) % 3), .5), t0, .12, rng.uniform(-.5, .5))
+    for t0 in (T['open'] + .75, T['open'] + 1.0, T['open'] + 1.3): put(s, ping(midi(91 + int(t0 * 3) % 3), .5), t0, .12, rng.uniform(-.5, .5))
     # final
     put(s, riser(T['logo'] - T['flashA'], 250, 8000), T['flashA'], .55)
     put(s, thump(100, 32, 1.1), T['logo'], .9); put(s, whoosh(.5, 3000, 300), T['logo'], .35)
@@ -240,11 +236,20 @@ def load_mp3(p):
     raw = subprocess.run(['ffmpeg', '-v', 'error', '-i', p, '-f', 's16le', '-ac', '1', '-ar', str(SR), '-'], capture_output=True, check=True).stdout
     return np.frombuffer(raw, np.int16).astype(np.float64) / 32768
 def build_voice():
-    v = buf()
+    """Fiecare replică e reconstruită din grupurile ei de vorbire; pauzele lungi sunt scurtate (cuvintele rămân întregi)."""
+    v = buf(); PRE, POST = .05, .06
     for n in range(1, 7):
         x = load_mp3(os.path.join(VOICE_DIR, f'linie_{n}.mp3'))
         rms = np.sqrt(np.mean(x[np.abs(x) > .01] ** 2)); x = x * (10 ** (-19 / 20) / rms)      # același nivel între replici
-        put(v, x, A[n], 1.0)
+        # grupurile legate (pauză păstrată) se copiază dintr-o bucată
+        runs = []
+        for g in LAY[n]:
+            if runs and runs[-1]['keep']: runs[-1]['e'] = g['o'][1]; runs[-1]['keep'] = g['keep']
+            else: runs.append(dict(s=g['o'][0], e=g['o'][1], rel=g['rel'], keep=g['keep']))
+        for r in runs:
+            i0 = int((r['s'] - PRE) * SR); i1 = int((r['e'] + POST) * SR); piece = x[max(0, i0):i1].copy()
+            f = int(.006 * SR); piece[:f] *= np.linspace(0, 1, f); piece[-f:] *= np.linspace(1, 0, f)
+            put(v, piece, r['rel'] - PRE, 1.0)
     return v
 
 def write(p, b):
