@@ -262,7 +262,7 @@ function snow(c, t, o = {}) {
 function ground(c, y, scroll, t) {
   const g = c.createLinearGradient(0, y, 0, H); g.addColorStop(0, '#e6eeff'); g.addColorStop(.18, '#a9bbea'); g.addColorStop(.6, '#4a5fae'); g.addColorStop(1, '#232f6e');
   c.fillStyle = g; c.beginPath(); c.moveTo(0, H); c.lineTo(0, y + 14);
-  for (let x = 0; x <= W + 40; x += 40) c.lineTo(x, y + Math.sin((x + scroll) * .012) * 12 + Math.sin((x + scroll) * .031) * 5);
+  for (let x = 0; x <= W + 40; x += 40) c.lineTo(x, y + Math.sin((x + scroll) * .012) * 7 + Math.sin((x + scroll) * .031) * 3);
   c.lineTo(W, H); c.closePath(); c.fill();
   for (let i = 0; i < 46; i++) {
     const r = rng(i * 13 + 5), x = mod(r() * 1400 - scroll * 1.1, 1400) - 160, yy = y + 30 + r() * 260;
@@ -457,7 +457,7 @@ function sleighGroup(c, t, st) {
 }
 // poziția sanie în timp (coordonate ecran, centrul reniului din spate)
 const GROUND_A = 1430;
-const Y_REST = 1352;
+const Y_REST = 1336;
 function sleighState(t) {
   const sc = 1.0, fly = 850;
   let x, y = fly, rot = 0, amp = 1, broken = 0, tired = 0;
@@ -480,8 +480,8 @@ function sleighState(t) {
   if (t > TL.touch) {
     const a = t - TL.touch, k = prog(t, TL.touch, TL.stopA), decay = Math.exp(-a * 3.2);
     x = 670 + 14 * E.outQuart(k);
-    y = Y_REST - 30 * Math.sin(a * 9) * decay + 14 * E.outCubic(prog(a, 0, .9));
-    rot = .17 - .14 * E.outCubic(prog(a, 0, 1)) + .05 * Math.sin(a * 8) * decay;
+    y = Y_REST - 18 * Math.sin(a * 9) * decay + 4 * E.outCubic(prog(a, 0, .9));
+    rot = .17 - .15 * E.outCubic(prog(a, 0, 1)) + .04 * Math.sin(a * 8) * decay;
     amp = 0; tired = 1;
   }
   return { x: x + 24 * sc, y, sc, rot, ph: t * 13, amp, broken, tired };
@@ -515,52 +515,46 @@ function drawFallenGifts(c, t) {
   });
 }
 // sania aterizează în zăpadă: urmă (brazdă), troian din jurul ei și stropi de zăpadă
-const gY = (x, sc) => GROUND_A + Math.sin((x + sc) * .012) * 12 + Math.sin((x + sc) * .031) * 5;
+const gY = (x, sc) => GROUND_A + Math.sin((x + sc) * .012) * 7 + Math.sin((x + sc) * .031) * 3;
 function furrow(c, t) {
   if (t < TL.touch) return;
   const sc = scrollA(t), s0 = sleighState(TL.touch), st = sleighState(t);
-  const xs = (s0.x - 490 * s0.sc) - (sc - scrollA(TL.touch)), xe = st.x + 200, len = xe - xs; if (len < 4) return;
-  const grow = E.outCubic(prog(t, TL.touch, TL.touch + .35));
-  const top = [], bot = [];
-  for (let x = xs; x <= xe; x += 12) {
-    const u = (x - xs) / len, depth = Math.min(1, (x - xs) / 70) * grow, y = gY(x, sc);
-    top.push([x, y + 6 + 3 * Math.sin(x * .09)]); bot.push([x, y + 6 + 8 + 26 * depth]);
+  const xs = (s0.x - 470 * s0.sc) - (sc - scrollA(TL.touch)), xe = st.x + 100, len = xe - xs; if (len < 4) return;
+  const grow = E.outCubic(prog(t, TL.touch, TL.touch + .4)), top = [], bot = [];
+  for (let x = xs; x <= xe; x += 10) {
+    const depth = Math.min(1, (x - xs) / 90) * grow, y = gY(x, sc);
+    top.push([x, y + 3]); bot.push([x, y + 3 + 3 + 9 * depth]);
   }
   c.save();
-  // groapa
-  const g = c.createLinearGradient(0, GROUND_A, 0, GROUND_A + 50); g.addColorStop(0, '#8fa3d8'); g.addColorStop(1, '#4a5fae');
-  c.fillStyle = g; c.beginPath(); top.forEach(([x, y], i) => i ? c.lineTo(x, y) : c.moveTo(x, y)); for (let i = bot.length - 1; i >= 0; i--) c.lineTo(bot[i][0], bot[i][1]); c.closePath(); c.fill();
-  // marginile albe, scoase afară de patine
-  c.strokeStyle = '#ffffff'; c.lineWidth = 7; c.lineCap = 'round'; c.beginPath(); top.forEach(([x, y], i) => i ? c.lineTo(x, y - 2) : c.moveTo(x, y - 2)); c.stroke();
-  c.strokeStyle = 'rgba(40,60,130,.5)'; c.lineWidth = 3; c.beginPath(); bot.forEach(([x, y], i) => i ? c.lineTo(x, y - 6) : c.moveTo(x, y - 6)); c.stroke();
-  for (let i = 0; i < top.length; i += 3) { c.fillStyle = '#fff'; c.beginPath(); c.arc(top[i][0], top[i][1] - 6 - (i % 2) * 3, 5 + (i % 4), 0, TAU); c.fill(); }
+  c.fillStyle = 'rgba(86,106,176,.85)'; c.beginPath(); top.forEach(([x, y], i) => i ? c.lineTo(x, y) : c.moveTo(x, y)); for (let i = bot.length - 1; i >= 0; i--) c.lineTo(bot[i][0], bot[i][1]); c.closePath(); c.fill();
+  c.strokeStyle = 'rgba(255,255,255,.95)'; c.lineWidth = 3; c.lineCap = 'round'; c.beginPath(); top.forEach(([x, y], i) => i ? c.lineTo(x, y - 1) : c.moveTo(x, y - 1)); c.stroke();
   c.restore();
 }
+// strat subțire de zăpadă care se așază în jurul patinelor și al copitelor (fără să le înghită)
 function snowBank(c, t, st) {
-  const k = E.outBack(prog(t, TL.touch - .05, TL.touch + .5), 1.3); if (k <= 0) return;
-  const sc = scrollA(t), x0 = st.x - 470 * st.sc, x1 = st.x + 360 * st.sc, L = x1 - x0;
-  const top = x => { const u = (x - x0) / L, f = Math.pow(Math.sin(Math.PI * clamp(u)), .6); return gY(x, sc) - (36 * f + Math.sin(x * .05 + 1.5) * 9 * f) * k; };
-  const g = c.createLinearGradient(0, GROUND_A - 60, 0, GROUND_A + 90); g.addColorStop(0, 'rgba(246,249,255,1)'); g.addColorStop(.4, 'rgba(200,214,245,.95)'); g.addColorStop(1, 'rgba(150,170,225,0)');
-  c.fillStyle = g; c.beginPath(); for (let x = x0; x <= x1; x += 14) x === x0 ? c.moveTo(x, top(x)) : c.lineTo(x, top(x));
-  for (let x = x1; x >= x0; x -= 14) c.lineTo(x, gY(x, sc) + 90); c.closePath(); c.fill();
-  c.strokeStyle = 'rgba(255,255,255,.95)'; c.lineWidth = 6; c.lineJoin = 'round'; c.beginPath(); for (let x = x0; x <= x1; x += 14) { const y = top(x) + 2; x === x0 ? c.moveTo(x, y) : c.lineTo(x, y); } c.stroke();
-  for (let i = 0; i < 18; i++) { const r = rng(i * 7 + 1), x = x0 + r() * L, y = top(x) + 12 + r() * 40; c.globalAlpha = .4 + .6 * Math.abs(Math.sin(t * 2 + i)); sparkle(c, x, y, 4 + r() * 5, 0, '#fff'); } c.globalAlpha = 1;
+  const k = E.outCubic(prog(t, TL.touch - .05, TL.touch + .45)); if (k <= 0) return;
+  const sc = scrollA(t), x0 = st.x - 500 * st.sc, x1 = st.x + 380 * st.sc, L = x1 - x0;
+  const h = x => { const u = clamp((x - x0) / L), edge = Math.pow(Math.sin(Math.PI * u), .7);
+    return (7 * edge + Math.max(0, 1 - Math.abs(u - .95) / .07) * 9 + Math.max(0, 1 - Math.abs(u - .07) / .06) * 6 + Math.sin(x * .08) * 1.6 * edge) * k; };
+  const g = c.createLinearGradient(0, GROUND_A, 0, H); g.addColorStop(0, '#e6eeff'); g.addColorStop(.18, '#a9bbea'); g.addColorStop(.6, '#4a5fae'); g.addColorStop(1, '#232f6e');
+  c.fillStyle = g; c.beginPath(); for (let x = x0; x <= x1; x += 8) x === x0 ? c.moveTo(x, gY(x, sc) - h(x)) : c.lineTo(x, gY(x, sc) - h(x));
+  for (let x = x1; x >= x0; x -= 8) c.lineTo(x, gY(x, sc) + 40); c.closePath(); c.fill();
+  c.strokeStyle = 'rgba(255,255,255,.95)'; c.lineWidth = 3; c.lineJoin = 'round'; c.beginPath(); for (let x = x0; x <= x1; x += 8) { const y = gY(x, sc) - h(x); x === x0 ? c.moveTo(x, y) : c.lineTo(x, y); } c.stroke();
 }
 function crashSnow(c, t) {
-  const t0 = TL.touch - .05, a = t - t0; if (a < 0 || a > 3.4) return;
-  const s0 = sleighState(TL.touch), r = rng(5); c.save();
-  for (let i = 0; i < 48; i++) {
-    const delay = r() * .5, fx = r(), x0 = s0.x - 500 + fx * 860, y0 = 1395 + r() * 30, vx = (r() - .4) * 340 + (fx - .5) * 160, vy = -280 - r() * 720, rad = 12 + r() * 30, life = 1.1 + r() * 1.2;
+  const t0 = TL.touch - .05, a = t - t0; if (a < 0 || a > 3.2) return;
+  const s0 = sleighState(TL.touch), r = rng(5); c.save(); c.fillStyle = '#fff';
+  for (let i = 0; i < 170; i++) {
+    const delay = r() * .55, fx = r(), x0 = s0.x - 470 + fx * 800, vx = (r() - .4) * 440 + (fx - .5) * 220, vy = -150 - r() * 640, rad = 1.8 + r() * 5.5, life = .9 + r() * 1.2;
     const aa = a - delay; if (aa < 0 || aa > life) continue; const u = aa / life;
-    const px = x0 + vx * aa - (scrollA(t) - scrollA(t0 + delay)), py = y0 + vy * aa + .5 * 1150 * aa * aa, rr = rad * (1 + u * .7);
-    const gg = c.createRadialGradient(px, py, 0, px, py, rr); gg.addColorStop(0, 'rgba(255,255,255,.95)'); gg.addColorStop(.6, 'rgba(232,240,255,.55)'); gg.addColorStop(1, 'rgba(232,240,255,0)');
-    c.globalAlpha = .95 * (1 - u * u); c.fillStyle = gg; c.beginPath(); c.arc(px, py, rr, 0, TAU); c.fill();
+    const px = x0 + vx * aa - (scrollA(t) - scrollA(t0 + delay)), py = 1424 + vy * aa + .5 * 1250 * aa * aa;
+    c.globalAlpha = .9 * (1 - u); c.beginPath(); c.arc(px, py, rad * (1 - u * .4), 0, TAU); c.fill();
   }
-  for (let i = 0; i < 12; i++) {
-    const delay = i * .05, aa = a - delay; if (aa < 0 || aa > 2.6) continue; const u = aa / 2.6, x0 = s0.x - 540 + i * 85, rr = 80 + u * 120;
-    const px = x0 - (scrollA(t) - scrollA(t0 + delay)) * .7 - u * 120, py = 1380 - 150 * E.outCubic(u) - (i % 3) * 18;
-    const gg = c.createRadialGradient(px, py, 0, px, py, rr); gg.addColorStop(0, 'rgba(240,246,255,.6)'); gg.addColorStop(1, 'rgba(240,246,255,0)');
-    c.globalAlpha = (1 - u) * .85; c.fillStyle = gg; c.beginPath(); c.arc(px, py, rr, 0, TAU); c.fill();
+  for (let i = 0; i < 9; i++) {
+    const delay = i * .06, aa = a - delay; if (aa < 0 || aa > 2.2) continue; const u = aa / 2.2, x0 = s0.x - 470 + i * 100, rr = 50 + u * 70;
+    const px = x0 - (scrollA(t) - scrollA(t0 + delay)) * .7 - u * 100, py = 1405 - 70 * E.outCubic(u);
+    const gg = c.createRadialGradient(px, py, 0, px, py, rr); gg.addColorStop(0, 'rgba(240,246,255,.45)'); gg.addColorStop(1, 'rgba(240,246,255,0)');
+    c.globalAlpha = (1 - u) * .8; c.fillStyle = gg; c.beginPath(); c.arc(px, py, rr, 0, TAU); c.fill();
   }
   c.restore();
 }
@@ -573,8 +567,8 @@ function worldA(c, t) {
   // ceață spre orizont
   let g = c.createLinearGradient(0, 1100, 0, 1440); g.addColorStop(0, 'rgba(120,140,220,0)'); g.addColorStop(1, 'rgba(150,160,230,.22)'); c.fillStyle = g; c.fillRect(0, 1100, W, 340);
   drawTile(c, CITY_A[2], sc);
-  ground(c, GROUND_A, sc, t);
   pines(c, sc, GROUND_A + 40, 1.25, 4, 1.1);
+  ground(c, GROUND_A, sc, t);
   furrow(c, t);
   const st = sleighState(t);
   // urmă de scântei
@@ -590,8 +584,8 @@ function worldA(c, t) {
   trail(c, t, {
     t0: TL.touch - .15, t1: TL.touch + 1.3, rate: 38, life: 1.1,
     pos: tb => { const s = sleighState(tb); return { x: s.x, y: s.y + 80 * s.sc, sc: scrollA(tb) }; },
-    draw: (cc, p, a, k) => { const r = rng(k * 9 + 2), rr = 26 + a * 70; const px = p.x + (r() - .5) * 760 - a * 140 - (scrollA(t) - p.sc), py = p.y + 20 - a * 90 - r() * 30;
-      const gg = cc.createRadialGradient(px, py, 0, px, py, rr); gg.addColorStop(0, 'rgba(255,255,255,.8)'); gg.addColorStop(1, 'rgba(255,255,255,0)'); cc.globalAlpha = (1 - a) * .9; cc.fillStyle = gg; cc.beginPath(); cc.arc(px, py, rr, 0, TAU); cc.fill(); cc.globalAlpha = 1; }
+    draw: (cc, p, a, k) => { const r = rng(k * 9 + 2), rr = 14 + a * 34; const px = p.x + (r() - .5) * 760 - a * 140 - (scrollA(t) - p.sc), py = p.y + 30 - a * 60 - r() * 20;
+      const gg = cc.createRadialGradient(px, py, 0, px, py, rr); gg.addColorStop(0, 'rgba(255,255,255,.8)'); gg.addColorStop(1, 'rgba(255,255,255,0)'); cc.globalAlpha = (1 - a) * .55; cc.fillStyle = gg; cc.beginPath(); cc.arc(px, py, rr, 0, TAU); cc.fill(); cc.globalAlpha = 1; }
   });
   crashSnow(c, t);
   // abur de la reni
@@ -639,70 +633,30 @@ function menuIcon(c, kind, x, y, s, col) {
   else { c.beginPath(); c.roundRect(-s * .44, -s * .44, s * .46, s * .88, 4); c.stroke(); c.beginPath(); c.moveTo(-s * .06, 0); c.lineTo(s * .5, 0); c.moveTo(s * .28, -s * .2); c.lineTo(s * .5, 0); c.lineTo(s * .28, s * .2); c.stroke(); }
   c.restore();
 }
-function chip(c, kind, x, y, label, val, col) {
-  c.save(); c.translate(x, y);
-  c.fillStyle = 'rgba(8,12,44,.85)'; c.strokeStyle = 'rgba(140,160,255,.45)'; c.lineWidth = 3; c.beginPath(); c.roundRect(-104, -34, 208, 68, 16); c.fill(); c.stroke();
-  c.fillStyle = col;
-  if (kind === 0) { c.fillRect(-84, -8, 30, 24); c.fillStyle = '#fff'; c.fillRect(-71, -8, 4, 24); c.fillRect(-84, 1, 30, 4); c.fillStyle = col; c.beginPath(); c.ellipse(-76, -12, 8, 5, -.5, 0, TAU); c.ellipse(-62, -12, 8, 5, .5, 0, TAU); c.fill(); }
-  else if (kind === 1) { c.strokeStyle = col; c.lineWidth = 4; c.lineCap = 'round'; for (let i = 0; i < 3; i++) { c.save(); c.translate(-69, 4); c.rotate(i * Math.PI / 3); c.beginPath(); c.moveTo(-17, 0); c.lineTo(17, 0); c.stroke(); c.restore(); } }
-  else heart(c, -69, 6, 1.5, col);
-  txt(c, label, -40, -13, 22, { font: 'Fredoka', weight: '600', align: 'left', fill: '#9fb0ff', stroke: null, ls: 1 });
-  txt(c, val, -40, 14, 34, { align: 'left', fill: '#fff', stroke: null });
-  c.restore();
-}
 function pausePanel(c, t) {
   const pin = E.outBack(prog(t, TL.pause + .15, TL.pause + .7), 1.8), pout = E.inCubic(prog(t, TL.panelOut, TL.panelOut + .25));
   if (pout >= 1) return;
   let sx = 0; if (t > TL.no && t < TL.no + .35) sx = Math.sin(t * 120) * 16 * (1 - prog(t, TL.no, TL.no + .35));
-  const PW = 740, PH = 900, sc = pin * (1 - pout * .9);
-  c.save(); c.translate(540 + sx, 910); c.scale(sc, sc); c.rotate(pout * .5);
-  c.save(); c.globalCompositeOperation = 'lighter'; glow(c, 0, 0, 720, '90,130,255', .3); c.restore();
-  // corp cu colțuri tăiate
-  chamfer(c, -PW / 2, -PH / 2, PW, PH, 40);
-  const bg = c.createLinearGradient(0, -PH / 2, 0, PH / 2); bg.addColorStop(0, '#18237a'); bg.addColorStop(.35, '#0d1650'); bg.addColorStop(1, '#070b2e'); c.fillStyle = bg; c.fill();
-  c.save(); chamfer(c, -PW / 2, -PH / 2, PW, PH, 40); c.clip();
-  c.strokeStyle = 'rgba(120,150,255,.08)'; c.lineWidth = 2; for (let x = -PW / 2; x < PW / 2; x += 40) { c.beginPath(); c.moveTo(x, -PH / 2); c.lineTo(x, PH / 2); c.stroke(); } for (let y = -PH / 2; y < PH / 2; y += 40) { c.beginPath(); c.moveTo(-PW / 2, y); c.lineTo(PW / 2, y); c.stroke(); }
-  // antet
-  const hg = c.createLinearGradient(0, -PH / 2, 0, -PH / 2 + 180); hg.addColorStop(0, 'rgba(255,255,255,.14)'); hg.addColorStop(1, 'rgba(255,255,255,.02)'); c.fillStyle = hg; c.fillRect(-PW / 2, -PH / 2, PW, 180);
-  c.fillStyle = 'rgba(255,210,63,.1)'; for (let x = -PW / 2 - 100; x < PW / 2; x += 56) { c.beginPath(); c.moveTo(x, -PH / 2 + 180); c.lineTo(x + 28, -PH / 2 + 180); c.lineTo(x + 28 + 60, -PH / 2 + 120); c.lineTo(x + 60, -PH / 2 + 120); c.fill(); }
-  c.fillStyle = '#ffd23f'; c.fillRect(-PW / 2, -PH / 2 + 180, PW, 6);
-  // linie de scanare care trece peste panou
-  const sy = mod(t * 260, PH + 200) - PH / 2 - 100; const sg = c.createLinearGradient(0, sy - 40, 0, sy + 40); sg.addColorStop(0, 'rgba(160,190,255,0)'); sg.addColorStop(.5, 'rgba(160,190,255,.14)'); sg.addColorStop(1, 'rgba(160,190,255,0)'); c.fillStyle = sg; c.fillRect(-PW / 2, sy - 40, PW, 80);
-  c.restore();
-  // contur neon cu degrade
-  chamfer(c, -PW / 2, -PH / 2, PW, PH, 40); const bd = c.createLinearGradient(-PW / 2, -PH / 2, PW / 2, PH / 2); bd.addColorStop(0, '#6fe7ff'); bd.addColorStop(.5, '#a58bff'); bd.addColorStop(1, '#ff7ad9'); c.strokeStyle = bd; c.lineWidth = 9; c.stroke();
-  chamfer(c, -PW / 2 + 16, -PH / 2 + 16, PW - 32, PH - 32, 28); c.strokeStyle = 'rgba(160,180,255,.3)'; c.lineWidth = 2; c.stroke();
-  // colțare galbene
-  c.strokeStyle = '#ffd23f'; c.lineWidth = 8; c.lineCap = 'square';
-  for (const [sxx, syy] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) { const cx = sxx * (PW / 2 - 4), cy = syy * (PH / 2 - 4); c.beginPath(); c.moveTo(cx - sxx * 70, cy); c.lineTo(cx, cy); c.lineTo(cx, cy - syy * 70); c.stroke(); }
-  // titlu + pictograme (Ă are loc destul deasupra)
-  c.fillStyle = '#fff'; c.fillRect(-318, -PH / 2 + 62, 14, 56); c.fillRect(-294, -PH / 2 + 62, 14, 56); c.fillRect(280, -PH / 2 + 62, 14, 56); c.fillRect(304, -PH / 2 + 62, 14, 56);
-  txt(c, 'PAUZĂ', 0, -PH / 2 + 96, 128, { fill: '#fff', stroke: null, ls: 10, shadow: 'rgba(110,180,255,.9)', sb: 0 });
-  // statistici
-  chip(c, 0, -232, -PH / 2 + 250, 'CADOURI', '12/12', '#ff6b6b'); chip(c, 1, 0, -PH / 2 + 250, 'VITEZĂ', '0 KM/H', '#9fe0ff'); chip(c, 2, 232, -PH / 2 + 250, 'MOȘ', '100%', '#ff6b8a');
-  // butoane
-  const items = ['CONTINUĂ', 'RESTART', 'IEȘIRE'], ys = [-80, 52, 184], k = E.inOut(prog(t, TL.cursor1, TL.cursor2)), barY = lerp(ys[0], ys[1], k);
+  const PW = 660, PH = 760, sc = pin * (1 - pout * .9);
+  c.save(); c.translate(540 + sx, 900); c.scale(sc, sc); c.rotate(pout * .5);
+  c.save(); c.globalCompositeOperation = 'lighter'; glow(c, 0, 0, 640, '90,130,255', .22); c.restore();
+  chamfer(c, -PW / 2, -PH / 2, PW, PH, 24);
+  const bg = c.createLinearGradient(0, -PH / 2, 0, PH / 2); bg.addColorStop(0, '#16206b'); bg.addColorStop(1, '#0a1145'); c.fillStyle = bg; c.fill();
+  c.strokeStyle = '#b9c6ff'; c.lineWidth = 6; c.stroke();
+  txt(c, 'PAUZĂ', 0, -PH / 2 + 110, 124, { fill: '#fff', stroke: null, ls: 8 });
+  c.fillStyle = '#ffd23f'; c.fillRect(-130, -PH / 2 + 190, 260, 6);
+  const items = ['CONTINUĂ', 'RESTART', 'IEȘIRE'], ys = [-60, 64, 188], k = E.inOut(prog(t, TL.cursor1, TL.cursor2)), barY = lerp(ys[0], ys[1], k);
   items.forEach((s, i) => {
     const y = ys[i], act = clamp(1 - Math.abs(barY - y) / 70);
-    c.save(); c.translate(0, y);
-    chamfer(c, -300, -52, 600, 104, 22);
-    if (act > .01) { const ag = c.createLinearGradient(0, -52, 0, 52); ag.addColorStop(0, '#fff1a8'); ag.addColorStop(.5, '#ffd23f'); ag.addColorStop(1, '#ff9d1f'); c.fillStyle = ag; c.save(); c.globalAlpha = act; c.shadowColor = 'rgba(255,200,60,.8)'; c.shadowBlur = 30 * act; c.fill(); c.restore(); }
-    if (act < .99) { const ig = c.createLinearGradient(0, -52, 0, 52); ig.addColorStop(0, '#1d2a82'); ig.addColorStop(1, '#0f1850'); c.fillStyle = ig; c.save(); c.globalAlpha = 1 - act; c.fill(); c.restore(); }
-    chamfer(c, -300, -52, 600, 104, 22); c.strokeStyle = act > .5 ? '#fff' : '#3b4bb5'; c.lineWidth = 4; c.stroke();
-    if (act > .3) { c.save(); chamfer(c, -300, -52, 600, 104, 22); c.clip(); c.fillStyle = `rgba(255,255,255,${.3 * act})`; c.fillRect(-300, -52, 600, 44); c.restore(); }
-    const col = act > .5 ? '#1a1233' : '#8ea2ff';
-    menuIcon(c, i, -240, 0, 54, col);
-    txt(c, s, -6, 4, 70, { fill: col, stroke: null, ls: 5 });
+    c.save(); c.translate(0, y); chamfer(c, -270, -50, 540, 100, 16);
+    if (act > .5) { c.fillStyle = '#ffd23f'; c.fill(); } else { c.fillStyle = 'rgba(255,255,255,.06)'; c.fill(); c.strokeStyle = 'rgba(160,178,255,.4)'; c.lineWidth = 3; c.stroke(); }
+    const col = act > .5 ? '#0a1033' : '#8ea2ff';
+    menuIcon(c, i, -208, 0, 50, col);
+    txt(c, s, 10, 4, 66, { fill: col, stroke: null, ls: 4 });
     c.restore();
   });
-  const bl = Math.sin(t * 14) > -.3; if (bl) { c.fillStyle = '#1a1233'; c.beginPath(); c.moveTo(250, barY - 18); c.lineTo(220, barY); c.lineTo(250, barY + 18); c.closePath(); c.fill(); }
-  // subsol
-  txt(c, 'APASĂ PENTRU A ALEGE', 0, 332, 28, { font: 'Fredoka', weight: '600', fill: '#9fb0ff', stroke: null, ls: 3 });
-  c.fillStyle = 'rgba(140,160,255,.3)'; c.fillRect(-300, 358, 600, 3);
-  txt(c, 'NIVEL 24 DECEMBRIE', -300, 392, 26, { font: 'Fredoka', weight: '600', align: 'left', fill: '#6f80d8', stroke: null, ls: 2 });
-  txt(c, 'ORA 23:59', 300, 392, 26, { font: 'Fredoka', weight: '600', align: 'right', fill: '#ffd23f', stroke: null, ls: 2 });
-  // „NU!”
-  if (t > TL.no) { const q = E.outBack(prog(t, TL.no, TL.no + .2), 3); c.save(); c.translate(250, 52); c.scale(q, q); c.rotate(-.2); c.fillStyle = '#e63946'; c.strokeStyle = '#fff'; c.lineWidth = 6; c.beginPath(); c.roundRect(-95, -50, 190, 100, 16); c.fill(); c.stroke(); txt(c, 'NU!', 0, 4, 80, { fill: '#fff', stroke: null }); c.restore(); }
+  if (Math.sin(t * 14) > -.3) { c.fillStyle = '#0a1033'; c.beginPath(); c.moveTo(236, barY - 16); c.lineTo(210, barY); c.lineTo(236, barY + 16); c.closePath(); c.fill(); }
+  if (t > TL.no) { const q = E.outBack(prog(t, TL.no, TL.no + .2), 3); c.save(); c.translate(220, 64); c.scale(q, q); c.rotate(-.2); c.fillStyle = '#e63946'; c.beginPath(); c.roundRect(-95, -50, 190, 100, 16); c.fill(); txt(c, 'NU!', 0, 4, 80, { fill: '#fff', stroke: null }); c.restore(); }
   c.restore();
 }
 // ───────────────────────── SCENA 3: PAUZĂ ─────────────────────────
