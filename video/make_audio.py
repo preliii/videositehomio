@@ -108,7 +108,10 @@ def build_sfx():
     for t0 in (2.45, 2.85, 3.2, 3.7, 4.1, 4.5): put(s, fftf(noise(.18), 150, 1400) * env(.18, .005, .18, 2), t0, .35)
     put(s, glide(1100, 220, 1.6, 1.4) * env(1.6, .05, 1.5, 1.2), T['descend'], .13)
     put(s, thump(120, 34, .8), T['touch'], .95); put(s, crunch(.7), T['touch'], .5)
-    for t0, m in ((5.18, 84), (5.42, 79), (5.66, 88)): put(s, ping(midi(m), .3, .3), t0, .22)
+    for t0, m in ((4.58, 84), (4.88, 79), (5.28, 88), (5.62, 83)):      # cadourile aterizează în zăpadă
+        put(s, thump(170, 70, .22), t0, .5); put(s, crunch(.22, 2000), t0, .22); put(s, ping(midi(m), .3, .3), t0 + .02, .2)
+    for t0 in (3.72, 4.02, 4.42, 4.78): put(s, whoosh(.3, 400, 2500), t0, .18)      # cad din sanie
+    put(s, crunch(1.0, 900), T['touch'] + .1, .35); put(s, whoosh(1.1, 600, 5000, .4), T['touch'] + .05, .25)   # zăpada se scutură din brazi
     # Stitch?
     put(s, sparkle(1.0), T['stitch'], .35); put(s, thump(150, 55, .4), T['stitch'], .5); put(s, whoosh(.6, 3000, 400), T['stitch'] - .1, .3)
     # PAUZĂ
