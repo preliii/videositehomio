@@ -3,26 +3,28 @@
    Tot ce apare pe ecran e o funcție de timp: scene(ctx, t). Când vine vocea reală,
    se ajustează doar timpii din TL. */
 
-const W = 1080, H = 1920, FPS = 60, DURATION = 24;
+const W = 1080, H = 1920, FPS = 60, DURATION = 28.8;
 const TAU = Math.PI * 2;
 
 // ───────────────────────── timeline (secunde) ─────────────────────────
 const TL = {
+  // timpii de start ai replicilor audio (secunde în video) — vezi voce/audio/linie_N.mp3
+  a: [0, 0.65, 3.0, 8.75, 15.0, 19.8, 24.0],
   // scena 1-2: lumea de noapte
-  hook1: 0.75, hook2: 1.05, hook3: 1.4, hookOut: 2.75,
-  sputter: 2.3, descend: 3.1, touch: 4.3, stopA: 5.5,
-  l1: 3.0, l2: 4.15, stitch: 5.05,
+  hook: [0.67, 0.93, 1.45], hookOut: 2.35,
+  sputter: 2.2, descend: 3.4, touch: 5.0, stopA: 6.5,
+  l1: [3.15, 3.55, 3.82, 4.22, 4.42], l2: [5.6, 6.0, 6.28, 6.56], stitch: 7.48, textsOut: 8.45,
   // scena 3: pauză
-  pause: 6.0, cursor1: 6.45, cursor2: 7.0, no: 7.45, panelOut: 7.75, slam: 7.95,
+  pause: 8.85, cursor1: 10.5, cursor2: 10.88, no: 12.42, panelOut: 12.72, slam: 13.24, slam2: 13.88, slam3: 14.26,
   // tranziție + scena 4: livrarea
-  irisA: 8.8, irisB: 9.35,
-  vanIn: 9.1, vanStop: 10.7, homio: 9.55, door: 10.9, prod0: 11.1, prodGap: 0.38, deliv: 12.9, vanOut: 13.4,
+  irisA: 14.55, irisB: 15.1,
+  vanIn: 14.7, vanStop: 15.9, homio: 15.08, door: 16.0, prod0: 16.2, prodGap: 0.38, cad: [16.08, 16.58], deliv: [17.28, 17.67, 17.81], rom: 18.15, vanOut: 18.45,
   // push spre interior
-  pushA: 14.7, pushB: 15.3,
+  pushA: 19.0, pushB: 19.6,
   // scena 5: camera
-  giftIn: 15.3, gaugeIn: 16.0, gaugeDown: 16.6, gaugeZero: 19.0, open: 17.9, zeroTxt: 19.1,
+  giftIn: 19.7, gaugeIn: 20.65, gaugeDown: 21.6, gaugeZero: 22.5, open: 22.25, zeroTxt: 22.5,
   // scena 6: final
-  flashA: 20.65, flashB: 21.35, logo: 21.2, tag1: 22.1, tag2: 22.55, url: 22.9
+  flashA: 23.4, flashB: 24.0, logo: 24.0, tag1: [25.09, 25.82], tag2: 27.11, url: 27.5
 };
 
 // ───────────────────────── utilitare ─────────────────────────
@@ -111,10 +113,10 @@ function shakeAt(t, ev) {
   return [sx, sy];
 }
 const SHAKES = [
-  { t: 4.3, a: 26, d: .55 }, { t: 5.1, a: 14, d: .4 }, { t: 7.45, a: 22, d: .4 },
-  { t: TL.slam, a: 34, d: .6 }, { t: 10.7, a: 14, d: .35 },
-  { t: 11.1 + 0.9, a: 8, d: .25 }, { t: 11.48 + .9, a: 8, d: .25 }, { t: 11.86 + .9, a: 8, d: .25 },
-  { t: 12.24 + .9, a: 8, d: .25 }, { t: 12.62 + .9, a: 8, d: .25 }, { t: TL.logo + .45, a: 12, d: .4 }
+  { t: TL.touch, a: 26, d: .55 }, { t: TL.touch + .8, a: 14, d: .4 }, { t: TL.no, a: 22, d: .4 },
+  { t: TL.slam, a: 34, d: .6 }, { t: TL.slam2, a: 22, d: .4 }, { t: TL.slam3, a: 28, d: .5 }, { t: TL.vanStop, a: 14, d: .35 },
+  ...[0, 1, 2, 3, 4].map(i => ({ t: TL.prod0 + i * TL.prodGap + .9, a: 8, d: .25 })),
+  { t: TL.logo + .45, a: 12, d: .4 }
 ];
 
 // ───────────────────────── resurse ─────────────────────────
@@ -490,30 +492,31 @@ function worldA(c, t) {
 }
 function textsA(c, t) {
   const st = sleighState(t);
-  words(c, t, [{ s: 'S-A', t0: TL.hook1, fill: '#fff', rot: -.3 }, { s: 'STRICAT', t0: TL.hook2, fill: '#ffd23f', rot: .25 }, { s: 'CEVA?', t0: TL.hook3, fill: '#fff', rot: -.2 }], 540, 420, 190, { out: TL.hookOut });
+  words(c, t, [{ s: 'S-A', t0: TL.hook[0], fill: '#fff', rot: -.3 }, { s: 'STRICAT', t0: TL.hook[1], fill: '#ffd23f', rot: .25 }, { s: 'CEVA?', t0: TL.hook[2], fill: '#fff', rot: -.2 }], 540, 420, 190, { out: TL.hookOut });
   // semn de exclamare deasupra lui Moș
   if (t > TL.sputter && t < TL.touch + 1) {
     const p = E.outBack(prog(t, TL.sputter + .1, TL.sputter + .45), 3);
     c.save(); c.translate(st.x - 100 * st.sc + (t > TL.descend ? 0 : 0), st.y - 250 * st.sc); c.scale(p, p);
     c.fillStyle = '#fff'; c.beginPath(); c.arc(0, 0, 52, 0, TAU); c.fill(); c.fillStyle = '#e63946'; c.font = '86px Anton'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('!', 0, 6); c.restore();
   }
-  if (t > TL.l1) {
-    words(c, t, [{ s: 'MOȘUL', t0: TL.l1, rot: .2 }, { s: 'N-A', t0: TL.l1 + .18 }, { s: 'AJUNS', t0: TL.l1 + .36 }, { s: 'LA', t0: TL.l1 + .5 }, { s: 'TIMP?', t0: TL.l1 + .62, fill: '#ffd23f' }], 540, 380, 118, {});
-    words(c, t, [{ s: 'TOCMAI', t0: TL.l2 }, { s: 'CÂND', t0: TL.l2 + .2 }, { s: 'ȚI-A', t0: TL.l2 + .36 }, { s: 'CERUT', t0: TL.l2 + .52 }], 540, 520, 118, {});
+  if (t > TL.l1[0]) {
+    const o = { out: TL.textsOut };
+    words(c, t, [{ s: 'MOȘUL', t0: TL.l1[0], rot: .2 }, { s: 'N-A', t0: TL.l1[1] }, { s: 'AJUNS', t0: TL.l1[2] }, { s: 'LA', t0: TL.l1[3] }, { s: 'TIMP?', t0: TL.l1[4], fill: '#ffd23f' }], 540, 380, 118, o);
+    words(c, t, [{ s: 'TOCMAI', t0: TL.l2[0] }, { s: 'CÂND', t0: TL.l2[1] }, { s: 'ȚI-A', t0: TL.l2[2] }, { s: 'CERUT', t0: TL.l2[3] }], 540, 520, 118, o);
   }
-  if (t > TL.stitch) {
-    const p = prog(t, TL.stitch, TL.stitch + .5), e = E.outElastic(p);
+  if (t > TL.stitch && t < TL.textsOut + .4) {
+    const p = prog(t, TL.stitch, TL.stitch + .5), e = E.outElastic(p) * (1 - E.inCubic(prog(t, TL.textsOut, TL.textsOut + .35)));
     c.save(); c.translate(540, 700); c.scale(lerp(.1, 1, e), lerp(.1, 1, e)); c.rotate(Math.sin(t * 30) * .02 * (1 - p) - .04);
     c.save(); c.globalCompositeOperation = 'lighter'; glow(c, 0, 0, 420, '60,160,255', .5 * (.7 + .3 * Math.sin(t * 8))); c.restore();
     txt(c, 'STITCH?', 0, 0, 250, { fill: '#7fd0ff', stroke: '#06122e', sw: 40, shadow: 'rgba(0,0,0,.6)', sb: 20, sy: 14 });
     c.restore();
-    burst(c, t, TL.stitch, 540, 700, { n: 26, speed: 560, life: .8, colors: ['#9fe0ff', '#fff', '#ffd23f'], size: 26, seed: 21 });
+    if (t < TL.textsOut) burst(c, t, TL.stitch, 540, 700, { n: 26, speed: 560, life: .8, colors: ['#9fe0ff', '#fff', '#ffd23f'], size: 26, seed: 21 });
   }
 }
 
 // ───────────────────────── SCENA 3: PAUZĂ ─────────────────────────
 function pauseScene(c, t) {
-  const fz = TL.touch + 1.55;                         // cadrul înghețat
+  const fz = TL.stopA + .15;                         // cadrul înghețat
   const p0 = prog(t, TL.pause, TL.pause + .25);
   c.save();
   c.translate(W / 2, H / 2); const z = 1 + .04 * E.outCubic(p0) + (t - TL.pause) * .004; c.scale(z, z); c.translate(-W / 2, -H / 2);
@@ -582,8 +585,8 @@ function pauseScene(c, t) {
         c.restore();
       };
       drop(TL.slam, 'CRĂCIUNUL', 780, 232, '#fff', -.05);
-      drop(TL.slam + .35, 'N-ARE', 990, 250, '#ffd23f', .04);
-      drop(TL.slam + .6, 'RESTART.', 1200, 250, '#ffd23f', -.03);
+      drop(TL.slam2, 'N-ARE', 990, 250, '#ffd23f', .04);
+      drop(TL.slam3, 'RESTART.', 1200, 250, '#ffd23f', -.03);
       burst(c, t, TL.slam, 540, 880, { n: 36, speed: 760, life: .9, colors: ['#fff', '#ffd23f', '#ff8a1f'], size: 28, seed: 31 });
     }
   }
@@ -709,11 +712,10 @@ function textsB(c, t) {
     c.restore();
     burst(c, t, TL.homio + .1, 540, 330, { n: 30, speed: 620, life: .9, colors: ['#ffd23f', '#fff', '#ff8a1f'], size: 24, seed: 55 });
   }
-  const f1 = TL.prod0 - .15;
-  words(c, t, [{ s: 'CADOURI', t0: f1, rot: .25 }, { s: 'LICENȚIATE', t0: f1 + .26, fill: '#ffd23f', rot: -.2 }], 540, 640, 136, { out: TL.deliv - .4 });
-  words(c, t, [{ s: 'LIVRĂM', t0: TL.deliv, rot: .2 }, { s: 'ÎN', t0: TL.deliv + .18 }, { s: 'TOATĂ', t0: TL.deliv + .3 }], 540, 600, 120, {});
-  words(c, t, [{ s: 'ROMÂNIA!', t0: TL.deliv + .5, fill: '#ffd23f', big: 1.1, rot: -.25 }], 540, 790, 180, {});
-  const u = E.outCubic(prog(t, TL.deliv + .75, TL.deliv + 1.25));
+  words(c, t, [{ s: 'CADOURI', t0: TL.cad[0], rot: .25 }, { s: 'LICENȚIATE', t0: TL.cad[1], fill: '#ffd23f', rot: -.2 }], 540, 640, 136, { out: TL.deliv[0] - .4 });
+  words(c, t, [{ s: 'LIVRĂM', t0: TL.deliv[0], rot: .2 }, { s: 'ÎN', t0: TL.deliv[1] }, { s: 'TOATĂ', t0: TL.deliv[2] }], 540, 600, 120, {});
+  words(c, t, [{ s: 'ROMÂNIA!', t0: TL.rom, fill: '#ffd23f', big: 1.1, rot: -.25 }], 540, 790, 180, {});
+  const u = E.outCubic(prog(t, TL.rom + .25, TL.rom + .75));
   if (u > 0) { const x0 = 540 - 340; [['#0b3a9e'], ['#ffd23f'], ['#e63946']].forEach(([col], i) => { c.fillStyle = col; c.beginPath(); c.roundRect(x0 + i * 680 / 3, 905, 680 / 3 * u + (i < 2 ? 2 : 0), 20, i === 0 ? [10, 0, 0, 10] : i === 2 ? [0, 10, 10, 0] : 0); c.fill(); }); }
 }
 
@@ -870,7 +872,7 @@ function endCard(c, t) {
     c.restore();
     burst(c, t, TL.logo + .35, 540, 690, { n: 60, speed: 880, life: 1.3, colors: ['#ffd23f', '#fff', '#ff8a1f', '#9fe0ff'], size: 34, seed: 101 });
   }
-  words(c, t, [{ s: 'CADOUL', t0: TL.tag1, rot: .25 }, { s: 'AJUNGE.', t0: TL.tag1 + .22, rot: -.2 }], 540, 1090, 120, {});
+  words(c, t, [{ s: 'CADOUL', t0: TL.tag1[0], rot: .25 }, { s: 'AJUNGE.', t0: TL.tag1[1], rot: -.2 }], 540, 1090, 120, {});
   words(c, t, [{ s: 'MEREU.', t0: TL.tag2, fill: '#ffd23f', big: 1.1, rot: .3 }], 540, 1290, 200, {});
   const up = E.outBack(prog(t, TL.url, TL.url + .45), 2);
   if (up > 0) { c.save(); c.translate(540, 1470); c.scale(up, up); const pu = 1 + .03 * Math.sin(t * 6); c.scale(pu, pu); c.fillStyle = '#c0722f'; c.beginPath(); c.roundRect(-250, -54, 500, 108, 54); c.fill(); c.strokeStyle = '#ffd9a8'; c.lineWidth = 5; c.stroke(); txt(c, 'homio.ro', 0, 4, 76, { font: 'Fredoka', weight: '700', fill: '#fff', stroke: null }); c.restore(); }
