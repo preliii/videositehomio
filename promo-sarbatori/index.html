@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ro">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="lib/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #C8202F; }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="24" data-width="1080" data-height="1920" data-motion-blur="on">
+      <div id="s1-hook" data-composition-id="s1-hook" data-composition-src="compositions/s1-hook.html" data-start="0.0" data-duration="2.95" data-track-index="1" data-track-kind="graphics" data-width="1080" data-height="1920" style="z-index:1"></div>
+      <div id="s2-funda" data-composition-id="s2-funda" data-composition-src="compositions/s2-funda.html" data-start="2.4" data-duration="2.55" data-track-index="2" data-track-kind="graphics" data-width="1080" data-height="1920" style="z-index:2"></div>
+      <div id="s3-globuri" data-composition-id="s3-globuri" data-composition-src="compositions/s3-globuri.html" data-start="4.4" data-duration="2.55" data-track-index="3" data-track-kind="graphics" data-width="1080" data-height="1920" style="z-index:3"></div>
+      <div id="s4-mos" data-composition-id="s4-mos" data-composition-src="compositions/s4-mos.html" data-start="6.4" data-duration="2.55" data-track-index="4" data-track-kind="graphics" data-width="1080" data-height="1920" style="z-index:4"></div>
+      <div id="s5-ghirlanda" data-composition-id="s5-ghirlanda" data-composition-src="compositions/s5-ghirlanda.html" data-start="8.4" data-duration="2.55" data-track-index="5" data-track-kind="graphics" data-width="1080" data-height="1920" style="z-index:5"></div>
+      <div id="s6-brad" data-composition-id="s6-brad" data-composition-src="compositions/s6-brad.html" data-start="10.4" data-duration="3.55" data-track-index="6" data-track-kind="graphics" data-width="1080" data-height="1920" style="z-index:6"></div>
+      <div id="s7-bon" data-composition-id="s7-bon" data-composition-src="compositions/s7-bon.html" data-start="13.4" data-duration="4.15" data-track-index="7" data-track-kind="graphics" data-width="1080" data-height="1920" style="z-index:7"></div>
+      <div id="s8-transport" data-composition-id="s8-transport" data-composition-src="compositions/s8-transport.html" data-start="17.0" data-duration="3.75" data-track-index="8" data-track-kind="graphics" data-width="1080" data-height="1920" style="z-index:8"></div>
+      <div id="s9-final" data-composition-id="s9-final" data-composition-src="compositions/s9-final.html" data-start="20.2" data-duration="3.8" data-track-index="9" data-track-kind="graphics" data-width="1080" data-height="1920" style="z-index:9"></div>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

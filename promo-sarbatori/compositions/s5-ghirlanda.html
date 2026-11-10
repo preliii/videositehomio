@@ -1,0 +1,48 @@
+<template>
+  <style>
+    @font-face { font-family: 'Anton'; font-weight: 400; src: url('assets/fonts/anton-latin-400-normal.woff2') format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122; }
+    @font-face { font-family: 'Anton'; font-weight: 400; src: url('assets/fonts/anton-latin-ext-400-normal.woff2') format('woff2'); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1E00-1E9F,U+2020,U+20A0-20AB,U+20AD-20C0; }
+    @font-face { font-family: 'Fredoka'; font-weight: 600; src: url('assets/fonts/fredoka-latin-600-normal.woff2') format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122; }
+    @font-face { font-family: 'Fredoka'; font-weight: 600; src: url('assets/fonts/fredoka-latin-ext-600-normal.woff2') format('woff2'); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1E00-1E9F,U+2020,U+20A0-20AB,U+20AD-20C0; }
+    @font-face { font-family: 'Fredoka'; font-weight: 700; src: url('assets/fonts/fredoka-latin-700-normal.woff2') format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122; }
+    @font-face { font-family: 'Fredoka'; font-weight: 700; src: url('assets/fonts/fredoka-latin-ext-700-normal.woff2') format('woff2'); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1E00-1E9F,U+2020,U+20A0-20AB,U+20AD-20C0; }
+
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    .world { position: absolute; inset: 0; background: var(--bg); color: var(--ink); }
+    .grain { position: absolute; inset: 0; opacity: .05; mix-blend-mode: multiply; background-image: url('assets/img/grain.png'); pointer-events: none; }
+    .abs { position: absolute; }
+    .hem { position: absolute; left: 0; right: 0; top: 1440px; bottom: 0; }
+    .name { position: absolute; left: 70px; top: 290px; width: 900px; font-family: 'Anton', sans-serif; font-weight: 400; font-size: 112px; line-height: 1.14; text-transform: uppercase; color: var(--ink); letter-spacing: 0; }
+    .w { display: inline-block; }
+    .gold { color: #FFD84A; }
+    .sub { position: absolute; font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 52px; line-height: 1.1; color: var(--ink); }
+    .stk { position: absolute; filter: drop-shadow(0 18px 22px rgba(0,0,0,.35)); }
+    .stk img { display: block; width: 100%; height: auto; }
+    .tagpos { position: absolute; width: 560px; height: 430px; scale: .86; transform-origin: 0 0; }
+    .swing { position: absolute; inset: 0; transform-origin: 50% 0; filter: drop-shadow(0 14px 14px rgba(0,0,0,.3)); }
+    .string { position: absolute; left: 50%; top: 0; width: 8px; height: 110px; margin-left: -4px; background: #C8202F; }
+    .tag { position: absolute; left: 0; top: 96px; width: 560px; height: 330px; background: #E9C48E; clip-path: polygon(0 56px, 56px 0, calc(100% - 56px) 0, 100% 56px, 100% 100%, 0 100%); }
+    .hole { position: absolute; left: 50%; top: 26px; width: 34px; height: 34px; margin-left: -17px; border-radius: 50%; background: var(--bg); box-shadow: inset 0 0 0 6px #C9A066; }
+    .tag .de { position: absolute; left: 0; right: 0; top: 66px; text-align: center; font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 52px; color: #6B4A1F; letter-spacing: .1em; }
+    .tag .price { position: absolute; left: 0; right: 0; top: 142px; text-align: center; font-family: 'Anton', sans-serif; font-size: 176px; line-height: 1; color: #C8202F; white-space: nowrap; }
+
+  </style>
+  <div id="root" data-composition-id="s5-ghirlanda" data-width="1080" data-height="1920">
+    <div id="s5-ghirlanda-world" class="world" style="--bg:#FFFFFF;--ink:#0E4B3A">
+      <div id="s5-ghirlanda-name" class="clip name" data-start="0" data-duration="2.55" style="top:290px;font-size:112px"><span class="w" data-layout-allow-overlap>GHIRLANDĂ</span> <span class="w" data-layout-allow-overlap>270</span> <span class="w" data-layout-allow-overlap>CM</span><br/><span class="w gold" data-layout-allow-overlap>100</span> <span class="w gold" data-layout-allow-overlap>LED-URI</span></div><div id="s5-ghirlanda-garland" class="clip stk" data-start="0" data-duration="2.55" style="left:-240.0px;top:648.0px;width:1560px;rotate:-14deg"><img id="s5-ghirlanda-garland-img" src="assets/img/ghirlanda.png" alt="" /></div><div id="s5-ghirlanda-tag" class="clip tagpos" data-start="0" data-duration="2.55" style="left:50px;top:930px;rotate:-5deg">
+        <div class="swing" id="s5-ghirlanda-swing"><div class="string"></div><div class="tag"><i class="hole"></i><span class="de" data-layout-allow-overlap>DE LA</span><span class="price" data-layout-allow-overlap>195 LEI</span></div></div>
+      </div>
+      <div class="hem" style="background:#E6ECEE;clip-path:polygon(0 100%,0.00% 0px,5.26% 16px,10.53% 0px,15.79% 16px,21.05% 0px,26.32% 16px,31.58% 0px,36.84% 16px,42.11% 0px,47.37% 16px,52.63% 0px,57.89% 16px,63.16% 0px,68.42% 16px,73.68% 0px,78.95% 16px,84.21% 0px,89.47% 16px,94.74% 0px,100.00% 16px,100% 100%)"></div>
+      <div class="grain"></div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#s5-ghirlanda-world", { clipPath: "circle(0px at 330px 1130px)" }, { clipPath: "circle(2100px at 330px 1130px)", duration: 0.55, ease: "power2.inOut" }, 0);
+    tl.fromTo("#s5-ghirlanda-name .w", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.16, stagger: 0.085, ease: "power2.out" }, 0.28);
+    tl.fromTo("#s5-ghirlanda-garland", { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(-20% -2% -20% -2%)", duration: 0.75, ease: "power3.inOut" }, 0.15);
+    tl.fromTo("#s5-ghirlanda-garland-img", { x: -40 }, { x: 0, duration: 0.75, ease: "power3.out" }, 0.15);
+    tl.fromTo("#s5-ghirlanda-swing", { rotation: 18 }, { rotation: 0, duration: 1.7, ease: "elastic.out(1, 0.35)" }, 0.6);
+    window.__timelines["s5-ghirlanda"] = tl;
+  </script>
+</template>
