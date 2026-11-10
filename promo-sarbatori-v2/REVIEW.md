@@ -13,3 +13,6 @@
 
 ## v4 (25,6 s, 150 BPM)
 Refăcut după feedback: produse mari și toate vizibile (v3 pierdea al treilea brad), etichete de preț lângă produs, fără text peste text (verificat cadru cu cadru la 0,4 s), montaj cu 6 produse × 0,8 s, melodie nouă (I-V-vi-IV, clopoțel, bas cu sidechain, tobe, riser și drop la 22,4 s). Muzica a fost verificată doar prin spectrogramă și niveluri, nu ascultată.
+
+## v5 (28,8 s)
+Transport și livrare: câte 3,2 s (2 măsuri), mașina mărită (×1,4); eticheta de nume din montaj nu mai atinge produsul; titlurile din hook separate; confetti sub text. Muzica extinsă la 18 măsuri.

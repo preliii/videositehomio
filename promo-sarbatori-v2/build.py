@@ -4,7 +4,7 @@ from string import Template
 
 BEAT = 0.4
 FPS = 30
-DUR = 25.6
+DUR = 28.8
 RED, GREEN, GOLD, TEAL, BLUE, PINK, ORANGE = '#D7263D', '#138A4B', '#FFC93C', '#0F7C8C', '#2457D6', '#E8457F', '#FF8A2A'
 DARK = '#0B3D2E'
 M = json.load(open('assets/products.json'))
@@ -195,12 +195,12 @@ def item(sid, key, pid, cx, cy, h, rot, price, tdx=0, tdy=30, tscale=0.7, corner
 sid = 's1-hook'; S0 = 0.0
 c_html, c_js = confetti(sid, 'c', 24, 11, 540, 760, ['#FFC93C', '#fff', '#138A4B', '#2457D6', '#FF8A2A'], 0.12)
 st1, _ = stk(sid, 'tree', '7746', 860, 800, 700, 5)
-st2, _ = stk(sid, 'bell', '7799', 450, 1110, 380, -8)
-st3, _ = stk(sid, 'bow', '7784', 690, 1170, 330, 9)
-st4, _ = stk(sid, 'tray', '7767', 860, 1190, 280, -4)
+st2, _ = stk(sid, 'bell', '7799', 450, 1230, 380, -8)
+st3, _ = stk(sid, 'bow', '7784', 690, 1290, 330, 9)
+st4, _ = stk(sid, 'tray', '7767', 860, 1300, 280, -4)
 body = (bunting(sid, [GOLD, GREEN, '#fff', BLUE, ORANGE]) + snowflakes(sid, [(640, 200, 520, 0), (-120, 900, 420, 15)]) +
-        title(sid, 't1', 'TOT', 280, 200, '#fff') + title(sid, 't2', 'CRĂCIUNUL', 490, 170, '#fff') + title(sid, 't3', 'ÎN STOC', 690, 170, GOLD, 'rotate:-3deg') +
-        st1 + st2 + st3 + st4 + mtag(sid, 'tag', 200, 1010, '11', 0.8, -6) + c_html)
+        title(sid, 't1', 'TOT', 280, 200, '#fff') + title(sid, 't2', 'CRĂCIUNUL', 590, 170, '#fff') + title(sid, 't3', 'ÎN STOC', 790, 170, GOLD, 'rotate:-3deg') +
+        st1 + st2 + st3 + st4 + mtag(sid, 'tag', 190, 1150, '11', 0.8, -6) + c_html)
 js = f"""
     flags(0);
     slam("#{sid}-t1", 0, -8, true); slam("#{sid}-t2", 0.06, 5, true); slam("#{sid}-t3", 0.8, -9);
@@ -238,7 +238,7 @@ scene(sid, GOLD, DARK, S0, 2 * BAR, body, js, 'circle', (540, 1000), pat=pattern
 
 # ───────────────────────── S3 GLOBURI ─────────────────────────
 sid = 's3-globuri'; S0 = 3 * BAR
-it = [('7768', 280, 765, 270, -5, '25', 105, 22), ('7767', 800, 765, 300, 4, '45', 105, 22), ('7766', 280, 1105, 310, 4, '49', 105, 22), ('7775', 800, 1105, 340, -4, '79', 70, 22)]
+it = [('7768', 280, 815, 270, -5, '25', 105, 22), ('7767', 800, 815, 300, 4, '45', 105, 22), ('7766', 280, 1150, 310, 4, '49', 105, 22), ('7775', 800, 1150, 340, -4, '79', 70, 22)]
 extra = stamp(sid, 'bd', 810, 290, 'ÎN', 'STOC') + chap_sub(sid, 'ȘI ORNAMENTE', 506, GOLD, 60)
 body, js = chapter(sid, S0, TEAL, '#fff', 'up', 'dots', it, title(sid, 'h', 'GLOBURI', 262, 226, '#fff'), extra, [1, 2.5, 4, 5.5], 31, [GOLD, PINK, ORANGE], corner=True, tscale=0.62)
 js += f'    slam("#{sid}-h", T(0), 6); {sub_in(sid, 1)} {badge_in(sid, "bd", 0.5, -8)}\n'
@@ -259,7 +259,7 @@ scene(sid, RED, '#fff', S0, 2 * BAR, body, js, 'diag', pat=pattern('stripes'))
 
 # ───────────────────────── S5 FUNDE ȘI CLOPOȚEI ─────────────────────────
 sid = 's5-funde'; S0 = 7 * BAR
-it = [('7784', 280, 765, 330, -8, '17', 70, 28), ('7799', 800, 765, 350, 7, '11', 80, 28), ('7783', 280, 1105, 300, 6, '25', 80, 28), ('7795', 800, 1105, 360, -5, '69', 50, 28)]
+it = [('7784', 280, 830, 330, -8, '17', 70, 28), ('7799', 800, 830, 350, 7, '11', 80, 28), ('7783', 280, 1165, 300, 6, '25', 80, 28), ('7795', 800, 1165, 360, -5, '69', 50, 28)]
 extra = stamp(sid, 'bd', 790, 290, 'ÎN', 'STOC') + chap_sub(sid, 'ȘI CLOPOȚEI', 508, GOLD, 60)
 body, js = chapter(sid, S0, BLUE, '#fff', 'left', 'diamonds', it, title(sid, 'h', 'FUNDE', 262, 240, '#fff'), extra, [1, 2.5, 4, 5.5], 61, [RED, PINK, GOLD], corner=True, tscale=0.62)
 js += f'    slam("#{sid}-h", T(0), -6); {sub_in(sid, 1)} {badge_in(sid, "bd", 0.5, 8)}\n'
@@ -267,15 +267,15 @@ scene(sid, BLUE, '#fff', S0, 2 * BAR, body, js, 'left', pat=pattern('diamonds'))
 
 # ───────────────────────── S6 MONTAJ RAPID (3 măsuri, 6 cărți × 0,8 s = 2 bătăi) ─────────────────────────
 sid = 's6-montaj'; S0 = 9 * BAR; CARD = 2 * BEAT
-cards = [('7746', 'Brad artificial 180 cm', '239', RED, '#fff', 760), ('7774', 'Set 24 de globuri', '55', GOLD, DARK, 720), ('7805', 'Ghirlandă LED 270 cm', '195', TEAL, '#fff', 0),
-         ('7842', 'Moș Crăciun auriu', '119', GREEN, '#fff', 600), ('7772', 'Set 60 de globuri aurii', '109', BLUE, '#fff', 760), ('7775', 'Set 22 de globuri', '79', PINK, '#fff', 740)]
+cards = [('7746', 'Brad artificial 180 cm', '239', RED, '#fff', 640), ('7774', 'Set 24 de globuri', '55', GOLD, DARK, 620), ('7805', 'Ghirlandă LED 270 cm', '195', TEAL, '#fff', 0),
+         ('7842', 'Moș Crăciun auriu', '119', GREEN, '#fff', 520), ('7772', 'Set 60 de globuri aurii', '109', BLUE, '#fff', 640), ('7775', 'Set 22 de globuri', '79', PINK, '#fff', 620)]
 body = ''; js = '    const C = i => OFF + 0.8 * i;\n'
 pats = [pattern('dots'), pattern('stripes'), pattern('diamonds')]
 for i, (pid, nm, pr, bg, ink, hh) in enumerate(cards):
     m = M[pid]
-    if pid == '7805': wd = 1700; hh = wd * m['h'] / m['w']; w = wd
+    if pid == '7805': wd = 1500; hh = wd * m['h'] / m['w']; w = wd
     else: w = hh * m['w'] / m['h']
-    cx, cy = (560, 680) if pid != '7805' else (540, 690)
+    cx, cy = (560, 735) if pid != '7805' else (540, 735)
     rot = [-5, 4, -8, 3, -4, 5][i]
     body += f"""<div id="{sid}-k{i}" class="abs" style="inset:0;background:{bg};color:{ink};z-index:{10+i}"><div class="abs" style="inset:0;{pats[i % 3]}"></div>
       <div id="{sid}-k{i}-nm" class="subt" style="top:282px;left:70px;font-size:54px;color:{ink}">{nm}</div>
@@ -295,8 +295,9 @@ scene(sid, RED, '#fff', S0, 6 * CARD, body, js, 'iris', (540, 1000), pat='')
 
 # ───────────────────────── S7 TRANSPORT GRATUIT (1 măsură) ─────────────────────────
 sid = 's7-transport'; S0 = 12 * BAR
-cf_h, cf_j = confetti(sid, 'c', 20, 81, 540, 900, [RED, GREEN, '#fff', BLUE], 0.25 + 0.8)
+cf_h, cf_j = confetti(sid, 'c', 20, 81, 540, 900, [RED, GREEN, '#fff', BLUE], 0.25 + 1.6)
 css8 = """
+    .cf { z-index: 2; }
     .star { position: absolute; z-index: 7; width: 520px; height: 520px; }
     .star .sh { position: absolute; inset: 0; background: #D7263D; clip-path: polygon(50% 0%, 61% 14%, 79% 9%, 82% 27%, 99% 33%, 90% 50%, 99% 67%, 82% 73%, 79% 91%, 61% 86%, 50% 100%, 39% 86%, 21% 91%, 18% 73%, 1% 67%, 10% 50%, 1% 33%, 18% 27%, 21% 9%, 39% 14%); }
     .star .tx { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; font-family: 'Anton'; line-height: .95; text-align: center; }
@@ -315,18 +316,21 @@ body = (bunting(sid, [RED, GREEN, '#fff', BLUE, ORANGE]) + snowflakes(sid, [(-12
 js = f"""
     flags(T(0)); slam("#{sid}-t1", T(0), -4); slam("#{sid}-t2", T(1), 5);
     tl.fromTo("#{sid}-star", {{ scale: 0.1, rotation: -60, opacity: 0 }}, {{ scale: 1, rotation: -8, opacity: 1, duration: 0.5, ease: "back.out(2.2)" }}, T(2));
-    tl.fromTo("#{sid}-pbox", {{ y: 700, rotation: 14, opacity: 0 }}, {{ y: 0, rotation: -4, opacity: 1, duration: 0.45, ease: "expo.out" }}, T(2.5));
+    tl.fromTo("#{sid}-pbox", {{ y: 700, rotation: 14, opacity: 0 }}, {{ y: 0, rotation: -4, opacity: 1, duration: 0.45, ease: "expo.out" }}, T(3));
+    tl.to("#{sid}-pbox", {{ y: -26, duration: 0.14, ease: "power2.out" }}, T(5)).to("#{sid}-pbox", {{ y: 0, duration: 0.2, ease: "bounce.out" }}, T(5) + 0.14);
+    tl.to("#{sid}-star", {{ rotation: -3, duration: 0.18, ease: "power2.out" }}, T(5)).to("#{sid}-star", {{ rotation: -8, duration: 0.3, ease: "elastic.out(1,.4)" }}, T(5) + 0.18);
     {cf_j}
-    shake(T(0), 14); shake(T(1), 12); shake(T(2), 12);
+    shake(T(0), 14); shake(T(1), 12); shake(T(2), 12); shake(T(3), 10); shake(T(5), 8);
 """
-scene(sid, GOLD, DARK, S0, BAR, body, js, 'circle', (540, 1000), extra_css=css8, pat=pattern('stripes'))
-E(S0, 0, 'slam'); E(S0, 1, 'slam'); E(S0, 2, 'pop'); E(S0, 2.5, 'whoosh'); E(S0, 2, 'conf')
+scene(sid, GOLD, DARK, S0, 2 * BAR, body, js, 'circle', (540, 1000), extra_css=css8, pat=pattern('stripes'))
+E(S0, 0, 'slam'); E(S0, 1, 'slam'); E(S0, 2, 'pop'); E(S0, 3, 'whoosh'); E(S0, 4, 'conf'); E(S0, 5, 'thump')
 
 # ───────────────────────── S8 LIVRARE 24 H (1 măsură) ─────────────────────────
-sid = 's8-livrare'; S0 = 13 * BAR
-cf_h, cf_j = confetti(sid, 'c', 18, 91, 540, 760, [GOLD, '#fff', ORANGE, PINK], 0.25 + 0.4)
+sid = 's8-livrare'; S0 = 14 * BAR
+cf_h, cf_j = confetti(sid, 'c', 18, 91, 540, 760, [GOLD, '#fff', ORANGE, PINK], 0.25 + 2.4)
 css9 = """
-    .van { position: absolute; left: 0; top: 1060px; width: 640px; height: 300px; z-index: 5; }
+    .cf { z-index: 2; }
+    .van { position: absolute; left: 0; top: 1040px; width: 640px; height: 300px; z-index: 5; }
     .van .cab { position: absolute; left: 0; top: 40px; width: 560px; height: 190px; background: #fff; border-radius: 14px 14px 8px 8px; box-shadow: 10px 14px 0 rgba(0,0,0,.25); }
     .van .cab2 { position: absolute; left: 400px; top: 90px; width: 190px; height: 140px; background: #fff; border-radius: 10px 60px 8px 8px; }
     .van .win { position: absolute; left: 440px; top: 108px; width: 110px; height: 66px; background: #2457D6; border-radius: 6px 40px 4px 4px; }
@@ -342,18 +346,19 @@ body = (bunting(sid, [GOLD, '#fff', RED, GREEN, ORANGE]) + snowflakes(sid, [(700
         ''.join(f'<i id="{sid}-sp{i}" class="sp" style="left:{40+i*30}px;top:{1130+i*38}px;width:{240+i*40}px"></i>' for i in range(4)) +
         f'<div id="{sid}-van" class="van"><div class="cab"></div><div class="cab2"></div><div class="win"></div><div class="strp"></div><div class="tg">HOMIO</div><div class="wh {sid}-wh" style="left:90px"><i></i></div><div class="wh {sid}-wh" style="left:440px"><i></i></div></div>' + cf_h)
 js = f"""
-    flags(T(0)); slam("#{sid}-t1", T(0), -4); slam("#{sid}-t2", T(0.8), 4); {sub_in(sid, 2.2)}
-    tl.fromTo("#{sid}-van", {{ x: -900 }}, {{ x: 520, duration: 0.8, ease: "power3.out" }}, T(2.6));
-    tl.fromTo(".{sid}-wh", {{ rotation: 0 }}, {{ rotation: 900, duration: 0.8, ease: "power3.out" }}, T(2.6));
-    tl.fromTo(["#{sid}-sp0", "#{sid}-sp1", "#{sid}-sp2", "#{sid}-sp3"], {{ scaleX: 0, transformOrigin: "100% 50%", opacity: 0 }}, {{ scaleX: 1, opacity: 1, duration: 0.25, ease: "power3.out", stagger: 0.05 }}, T(2.7));
+    flags(T(0)); slam("#{sid}-t1", T(0), -4); slam("#{sid}-t2", T(0.8), 4); {sub_in(sid, 2)}
+    tl.fromTo("#{sid}-van", {{ x: -1000, scale: 1.4, transformOrigin: "0% 50%" }}, {{ x: 120, scale: 1.4, transformOrigin: "0% 50%", duration: 0.9, ease: "power3.out" }}, T(3));
+    tl.fromTo(".{sid}-wh", {{ rotation: 0 }}, {{ rotation: 900, duration: 0.9, ease: "power3.out" }}, T(3));
+    tl.to("#{sid}-van", {{ y: -14, duration: 0.14, ease: "power2.out" }}, T(5.5)).to("#{sid}-van", {{ y: 0, duration: 0.22, ease: "bounce.out" }}, T(5.5) + 0.14);
+    tl.fromTo(["#{sid}-sp0", "#{sid}-sp1", "#{sid}-sp2", "#{sid}-sp3"], {{ scaleX: 0, transformOrigin: "100% 50%", opacity: 0 }}, {{ scaleX: 1, opacity: 1, duration: 0.25, ease: "power3.out", stagger: 0.05 }}, T(3.1));
     {cf_j}
-    shake(T(0), 14); shake(T(0.8), 10);
+    shake(T(0), 14); shake(T(0.8), 10); shake(T(3.9), 10); shake(T(5.5), 8);
 """
-scene(sid, BLUE, '#fff', S0, BAR, body, js, 'up', extra_css=css9, pat=pattern('dots'))
-E(S0, 0, 'slam'); E(S0, .8, 'slam'); E(S0, 2.6, 'whoosh'); E(S0, 1, 'conf')
+scene(sid, BLUE, '#fff', S0, 2 * BAR, body, js, 'up', extra_css=css9, pat=pattern('dots'))
+E(S0, 0, 'slam'); E(S0, .8, 'slam'); E(S0, 3, 'whoosh'); E(S0, 3.9, 'thump'); E(S0, 5.5, 'thump'); E(S0, 5, 'conf')
 
 # ───────────────────────── S9 FINAL (2 măsuri) ─────────────────────────
-sid = 's9-final'; S0 = 14 * BAR
+sid = 's9-final'; S0 = 16 * BAR
 c1h, c1j = confetti(sid, 'a', 26, 101, 540, 520, [GOLD, '#fff', GREEN, BLUE, ORANGE, PINK], 0.25, 640)
 c2h, c2j = confetti(sid, 'b', 20, 102, 300, 1000, [GOLD, '#fff', GREEN, PINK], 0.25 + 1.2, 520)
 css10 = """
@@ -410,5 +415,5 @@ open('index.html', 'w').write(f"""<!doctype html>
   </body>
 </html>
 """)
-json.dump(dict(bpm=150, beat=BEAT, bar=BAR, events=sorted(EV), scenes=SCENES, dur=DUR, montage=[9 * BAR, 9 * BAR + 6 * CARD], build=13 * BAR, drop=14 * BAR), open('events.json', 'w'), indent=1)
+json.dump(dict(bpm=150, beat=BEAT, bar=BAR, events=sorted(EV), scenes=SCENES, dur=DUR, montage=[9 * BAR, 9 * BAR + 6 * CARD], build=15 * BAR, drop=16 * BAR), open('events.json', 'w'), indent=1)
 print('ok', len(SCENES), 'scene;', len(EV), 'evenimente; durata', DUR)

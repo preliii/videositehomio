@@ -78,12 +78,12 @@ MEL = dict(C=[(0, 76, .5), (.5, 79, .5), (1, 81, 1), (2, 79, .5), (2.5, 76, .5),
            G=[(0, 74, .5), (.5, 76, .5), (1, 79, 1.5), (2.5, 76, .5), (3, 74, 1)],
            Am=[(0, 72, .5), (.5, 76, .5), (1, 81, 1), (2, 79, .5), (2.5, 76, .5), (3, 72, 1)],
            F=[(0, 77, .5), (.5, 81, .5), (1, 84, 1), (2, 81, .5), (2.5, 77, .5), (3, 76, 1)])
-PROG = ['C', 'G', 'Am', 'F'] * 3 + ['Am', 'F', 'C', 'C']      # 16 măsuri
-def mode(b): return 'hook' if b == 0 else 'chap' if b <= 8 else 'montage' if b <= 11 else 'break' if b == 12 else 'build' if b == 13 else 'drop' if b == 14 else 'final'
+PROG = ['C', 'G', 'Am', 'F'] * 4 + ['Am', 'F']      # 18 măsuri
+def mode(b): return 'hook' if b == 0 else 'chap' if b <= 8 else 'montage' if b <= 11 else 'break' if b <= 12 else 'chap' if b <= 14 else 'build' if b == 15 else 'drop' if b == 16 else 'final'
 
 def build_music():
     drums, harm, lead = buf(), buf(), buf(); kicks = []
-    for b in range(16):
+    for b in range(18):
         t0 = b * BAR; ch = PROG[b]; md = mode(b); c = CH[ch]
         full = md in ('hook', 'chap', 'montage', 'drop', 'final')
         # tobe
@@ -114,7 +114,7 @@ def build_music():
         else:
             for n in c['tri']: put(harm, pad(n + (0 if md == 'break' else 12), 4 * BEAT), t0, .06, (n % 3 - 1) * .35)
         # melodie (clopoțel)
-        hi = 12 if (5 <= b <= 8 or b == 14) else 0
+        hi = 12 if (5 <= b <= 8 or b == 16) else 0
         if md != 'final':
             for pos, n, ln in MEL[ch]:
                 g = .34 if md in ('hook', 'chap', 'montage', 'drop') else .16
@@ -122,7 +122,7 @@ def build_music():
         if md == 'break':      # arpegiu ușor
             for k in range(8): put(lead, bell(c['tri'][k % 3] + 24, .4, .5), t0 + k * BEAT / 2, .07, (k % 3 - 1) * .4)
     # final: acord lung, arpegiu
-    tf = 15 * BAR
+    tf = 17 * BAR
     for i, n in enumerate((72, 76, 79, 84, 88)): put(lead, bell(n, 1.6, .8), tf + i * .06, .2, (i - 2) * .3)
     for n in (48, 60, 64, 67): put(harm, stab(n, .9), tf, .2)
     # sidechain: bas/acorduri se retrag la fiecare lovitură de kick
@@ -157,7 +157,7 @@ def build_sfx():
         elif kind == 'conf':
             put(s, fftf(noise(.4), 2200, 10000) * env(.4, .004, .4, 2.4), t, .2)
     # riser + impact la drop
-    n = int(2 * BAR * SR); r = fftf(noise(2 * BAR), 300, 9000) * (np.arange(n) / n) ** 2; put(s, norm(r, .9), BUILD, .35)
+    n = int((DROP - BUILD) * SR); r = fftf(noise(DROP - BUILD), 300, 9000) * (np.arange(n) / n) ** 2; put(s, norm(r, .9), BUILD, .35)
     put(s, kick() * 1.1, DROP, .5); put(s, crash(1.6), DROP, .5)
     for k, nn in enumerate((84, 88, 91, 96)): put(s, bell(nn, 1.4), DROP + .02 + k * .03, .14, (k - 1.5) * .35)
     return s
