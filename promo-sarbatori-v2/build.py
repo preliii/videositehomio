@@ -238,7 +238,7 @@ scene(sid, GOLD, DARK, S0, 2 * BAR, body, js, 'circle', (540, 1000), pat=pattern
 
 # ───────────────────────── S3 GLOBURI ─────────────────────────
 sid = 's3-globuri'; S0 = 3 * BAR
-it = [('7768', 280, 815, 270, -5, '25', 105, 22), ('7767', 800, 815, 300, 4, '45', 105, 22), ('7766', 280, 1150, 310, 4, '49', 105, 22), ('7775', 800, 1150, 340, -4, '79', 70, 22)]
+it = [('7768', 280, 815, 270, -5, '25', 105, -8), ('7767', 800, 815, 300, 4, '45', 105, -8), ('7766', 280, 1150, 310, 4, '49', 105, -8), ('7775', 800, 1150, 340, -4, '79', 70, -8)]
 extra = stamp(sid, 'bd', 810, 290, 'ÎN', 'STOC') + chap_sub(sid, 'ȘI ORNAMENTE', 506, GOLD, 60)
 body, js = chapter(sid, S0, TEAL, '#fff', 'up', 'dots', it, title(sid, 'h', 'GLOBURI', 262, 226, '#fff'), extra, [1, 2.5, 4, 5.5], 31, [GOLD, PINK, ORANGE], corner=True, tscale=0.62)
 js += f'    slam("#{sid}-h", T(0), 6); {sub_in(sid, 1)} {badge_in(sid, "bd", 0.5, -8)}\n'
@@ -259,7 +259,7 @@ scene(sid, RED, '#fff', S0, 2 * BAR, body, js, 'diag', pat=pattern('stripes'))
 
 # ───────────────────────── S5 FUNDE ȘI CLOPOȚEI ─────────────────────────
 sid = 's5-funde'; S0 = 7 * BAR
-it = [('7784', 280, 830, 330, -8, '17', 70, 28), ('7799', 800, 830, 350, 7, '11', 80, 28), ('7783', 280, 1165, 300, 6, '25', 80, 28), ('7795', 800, 1165, 360, -5, '69', 50, 28)]
+it = [('7784', 280, 830, 330, -8, '17', 70, -6), ('7799', 800, 830, 350, 7, '11', 80, -6), ('7783', 280, 1165, 300, 6, '25', 80, -6), ('7795', 800, 1165, 360, -5, '69', 50, -6)]
 extra = stamp(sid, 'bd', 790, 290, 'ÎN', 'STOC') + chap_sub(sid, 'ȘI CLOPOȚEI', 508, GOLD, 60)
 body, js = chapter(sid, S0, BLUE, '#fff', 'left', 'diamonds', it, title(sid, 'h', 'FUNDE', 262, 240, '#fff'), extra, [1, 2.5, 4, 5.5], 61, [RED, PINK, GOLD], corner=True, tscale=0.62)
 js += f'    slam("#{sid}-h", T(0), -6); {sub_in(sid, 1)} {badge_in(sid, "bd", 0.5, 8)}\n'
