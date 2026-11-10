@@ -1,0 +1,85 @@
+<template>
+  <style>
+    @font-face { font-family: 'Anton'; font-weight: 400; src: url('assets/fonts/anton-latin-400-normal.woff2') format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122; }
+    @font-face { font-family: 'Anton'; font-weight: 400; src: url('assets/fonts/anton-latin-ext-400-normal.woff2') format('woff2'); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1E00-1E9F,U+2020,U+20A0-20AB,U+20AD-20C0; }
+    @font-face { font-family: 'Fredoka'; font-weight: 700; src: url('assets/fonts/fredoka-latin-700-normal.woff2') format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122; }
+    @font-face { font-family: 'Fredoka'; font-weight: 700; src: url('assets/fonts/fredoka-latin-ext-700-normal.woff2') format('woff2'); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1E00-1E9F,U+2020,U+20A0-20AB,U+20AD-20C0; }
+
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    .world { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 38%, #1d2740 0%, #101829 55%, #070b14 100%); }
+    .scan { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0 2px, transparent 2px 6px); z-index: 30; pointer-events: none; }
+    .grain { position: absolute; inset: 0; opacity: .07; mix-blend-mode: overlay; background-image: url('assets/img/grain.png'); z-index: 31; pointer-events: none; }
+    .vig { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 45%, transparent 55%, rgba(0,0,0,.55) 100%); z-index: 29; pointer-events: none; }
+    .abs { position: absolute; }
+    .chrome { background: linear-gradient(180deg, #ffffff 0%, #eef1f8 30%, #aab3c6 49%, #566075 52%, #d4dbea 70%, #ffffff 100%); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; padding: 46px 16px 16px; margin: -46px -16px -16px; font-family: 'Anton', sans-serif; text-transform: uppercase; white-space: nowrap; line-height: 1; filter: drop-shadow(0 5px 0 #0a0f1c) drop-shadow(0 0 22px rgba(255,255,255,.22)); }
+    .neon { color: #ff4655; font-family: 'Anton', sans-serif; text-transform: uppercase; white-space: nowrap; line-height: 1; text-shadow: 0 0 6px #ff2d3f, 0 0 18px #ff2d3f, 0 0 44px rgba(255,45,63,.8); }
+    .lite { color: #cfd6e6; font-family: 'Fredoka', sans-serif; font-weight: 700; text-transform: uppercase; white-space: nowrap; line-height: 1; letter-spacing: .02em; }
+    .box { position: absolute; border: 7px solid #ff4655; box-shadow: 0 0 14px #ff2d3f, 0 0 40px rgba(255,45,63,.7), inset 0 0 22px rgba(255,45,63,.55); background: rgba(255,45,63,.08); }
+    .plate { position: absolute; background: linear-gradient(180deg, #ff3b4b, #c1101f); box-shadow: 0 0 30px rgba(255,45,63,.65), 0 10px 0 #5a0710; }
+    .plate span { display: block; color: #fff; font-family: 'Anton'; text-transform: uppercase; white-space: nowrap; line-height: 1; text-align: center; }
+    .gb { position: absolute; left: 0; width: 1080px; z-index: 40; pointer-events: none; opacity: 0; }
+    .badge { position: absolute; width: 190px; height: 190px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ff6572, #d4101f 60%, #8d0814); box-shadow: 0 0 26px rgba(255,45,63,.8), inset 0 -8px 0 rgba(0,0,0,.25); display: flex; align-items: center; justify-content: center; flex-direction: column; color: #fff; font-family: 'Anton'; line-height: .95; text-align: center; }
+    .badge b { font-weight: 400; font-size: 58px; } .badge i { font-style: normal; font-size: 40px; }
+    .slash { position: absolute; width: 8px; background: linear-gradient(180deg, transparent, #fff 20%, #fff 80%, transparent); box-shadow: 0 0 18px #fff; transform-origin: 50% 50%; }
+
+  </style>
+  <div id="root" data-composition-id="s1" data-width="1080" data-height="1920">
+    <div id="s1-world" class="world">
+<i id="s1-gb0" class="gb" style="top:1326px;height:64px;background:#9fb7ff"></i><i id="s1-gb1" class="gb" style="top:1220px;height:64px;background:#ff3b4b"></i><i id="s1-gb2" class="gb" style="top:1228px;height:22px;background:#9fb7ff"></i><i id="s1-gb3" class="gb" style="top:1437px;height:140px;background:#ff3b4b"></i><i id="s1-gb4" class="gb" style="top:1094px;height:14px;background:#ffffff"></i><i id="s1-gb5" class="gb" style="top:365px;height:22px;background:#ffffff"></i><i id="s1-gb6" class="gb" style="top:991px;height:96px;background:#9fb7ff"></i><div class="abs" style="left:0;top:215px;width:1080px;text-align:center"><div id="s1-t1" class="chrome" style="font-size:176px;display:inline-block">CRĂCIUNUL</div></div><div class="abs" style="left:0;top:415px;width:1080px;text-align:center"><div id="s1-t2" class="neon" style="font-size:270px;display:inline-block">VINE!</div></div><div id="s1-ic" class="abs" style="left:240px;top:760px;width:600px;height:630px"><svg id="s1i" viewBox="0 0 400 420" width="100%" height="100%"><defs>
+      <linearGradient id="s1ich" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".32" stop-color="#e8ecf5"/><stop offset=".5" stop-color="#8d97ad"/><stop offset=".53" stop-color="#4a5468"/><stop offset=".72" stop-color="#cfd6e6"/><stop offset="1" stop-color="#ffffff"/></linearGradient>
+      <linearGradient id="s1ird" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff6572"/><stop offset="1" stop-color="#b30f1d"/></linearGradient>
+    </defs>
+      <g stroke="#0a0f1c" stroke-width="7" stroke-linejoin="round" stroke-linecap="round">
+        <rect x="170" y="340" width="60" height="62" fill="url(#s1ich)"/>
+        <polygon points="200,150 345,345 55,345" fill="url(#s1ich)"/>
+        <polygon points="200,85 320,235 80,235" fill="url(#s1ich)"/>
+        <polygon points="200,30 290,140 110,140" fill="url(#s1ich)"/>
+        <polygon points="200,-12 214,18 246,20 222,40 230,70 200,54 170,70 178,40 154,20 186,18" fill="url(#s1ird)" transform="translate(0,-6)"/>
+      </g>
+      <g fill="url(#s1ird)" stroke="#0a0f1c" stroke-width="5"><circle cx="150" cy="215" r="14"/><circle cx="250" cy="195" r="14"/><circle cx="200" cy="290" r="15"/><circle cx="120" cy="320" r="13"/><circle cx="285" cy="318" r="13"/></g>
+      <path d="M120,120 L168,60 M130,215 L190,140 M96,330 L176,235" stroke="#fff" stroke-opacity=".7" stroke-width="6" fill="none" stroke-linecap="round"/>
+    </svg></div><div id="s1-ln" class="box" style="left:150px;top:722px;width:780px;height:0;border-width:4px 0 0 0"></div>
+      <div class="vig"></div><div class="scan"></div><div class="grain"></div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+
+    tl.fromTo("#s1-t1", { x: -80, skewX: -14, opacity: 1, filter: "blur(8px)" }, { x: 0, skewX: -10, opacity: 1, filter: "blur(0px)", duration: 0.28, ease: "expo.out" }, 0);
+    tl.fromTo("#s1-t2", { scale: 1.35, skewX: -14, opacity: 1 }, { scale: 1, skewX: -10, opacity: 1, duration: 0.3, ease: "back.out(2)" }, 0.12);
+    tl.fromTo("#s1-ic", { y: 90, scale: 0.8, opacity: 1 }, { y: 0, scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.6)" }, 0.25);
+    tl.fromTo("#s1-ln", { scaleX: 0, opacity: 1 }, { scaleX: 1, opacity: 1, duration: 0.4, ease: "power3.out" }, 0.3);
+    tl.to("#s1-ic", { y: -14, duration: 0.5, ease: "sine.inOut", yoyo: true, repeat: 1 }, 0.8);
+    tl.set("#s1-gb0", { opacity: 1, x: -108 }, 0.045);
+tl.to("#s1-gb0", { opacity: 0, x: 36, duration: 0.08, ease: "power2.out" }, 0.045);
+tl.set("#s1-gb1", { opacity: 1, x: -143 }, 0.010);
+tl.to("#s1-gb1", { opacity: 0, x: 47, duration: 0.10, ease: "power2.out" }, 0.010);
+tl.set("#s1-gb2", { opacity: 1, x: -87 }, 0.061);
+tl.to("#s1-gb2", { opacity: 0, x: 29, duration: 0.11, ease: "power2.out" }, 0.061);
+tl.set("#s1-gb3", { opacity: 1, x: 70 }, 0.055);
+tl.to("#s1-gb3", { opacity: 0, x: -24, duration: 0.09, ease: "power2.out" }, 0.055);
+tl.set("#s1-gb4", { opacity: 1, x: 124 }, 0.069);
+tl.to("#s1-gb4", { opacity: 0, x: -42, duration: 0.08, ease: "power2.out" }, 0.069);
+tl.set("#s1-gb5", { opacity: 1, x: 72 }, 0.028);
+tl.to("#s1-gb5", { opacity: 0, x: -24, duration: 0.06, ease: "power2.out" }, 0.028);
+tl.set("#s1-gb6", { opacity: 1, x: -320 }, 0.062);
+tl.to("#s1-gb6", { opacity: 0, x: 106, duration: 0.10, ease: "power2.out" }, 0.062);
+tl.set("#s1-gb0", { opacity: 1, x: 134 }, 1.412);
+tl.to("#s1-gb0", { opacity: 0, x: -45, duration: 0.09, ease: "power2.out" }, 1.412);
+tl.set("#s1-gb1", { opacity: 1, x: -150 }, 1.381);
+tl.to("#s1-gb1", { opacity: 0, x: 50, duration: 0.11, ease: "power2.out" }, 1.381);
+tl.set("#s1-gb2", { opacity: 1, x: 174 }, 1.453);
+tl.to("#s1-gb2", { opacity: 0, x: -58, duration: 0.08, ease: "power2.out" }, 1.453);
+tl.set("#s1-gb3", { opacity: 1, x: 2 }, 1.454);
+tl.to("#s1-gb3", { opacity: 0, x: -1, duration: 0.09, ease: "power2.out" }, 1.454);
+tl.set("#s1-gb4", { opacity: 1, x: -299 }, 1.400);
+tl.to("#s1-gb4", { opacity: 0, x: 99, duration: 0.10, ease: "power2.out" }, 1.400);
+tl.set("#s1-gb5", { opacity: 1, x: 122 }, 1.431);
+tl.to("#s1-gb5", { opacity: 0, x: -41, duration: 0.12, ease: "power2.out" }, 1.431);
+tl.set("#s1-gb6", { opacity: 1, x: -168 }, 1.393);
+tl.to("#s1-gb6", { opacity: 0, x: 56, duration: 0.07, ease: "power2.out" }, 1.393);
+
+
+    window.__timelines["s1"] = tl;
+  </script>
+</template>

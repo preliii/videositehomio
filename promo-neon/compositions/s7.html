@@ -1,0 +1,58 @@
+<template>
+  <style>
+    @font-face { font-family: 'Anton'; font-weight: 400; src: url('assets/fonts/anton-latin-400-normal.woff2') format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122; }
+    @font-face { font-family: 'Anton'; font-weight: 400; src: url('assets/fonts/anton-latin-ext-400-normal.woff2') format('woff2'); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1E00-1E9F,U+2020,U+20A0-20AB,U+20AD-20C0; }
+    @font-face { font-family: 'Fredoka'; font-weight: 700; src: url('assets/fonts/fredoka-latin-700-normal.woff2') format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122; }
+    @font-face { font-family: 'Fredoka'; font-weight: 700; src: url('assets/fonts/fredoka-latin-ext-700-normal.woff2') format('woff2'); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1E00-1E9F,U+2020,U+20A0-20AB,U+20AD-20C0; }
+
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    .world { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 38%, #1d2740 0%, #101829 55%, #070b14 100%); }
+    .scan { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0 2px, transparent 2px 6px); z-index: 30; pointer-events: none; }
+    .grain { position: absolute; inset: 0; opacity: .07; mix-blend-mode: overlay; background-image: url('assets/img/grain.png'); z-index: 31; pointer-events: none; }
+    .vig { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 45%, transparent 55%, rgba(0,0,0,.55) 100%); z-index: 29; pointer-events: none; }
+    .abs { position: absolute; }
+    .chrome { background: linear-gradient(180deg, #ffffff 0%, #eef1f8 30%, #aab3c6 49%, #566075 52%, #d4dbea 70%, #ffffff 100%); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; padding: 46px 16px 16px; margin: -46px -16px -16px; font-family: 'Anton', sans-serif; text-transform: uppercase; white-space: nowrap; line-height: 1; filter: drop-shadow(0 5px 0 #0a0f1c) drop-shadow(0 0 22px rgba(255,255,255,.22)); }
+    .neon { color: #ff4655; font-family: 'Anton', sans-serif; text-transform: uppercase; white-space: nowrap; line-height: 1; text-shadow: 0 0 6px #ff2d3f, 0 0 18px #ff2d3f, 0 0 44px rgba(255,45,63,.8); }
+    .lite { color: #cfd6e6; font-family: 'Fredoka', sans-serif; font-weight: 700; text-transform: uppercase; white-space: nowrap; line-height: 1; letter-spacing: .02em; }
+    .box { position: absolute; border: 7px solid #ff4655; box-shadow: 0 0 14px #ff2d3f, 0 0 40px rgba(255,45,63,.7), inset 0 0 22px rgba(255,45,63,.55); background: rgba(255,45,63,.08); }
+    .plate { position: absolute; background: linear-gradient(180deg, #ff3b4b, #c1101f); box-shadow: 0 0 30px rgba(255,45,63,.65), 0 10px 0 #5a0710; }
+    .plate span { display: block; color: #fff; font-family: 'Anton'; text-transform: uppercase; white-space: nowrap; line-height: 1; text-align: center; }
+    .gb { position: absolute; left: 0; width: 1080px; z-index: 40; pointer-events: none; opacity: 0; }
+    .badge { position: absolute; width: 190px; height: 190px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ff6572, #d4101f 60%, #8d0814); box-shadow: 0 0 26px rgba(255,45,63,.8), inset 0 -8px 0 rgba(0,0,0,.25); display: flex; align-items: center; justify-content: center; flex-direction: column; color: #fff; font-family: 'Anton'; line-height: .95; text-align: center; }
+    .badge b { font-weight: 400; font-size: 58px; } .badge i { font-style: normal; font-size: 40px; }
+    .slash { position: absolute; width: 8px; background: linear-gradient(180deg, transparent, #fff 20%, #fff 80%, transparent); box-shadow: 0 0 18px #fff; transform-origin: 50% 50%; }
+
+  </style>
+  <div id="root" data-composition-id="s7" data-width="1080" data-height="1920">
+    <div id="s7-world" class="world">
+<i id="s7-gb0" class="gb" style="top:1108px;height:96px;background:#ffffff"></i><i id="s7-gb1" class="gb" style="top:1268px;height:96px;background:#9fb7ff"></i><i id="s7-gb2" class="gb" style="top:215px;height:64px;background:#ff3b4b"></i><i id="s7-gb3" class="gb" style="top:1102px;height:22px;background:#ffffff"></i><i id="s7-gb4" class="gb" style="top:771px;height:38px;background:#ffffff"></i><i id="s7-gb5" class="gb" style="top:804px;height:22px;background:#ff3b4b"></i><i id="s7-gb6" class="gb" style="top:334px;height:96px;background:#ff3b4b"></i><div id="s7-fr" class="box" style="left:230px;top:300px;width:620px;height:590px;border-radius:14px"></div><div id="s7-lg" class="abs" style="left:262px;top:332px;width:556px;height:526px;background:url(assets/img/logo-card.png) center/contain no-repeat"></div><div class="abs" style="left:0;top:960px;width:1080px;text-align:center"><div id="s7-u" class="chrome" style="font-size:98px;display:inline-block">HOMIO.RO</div></div><div class="abs" style="left:0;top:1090px;width:1080px;text-align:center"><div id="s7-u2" class="neon" style="font-size:84px;display:inline-block">/SARBATORI</div></div><div id="s7-f" class="lite" style="position:absolute;left:0;top:1230px;width:1080px;text-align:center;font-size:46px;font-style:italic">transport gratuit peste 200 lei</div>
+      <div class="vig"></div><div class="scan"></div><div class="grain"></div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+
+    tl.fromTo("#s7-fr", { scale: 1.9, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: "expo.out" }, 0);
+    tl.fromTo("#s7-lg", { scale: 1.9, opacity: 0, filter: "blur(10px)" }, { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.4, ease: "expo.out" }, 0.05);
+    tl.fromTo("#s7-u", { x: -500, skewX: -14, opacity: 0 }, { x: 0, skewX: -10, opacity: 1, duration: 0.3, ease: "expo.out" }, 0.4);
+    tl.fromTo("#s7-u2", { x: 500, skewX: -14, opacity: 0 }, { x: 0, skewX: -10, opacity: 1, duration: 0.3, ease: "expo.out" }, 0.55);
+    tl.fromTo("#s7-f", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.25 }, 0.95);
+    tl.set("#s7-gb0", { opacity: 1, x: -127 }, 0.088);
+tl.to("#s7-gb0", { opacity: 0, x: 42, duration: 0.05, ease: "power2.out" }, 0.088);
+tl.set("#s7-gb1", { opacity: 1, x: -179 }, 0.029);
+tl.to("#s7-gb1", { opacity: 0, x: 59, duration: 0.11, ease: "power2.out" }, 0.029);
+tl.set("#s7-gb2", { opacity: 1, x: -284 }, 0.082);
+tl.to("#s7-gb2", { opacity: 0, x: 94, duration: 0.11, ease: "power2.out" }, 0.082);
+tl.set("#s7-gb3", { opacity: 1, x: 36 }, 0.041);
+tl.to("#s7-gb3", { opacity: 0, x: -12, duration: 0.07, ease: "power2.out" }, 0.041);
+tl.set("#s7-gb4", { opacity: 1, x: 24 }, 0.032);
+tl.to("#s7-gb4", { opacity: 0, x: -8, duration: 0.07, ease: "power2.out" }, 0.032);
+tl.set("#s7-gb5", { opacity: 1, x: -106 }, 0.025);
+tl.to("#s7-gb5", { opacity: 0, x: 35, duration: 0.12, ease: "power2.out" }, 0.025);
+tl.set("#s7-gb6", { opacity: 1, x: 23 }, 0.027);
+tl.to("#s7-gb6", { opacity: 0, x: -8, duration: 0.11, ease: "power2.out" }, 0.027);
+
+
+    window.__timelines["s7"] = tl;
+  </script>
+</template>

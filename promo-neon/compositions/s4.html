@@ -1,0 +1,60 @@
+<template>
+  <style>
+    @font-face { font-family: 'Anton'; font-weight: 400; src: url('assets/fonts/anton-latin-400-normal.woff2') format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122; }
+    @font-face { font-family: 'Anton'; font-weight: 400; src: url('assets/fonts/anton-latin-ext-400-normal.woff2') format('woff2'); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1E00-1E9F,U+2020,U+20A0-20AB,U+20AD-20C0; }
+    @font-face { font-family: 'Fredoka'; font-weight: 700; src: url('assets/fonts/fredoka-latin-700-normal.woff2') format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122; }
+    @font-face { font-family: 'Fredoka'; font-weight: 700; src: url('assets/fonts/fredoka-latin-ext-700-normal.woff2') format('woff2'); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1E00-1E9F,U+2020,U+20A0-20AB,U+20AD-20C0; }
+
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    .world { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 38%, #1d2740 0%, #101829 55%, #070b14 100%); }
+    .scan { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0 2px, transparent 2px 6px); z-index: 30; pointer-events: none; }
+    .grain { position: absolute; inset: 0; opacity: .07; mix-blend-mode: overlay; background-image: url('assets/img/grain.png'); z-index: 31; pointer-events: none; }
+    .vig { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 45%, transparent 55%, rgba(0,0,0,.55) 100%); z-index: 29; pointer-events: none; }
+    .abs { position: absolute; }
+    .chrome { background: linear-gradient(180deg, #ffffff 0%, #eef1f8 30%, #aab3c6 49%, #566075 52%, #d4dbea 70%, #ffffff 100%); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; padding: 46px 16px 16px; margin: -46px -16px -16px; font-family: 'Anton', sans-serif; text-transform: uppercase; white-space: nowrap; line-height: 1; filter: drop-shadow(0 5px 0 #0a0f1c) drop-shadow(0 0 22px rgba(255,255,255,.22)); }
+    .neon { color: #ff4655; font-family: 'Anton', sans-serif; text-transform: uppercase; white-space: nowrap; line-height: 1; text-shadow: 0 0 6px #ff2d3f, 0 0 18px #ff2d3f, 0 0 44px rgba(255,45,63,.8); }
+    .lite { color: #cfd6e6; font-family: 'Fredoka', sans-serif; font-weight: 700; text-transform: uppercase; white-space: nowrap; line-height: 1; letter-spacing: .02em; }
+    .box { position: absolute; border: 7px solid #ff4655; box-shadow: 0 0 14px #ff2d3f, 0 0 40px rgba(255,45,63,.7), inset 0 0 22px rgba(255,45,63,.55); background: rgba(255,45,63,.08); }
+    .plate { position: absolute; background: linear-gradient(180deg, #ff3b4b, #c1101f); box-shadow: 0 0 30px rgba(255,45,63,.65), 0 10px 0 #5a0710; }
+    .plate span { display: block; color: #fff; font-family: 'Anton'; text-transform: uppercase; white-space: nowrap; line-height: 1; text-align: center; }
+    .gb { position: absolute; left: 0; width: 1080px; z-index: 40; pointer-events: none; opacity: 0; }
+    .badge { position: absolute; width: 190px; height: 190px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ff6572, #d4101f 60%, #8d0814); box-shadow: 0 0 26px rgba(255,45,63,.8), inset 0 -8px 0 rgba(0,0,0,.25); display: flex; align-items: center; justify-content: center; flex-direction: column; color: #fff; font-family: 'Anton'; line-height: .95; text-align: center; }
+    .badge b { font-weight: 400; font-size: 58px; } .badge i { font-style: normal; font-size: 40px; }
+    .slash { position: absolute; width: 8px; background: linear-gradient(180deg, transparent, #fff 20%, #fff 80%, transparent); box-shadow: 0 0 18px #fff; transform-origin: 50% 50%; }
+
+  </style>
+  <div id="root" data-composition-id="s4" data-width="1080" data-height="1920">
+    <div id="s4-world" class="world">
+<i id="s4-gb0" class="gb" style="top:1208px;height:22px;background:#ff3b4b"></i><i id="s4-gb1" class="gb" style="top:653px;height:22px;background:#ffffff"></i><i id="s4-gb2" class="gb" style="top:1302px;height:64px;background:#9fb7ff"></i><i id="s4-gb3" class="gb" style="top:1302px;height:140px;background:#ffffff"></i><i id="s4-gb4" class="gb" style="top:917px;height:96px;background:#9fb7ff"></i><i id="s4-gb5" class="gb" style="top:1007px;height:38px;background:#ffffff"></i><i id="s4-gb6" class="gb" style="top:238px;height:14px;background:#ffffff"></i><div class="abs" style="left:0;top:300px;width:1080px;text-align:center"><div id="s4-pe" class="lite" style="font-size:64px;font-style:italic;display:inline-block">PESTE</div></div><div class="abs" style="left:0;top:380px;width:1080px;text-align:center"><div id="s4-n" class="chrome" style="font-size:520px;display:inline-block"><span id="s4-nv">0</span></div></div><div id="s4-bx" class="box" style="left:100px;top:930px;width:880px;height:200px"></div><div class="abs" style="left:100px;top:930px;width:880px;height:200px;display:flex;align-items:center;justify-content:center"><div id="s4-nt" class="neon" style="font-size:96px">PRODUSE ÎN STOC</div></div><div id="s4-lo" class="lite" style="position:absolute;left:0;top:1200px;width:1080px;text-align:center;font-size:48px;font-style:italic">decorațiuni de Crăciun</div>
+      <div class="vig"></div><div class="scan"></div><div class="grain"></div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+
+    const o = { v: 0 };
+    tl.fromTo("#s4-pe", { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: 0.2, ease: "power3.out" }, 0.05);
+    tl.fromTo("#s4-n", { scale: 1.5, skewX: -14, opacity: 0, filter: "blur(10px)" }, { scale: 1, skewX: -10, opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 0.1);
+    tl.to(o, { v: 40, duration: 0.7, ease: "power3.out", onUpdate: () => { document.getElementById("s4-nv").textContent = String(Math.round(o.v)) + (o.v >= 39.5 ? "+" : ""); } }, 0.1);
+    tl.fromTo("#s4-bx", { scaleX: 0, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 0.3, ease: "power3.out" }, 0.55);
+    tl.fromTo("#s4-nt", { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.25, ease: "power2.out" }, 0.8);
+    tl.fromTo("#s4-lo", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.25, ease: "power3.out" }, 1.2);
+    tl.set("#s4-gb0", { opacity: 1, x: 145 }, 0.063);
+tl.to("#s4-gb0", { opacity: 0, x: -49, duration: 0.07, ease: "power2.out" }, 0.063);
+tl.set("#s4-gb1", { opacity: 1, x: 18 }, 0.001);
+tl.to("#s4-gb1", { opacity: 0, x: -6, duration: 0.06, ease: "power2.out" }, 0.001);
+tl.set("#s4-gb2", { opacity: 1, x: 43 }, 0.077);
+tl.to("#s4-gb2", { opacity: 0, x: -15, duration: 0.08, ease: "power2.out" }, 0.077);
+tl.set("#s4-gb3", { opacity: 1, x: 131 }, 0.072);
+tl.to("#s4-gb3", { opacity: 0, x: -44, duration: 0.10, ease: "power2.out" }, 0.072);
+tl.set("#s4-gb4", { opacity: 1, x: 231 }, 0.075);
+tl.to("#s4-gb4", { opacity: 0, x: -77, duration: 0.05, ease: "power2.out" }, 0.075);
+tl.set("#s4-gb5", { opacity: 1, x: 110 }, 0.041);
+tl.to("#s4-gb5", { opacity: 0, x: -37, duration: 0.08, ease: "power2.out" }, 0.041);
+tl.set("#s4-gb6", { opacity: 1, x: -125 }, 0.098);
+tl.to("#s4-gb6", { opacity: 0, x: 41, duration: 0.05, ease: "power2.out" }, 0.098);
+
+
+    window.__timelines["s4"] = tl;
+  </script>
+</template>

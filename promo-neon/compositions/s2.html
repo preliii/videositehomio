@@ -1,0 +1,151 @@
+<template>
+  <style>
+    @font-face { font-family: 'Anton'; font-weight: 400; src: url('assets/fonts/anton-latin-400-normal.woff2') format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122; }
+    @font-face { font-family: 'Anton'; font-weight: 400; src: url('assets/fonts/anton-latin-ext-400-normal.woff2') format('woff2'); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1E00-1E9F,U+2020,U+20A0-20AB,U+20AD-20C0; }
+    @font-face { font-family: 'Fredoka'; font-weight: 700; src: url('assets/fonts/fredoka-latin-700-normal.woff2') format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122; }
+    @font-face { font-family: 'Fredoka'; font-weight: 700; src: url('assets/fonts/fredoka-latin-ext-700-normal.woff2') format('woff2'); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1E00-1E9F,U+2020,U+20A0-20AB,U+20AD-20C0; }
+
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    .world { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 38%, #1d2740 0%, #101829 55%, #070b14 100%); }
+    .scan { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0 2px, transparent 2px 6px); z-index: 30; pointer-events: none; }
+    .grain { position: absolute; inset: 0; opacity: .07; mix-blend-mode: overlay; background-image: url('assets/img/grain.png'); z-index: 31; pointer-events: none; }
+    .vig { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 45%, transparent 55%, rgba(0,0,0,.55) 100%); z-index: 29; pointer-events: none; }
+    .abs { position: absolute; }
+    .chrome { background: linear-gradient(180deg, #ffffff 0%, #eef1f8 30%, #aab3c6 49%, #566075 52%, #d4dbea 70%, #ffffff 100%); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; padding: 46px 16px 16px; margin: -46px -16px -16px; font-family: 'Anton', sans-serif; text-transform: uppercase; white-space: nowrap; line-height: 1; filter: drop-shadow(0 5px 0 #0a0f1c) drop-shadow(0 0 22px rgba(255,255,255,.22)); }
+    .neon { color: #ff4655; font-family: 'Anton', sans-serif; text-transform: uppercase; white-space: nowrap; line-height: 1; text-shadow: 0 0 6px #ff2d3f, 0 0 18px #ff2d3f, 0 0 44px rgba(255,45,63,.8); }
+    .lite { color: #cfd6e6; font-family: 'Fredoka', sans-serif; font-weight: 700; text-transform: uppercase; white-space: nowrap; line-height: 1; letter-spacing: .02em; }
+    .box { position: absolute; border: 7px solid #ff4655; box-shadow: 0 0 14px #ff2d3f, 0 0 40px rgba(255,45,63,.7), inset 0 0 22px rgba(255,45,63,.55); background: rgba(255,45,63,.08); }
+    .plate { position: absolute; background: linear-gradient(180deg, #ff3b4b, #c1101f); box-shadow: 0 0 30px rgba(255,45,63,.65), 0 10px 0 #5a0710; }
+    .plate span { display: block; color: #fff; font-family: 'Anton'; text-transform: uppercase; white-space: nowrap; line-height: 1; text-align: center; }
+    .gb { position: absolute; left: 0; width: 1080px; z-index: 40; pointer-events: none; opacity: 0; }
+    .badge { position: absolute; width: 190px; height: 190px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ff6572, #d4101f 60%, #8d0814); box-shadow: 0 0 26px rgba(255,45,63,.8), inset 0 -8px 0 rgba(0,0,0,.25); display: flex; align-items: center; justify-content: center; flex-direction: column; color: #fff; font-family: 'Anton'; line-height: .95; text-align: center; }
+    .badge b { font-weight: 400; font-size: 58px; } .badge i { font-style: normal; font-size: 40px; }
+    .slash { position: absolute; width: 8px; background: linear-gradient(180deg, transparent, #fff 20%, #fff 80%, transparent); box-shadow: 0 0 18px #fff; transform-origin: 50% 50%; }
+
+  </style>
+  <div id="root" data-composition-id="s2" data-width="1080" data-height="1920">
+    <div id="s2-world" class="world">
+<i id="s2-gb0" class="gb" style="top:1036px;height:22px;background:#9fb7ff"></i><i id="s2-gb1" class="gb" style="top:756px;height:140px;background:#9fb7ff"></i><i id="s2-gb2" class="gb" style="top:1152px;height:22px;background:#ff3b4b"></i><i id="s2-gb3" class="gb" style="top:1260px;height:96px;background:#ff3b4b"></i><i id="s2-gb4" class="gb" style="top:208px;height:14px;background:#ffffff"></i><i id="s2-gb5" class="gb" style="top:1056px;height:96px;background:#ffffff"></i><i id="s2-gb6" class="gb" style="top:655px;height:22px;background:#ff3b4b"></i><i id="s2-gb7" class="gb" style="top:266px;height:140px;background:#9fb7ff"></i><i id="s2-gb8" class="gb" style="top:1013px;height:140px;background:#9fb7ff"></i><div id="s2-w0" class="abs" style="left:0;top:235px;width:1080px;text-align:center"><div class="chrome" style="font-size:150px;display:inline-block">BRAZI</div></div><div id="s2-i0" class="abs" style="left:170px;top:430px;width:740px;height:777px"><svg id="s2ic0" viewBox="0 0 400 420" width="100%" height="100%"><defs>
+      <linearGradient id="s2ic0ch" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".32" stop-color="#e8ecf5"/><stop offset=".5" stop-color="#8d97ad"/><stop offset=".53" stop-color="#4a5468"/><stop offset=".72" stop-color="#cfd6e6"/><stop offset="1" stop-color="#ffffff"/></linearGradient>
+      <linearGradient id="s2ic0rd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff6572"/><stop offset="1" stop-color="#b30f1d"/></linearGradient>
+    </defs>
+      <g stroke="#0a0f1c" stroke-width="7" stroke-linejoin="round" stroke-linecap="round">
+        <rect x="170" y="340" width="60" height="62" fill="url(#s2ic0ch)"/>
+        <polygon points="200,150 345,345 55,345" fill="url(#s2ic0ch)"/>
+        <polygon points="200,85 320,235 80,235" fill="url(#s2ic0ch)"/>
+        <polygon points="200,30 290,140 110,140" fill="url(#s2ic0ch)"/>
+        <polygon points="200,-12 214,18 246,20 222,40 230,70 200,54 170,70 178,40 154,20 186,18" fill="url(#s2ic0rd)" transform="translate(0,-6)"/>
+      </g>
+      <g fill="url(#s2ic0rd)" stroke="#0a0f1c" stroke-width="5"><circle cx="150" cy="215" r="14"/><circle cx="250" cy="195" r="14"/><circle cx="200" cy="290" r="15"/><circle cx="120" cy="320" r="13"/><circle cx="285" cy="318" r="13"/></g>
+      <path d="M120,120 L168,60 M130,215 L190,140 M96,330 L176,235" stroke="#fff" stroke-opacity=".7" stroke-width="6" fill="none" stroke-linecap="round"/>
+    </svg></div><div id="s2-s0" class="slash" style="left:538px;top:430px;height:790px;opacity:0;transform:skewX(-8deg)"></div><div id="s2-b0" class="badge" style="left:760px;top:1040px"><b>ÎN</b><i>STOC</i></div><div id="s2-w1" class="abs" style="left:0;top:235px;width:1080px;text-align:center"><div class="chrome" style="font-size:150px;display:inline-block">GLOBURI</div></div><div id="s2-i1" class="abs" style="left:170px;top:430px;width:740px;height:777px"><svg id="s2ic1" viewBox="0 0 400 420" width="100%" height="100%"><defs>
+      <linearGradient id="s2ic1ch" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".32" stop-color="#e8ecf5"/><stop offset=".5" stop-color="#8d97ad"/><stop offset=".53" stop-color="#4a5468"/><stop offset=".72" stop-color="#cfd6e6"/><stop offset="1" stop-color="#ffffff"/></linearGradient>
+      <linearGradient id="s2ic1rd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff6572"/><stop offset="1" stop-color="#b30f1d"/></linearGradient>
+    </defs>
+      <g stroke="#0a0f1c" stroke-width="7" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M200,60 C200,30 235,20 245,45" fill="none" stroke="url(#s2ic1ch)" stroke-width="12"/>
+        <rect x="165" y="68" width="70" height="42" rx="8" fill="url(#s2ic1rd)"/>
+        <circle cx="200" cy="245" r="140" fill="url(#s2ic1ch)"/>
+        <path d="M70,215 Q200,300 330,215 L330,265 Q200,350 70,265 Z" fill="url(#s2ic1rd)"/>
+      </g>
+      <ellipse cx="140" cy="170" rx="34" ry="52" fill="#fff" fill-opacity=".85" transform="rotate(35 140 170)"/>
+      <circle cx="270" cy="330" r="12" fill="#fff" fill-opacity=".7"/>
+    </svg></div><div id="s2-s1" class="slash" style="left:538px;top:430px;height:790px;opacity:0;transform:skewX(-8deg)"></div><div id="s2-b1" class="badge" style="left:130px;top:1040px"><b>ÎN</b><i>STOC</i></div><div id="s2-w2" class="abs" style="left:0;top:235px;width:1080px;text-align:center"><div class="chrome" style="font-size:150px;display:inline-block">GHIRLANDE</div></div><div id="s2-i2" class="abs" style="left:170px;top:430px;width:740px;height:777px"><svg id="s2ic2" viewBox="0 0 400 420" width="100%" height="100%"><defs>
+      <linearGradient id="s2ic2ch" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".32" stop-color="#e8ecf5"/><stop offset=".5" stop-color="#8d97ad"/><stop offset=".53" stop-color="#4a5468"/><stop offset=".72" stop-color="#cfd6e6"/><stop offset="1" stop-color="#ffffff"/></linearGradient>
+      <linearGradient id="s2ic2rd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff6572"/><stop offset="1" stop-color="#b30f1d"/></linearGradient>
+    </defs>
+      <g stroke="#0a0f1c" stroke-width="26" stroke-linecap="round"><path d="M52,240 L85,194"/><path d="M52,240 L71,292"/><path d="M79,243 L98,190"/><path d="M79,243 L112,288"/><path d="M106,237 L139,192"/><path d="M106,237 L125,290"/><path d="M133,225 L152,173"/><path d="M133,225 L166,270"/><path d="M160,210 L193,164"/><path d="M160,210 L179,262"/><path d="M187,196 L206,143"/><path d="M187,196 L220,241"/><path d="M214,188 L247,143"/><path d="M214,188 L233,241"/><path d="M241,188 L260,136"/><path d="M241,188 L274,234"/><path d="M268,197 L301,152"/><path d="M268,197 L287,250"/><path d="M295,211 L314,159"/><path d="M295,211 L328,256"/><path d="M322,227 L355,181"/><path d="M322,227 L341,279"/><path d="M349,238 L368,186"/><path d="M349,238 L382,284"/></g>
+      <g stroke="url(#s2ic2ch)" stroke-width="14" stroke-linecap="round"><path d="M52,240 L85,194"/><path d="M52,240 L71,292"/><path d="M79,243 L98,190"/><path d="M79,243 L112,288"/><path d="M106,237 L139,192"/><path d="M106,237 L125,290"/><path d="M133,225 L152,173"/><path d="M133,225 L166,270"/><path d="M160,210 L193,164"/><path d="M160,210 L179,262"/><path d="M187,196 L206,143"/><path d="M187,196 L220,241"/><path d="M214,188 L247,143"/><path d="M214,188 L233,241"/><path d="M241,188 L260,136"/><path d="M241,188 L274,234"/><path d="M268,197 L301,152"/><path d="M268,197 L287,250"/><path d="M295,211 L314,159"/><path d="M295,211 L328,256"/><path d="M322,227 L355,181"/><path d="M322,227 L341,279"/><path d="M349,238 L368,186"/><path d="M349,238 L382,284"/></g>
+      <path d="M40,236 L46,238 L52,240 L58,241 L64,242 L70,243 L76,243 L82,243 L88,242 L94,241 L100,239 L106,237 L112,235 L118,233 L124,230 L130,227 L136,223 L142,220 L148,217 L154,213 L160,210 L166,206 L172,203 L178,200 L184,197 L190,195 L196,192 L202,190 L208,189 L214,188 L220,187 L226,187 L232,187 L238,188 L244,189 L250,190 L256,192 L262,194 L268,197 L274,200 L280,203 L286,206 L292,209 L298,213 L304,216 L310,220 L316,223 L322,227 L328,230 L334,233 L340,235 L346,237 L352,239 L358,241 L364,242" stroke="#0a0f1c" stroke-width="30" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M40,236 L46,238 L52,240 L58,241 L64,242 L70,243 L76,243 L82,243 L88,242 L94,241 L100,239 L106,237 L112,235 L118,233 L124,230 L130,227 L136,223 L142,220 L148,217 L154,213 L160,210 L166,206 L172,203 L178,200 L184,197 L190,195 L196,192 L202,190 L208,189 L214,188 L220,187 L226,187 L232,187 L238,188 L244,189 L250,190 L256,192 L262,194 L268,197 L274,200 L280,203 L286,206 L292,209 L298,213 L304,216 L310,220 L316,223 L322,227 L328,230 L334,233 L340,235 L346,237 L352,239 L358,241 L364,242" stroke="url(#s2ic2ch)" stroke-width="18" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="72" cy="243" r="17" fill="url(#s2ic2rd)" stroke="#0a0f1c" stroke-width="5"/><circle cx="126" cy="229" r="17" fill="#fff" stroke="#0a0f1c" stroke-width="5"/><circle cx="180" cy="199" r="17" fill="url(#s2ic2rd)" stroke="#0a0f1c" stroke-width="5"/><circle cx="234" cy="187" r="17" fill="#fff" stroke="#0a0f1c" stroke-width="5"/><circle cx="288" cy="207" r="17" fill="url(#s2ic2rd)" stroke="#0a0f1c" stroke-width="5"/>
+    </svg></div><div id="s2-s2" class="slash" style="left:538px;top:430px;height:790px;opacity:0;transform:skewX(-8deg)"></div><div id="s2-b2" class="badge" style="left:760px;top:1040px"><b>ÎN</b><i>STOC</i></div><div id="s2-w3" class="abs" style="left:0;top:235px;width:1080px;text-align:center"><div class="chrome" style="font-size:128px;display:inline-block">MOȘ CRĂCIUN</div></div><div id="s2-i3" class="abs" style="left:170px;top:430px;width:740px;height:777px"><svg id="s2ic3" viewBox="0 0 400 420" width="100%" height="100%"><defs>
+      <linearGradient id="s2ic3ch" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".32" stop-color="#e8ecf5"/><stop offset=".5" stop-color="#8d97ad"/><stop offset=".53" stop-color="#4a5468"/><stop offset=".72" stop-color="#cfd6e6"/><stop offset="1" stop-color="#ffffff"/></linearGradient>
+      <linearGradient id="s2ic3rd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff6572"/><stop offset="1" stop-color="#b30f1d"/></linearGradient>
+    </defs>
+      <g stroke="#0a0f1c" stroke-width="7" stroke-linejoin="round" stroke-linecap="round">
+        <ellipse cx="200" cy="215" rx="82" ry="66" fill="#f4dccb"/>
+        <path d="M112,205 Q70,380 200,410 Q330,380 288,205 Q250,252 200,234 Q150,252 112,205 Z" fill="url(#s2ic3ch)"/>
+        <ellipse cx="168" cy="244" rx="38" ry="20" fill="url(#s2ic3ch)" transform="rotate(12 168 244)"/>
+        <ellipse cx="232" cy="244" rx="38" ry="20" fill="url(#s2ic3ch)" transform="rotate(-12 232 244)"/>
+        <path d="M96,166 Q112,22 250,34 Q306,52 304,172 Q200,150 96,166 Z" fill="url(#s2ic3rd)"/>
+        <rect x="84" y="150" width="232" height="50" rx="25" fill="url(#s2ic3ch)"/>
+        <circle cx="312" cy="48" r="32" fill="url(#s2ic3ch)"/>
+      </g>
+      <g fill="#0a0f1c"><circle cx="166" cy="212" r="8"/><circle cx="234" cy="212" r="8"/></g>
+      <circle cx="200" cy="232" r="12" fill="#e0805f" stroke="#0a0f1c" stroke-width="4"/>
+    </svg></div><div id="s2-s3" class="slash" style="left:538px;top:430px;height:790px;opacity:0;transform:skewX(-8deg)"></div><div id="s2-b3" class="badge" style="left:130px;top:1040px"><b>ÎN</b><i>STOC</i></div>
+      <div class="vig"></div><div class="scan"></div><div class="grain"></div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+tl.fromTo("#s2-w0", { x: -620, skewX: -14, opacity: 0 }, { x: 0, skewX: -10, opacity: 1, duration: 0.26, ease: "expo.out" }, 0.00);
+tl.fromTo("#s2-i0", { x: 620, scale: 0.85, opacity: 0 }, { x: 0, scale: 1, opacity: 1, duration: 0.34, ease: "back.out(1.5)" }, 0.06);
+tl.fromTo("#s2-s0", { scaleY: 0, opacity: 0 }, { scaleY: 1, opacity: 1, duration: 0.2, ease: "power3.out" }, 0.10);
+tl.fromTo("#s2-b0", { scale: 0.1, rotation: -50, opacity: 0 }, { scale: 1, rotation: -8, opacity: 1, duration: 0.32, ease: "back.out(2.4)" }, 0.30);
+tl.to("#s2-w0", { x: 620, opacity: 0, duration: 0.14, ease: "power3.in" }, 0.74);
+tl.to("#s2-i0", { x: -620, opacity: 0, duration: 0.14, ease: "power3.in" }, 0.74);
+tl.to(["#s2-s0", "#s2-b0"], { opacity: 0, duration: 0.1 }, 0.74);
+tl.set("#s2-gb0", { opacity: 1, x: 282 }, 0.074);
+tl.to("#s2-gb0", { opacity: 0, x: -94, duration: 0.06, ease: "power2.out" }, 0.074);
+tl.set("#s2-gb1", { opacity: 1, x: 309 }, 0.076);
+tl.to("#s2-gb1", { opacity: 0, x: -103, duration: 0.09, ease: "power2.out" }, 0.076);
+tl.set("#s2-gb2", { opacity: 1, x: 38 }, 0.095);
+tl.to("#s2-gb2", { opacity: 0, x: -13, duration: 0.08, ease: "power2.out" }, 0.095);
+tl.set("#s2-gb3", { opacity: 1, x: 127 }, 0.034);
+tl.to("#s2-gb3", { opacity: 0, x: -43, duration: 0.09, ease: "power2.out" }, 0.034);
+tl.set("#s2-gb4", { opacity: 1, x: 47 }, 0.051);
+tl.to("#s2-gb4", { opacity: 0, x: -16, duration: 0.12, ease: "power2.out" }, 0.051);
+tl.fromTo("#s2-w1", { x: 620, skewX: -14, opacity: 0 }, { x: 0, skewX: -10, opacity: 1, duration: 0.26, ease: "expo.out" }, 0.90);
+tl.fromTo("#s2-i1", { x: -620, scale: 0.85, opacity: 0 }, { x: 0, scale: 1, opacity: 1, duration: 0.34, ease: "back.out(1.5)" }, 0.96);
+tl.fromTo("#s2-s1", { scaleY: 0, opacity: 0 }, { scaleY: 1, opacity: 1, duration: 0.2, ease: "power3.out" }, 1.00);
+tl.fromTo("#s2-b1", { scale: 0.1, rotation: -50, opacity: 0 }, { scale: 1, rotation: -8, opacity: 1, duration: 0.32, ease: "back.out(2.4)" }, 1.20);
+tl.to("#s2-w1", { x: -620, opacity: 0, duration: 0.14, ease: "power3.in" }, 1.64);
+tl.to("#s2-i1", { x: 620, opacity: 0, duration: 0.14, ease: "power3.in" }, 1.64);
+tl.to(["#s2-s1", "#s2-b1"], { opacity: 0, duration: 0.1 }, 1.64);
+tl.set("#s2-gb0", { opacity: 1, x: 314 }, 0.991);
+tl.to("#s2-gb0", { opacity: 0, x: -105, duration: 0.08, ease: "power2.out" }, 0.991);
+tl.set("#s2-gb1", { opacity: 1, x: -236 }, 0.984);
+tl.to("#s2-gb1", { opacity: 0, x: 78, duration: 0.05, ease: "power2.out" }, 0.984);
+tl.set("#s2-gb2", { opacity: 1, x: 43 }, 0.980);
+tl.to("#s2-gb2", { opacity: 0, x: -15, duration: 0.05, ease: "power2.out" }, 0.980);
+tl.set("#s2-gb3", { opacity: 1, x: 264 }, 0.932);
+tl.to("#s2-gb3", { opacity: 0, x: -88, duration: 0.07, ease: "power2.out" }, 0.932);
+tl.set("#s2-gb4", { opacity: 1, x: -3 }, 0.937);
+tl.to("#s2-gb4", { opacity: 0, x: 1, duration: 0.09, ease: "power2.out" }, 0.937);
+tl.fromTo("#s2-w2", { x: -620, skewX: -14, opacity: 0 }, { x: 0, skewX: -10, opacity: 1, duration: 0.26, ease: "expo.out" }, 1.80);
+tl.fromTo("#s2-i2", { x: 620, scale: 0.85, opacity: 0 }, { x: 0, scale: 1, opacity: 1, duration: 0.34, ease: "back.out(1.5)" }, 1.86);
+tl.fromTo("#s2-s2", { scaleY: 0, opacity: 0 }, { scaleY: 1, opacity: 1, duration: 0.2, ease: "power3.out" }, 1.90);
+tl.fromTo("#s2-b2", { scale: 0.1, rotation: -50, opacity: 0 }, { scale: 1, rotation: -8, opacity: 1, duration: 0.32, ease: "back.out(2.4)" }, 2.10);
+tl.to("#s2-w2", { x: 620, opacity: 0, duration: 0.14, ease: "power3.in" }, 2.54);
+tl.to("#s2-i2", { x: -620, opacity: 0, duration: 0.14, ease: "power3.in" }, 2.54);
+tl.to(["#s2-s2", "#s2-b2"], { opacity: 0, duration: 0.1 }, 2.54);
+tl.set("#s2-gb0", { opacity: 1, x: -126 }, 1.803);
+tl.to("#s2-gb0", { opacity: 0, x: 42, duration: 0.07, ease: "power2.out" }, 1.803);
+tl.set("#s2-gb1", { opacity: 1, x: -115 }, 1.868);
+tl.to("#s2-gb1", { opacity: 0, x: 38, duration: 0.08, ease: "power2.out" }, 1.868);
+tl.set("#s2-gb2", { opacity: 1, x: 321 }, 1.881);
+tl.to("#s2-gb2", { opacity: 0, x: -107, duration: 0.11, ease: "power2.out" }, 1.881);
+tl.set("#s2-gb3", { opacity: 1, x: -158 }, 1.803);
+tl.to("#s2-gb3", { opacity: 0, x: 52, duration: 0.12, ease: "power2.out" }, 1.803);
+tl.set("#s2-gb4", { opacity: 1, x: -265 }, 1.813);
+tl.to("#s2-gb4", { opacity: 0, x: 88, duration: 0.08, ease: "power2.out" }, 1.813);
+tl.fromTo("#s2-w3", { x: 620, skewX: -14, opacity: 0 }, { x: 0, skewX: -10, opacity: 1, duration: 0.26, ease: "expo.out" }, 2.70);
+tl.fromTo("#s2-i3", { x: -620, scale: 0.85, opacity: 0 }, { x: 0, scale: 1, opacity: 1, duration: 0.34, ease: "back.out(1.5)" }, 2.76);
+tl.fromTo("#s2-s3", { scaleY: 0, opacity: 0 }, { scaleY: 1, opacity: 1, duration: 0.2, ease: "power3.out" }, 2.80);
+tl.fromTo("#s2-b3", { scale: 0.1, rotation: -50, opacity: 0 }, { scale: 1, rotation: -8, opacity: 1, duration: 0.32, ease: "back.out(2.4)" }, 3.00);
+tl.set("#s2-gb0", { opacity: 1, x: 129 }, 2.763);
+tl.to("#s2-gb0", { opacity: 0, x: -43, duration: 0.09, ease: "power2.out" }, 2.763);
+tl.set("#s2-gb1", { opacity: 1, x: -89 }, 2.815);
+tl.to("#s2-gb1", { opacity: 0, x: 29, duration: 0.07, ease: "power2.out" }, 2.815);
+tl.set("#s2-gb2", { opacity: 1, x: 340 }, 2.791);
+tl.to("#s2-gb2", { opacity: 0, x: -114, duration: 0.06, ease: "power2.out" }, 2.791);
+tl.set("#s2-gb3", { opacity: 1, x: -57 }, 2.753);
+tl.to("#s2-gb3", { opacity: 0, x: 19, duration: 0.11, ease: "power2.out" }, 2.753);
+tl.set("#s2-gb4", { opacity: 1, x: -311 }, 2.788);
+tl.to("#s2-gb4", { opacity: 0, x: 103, duration: 0.09, ease: "power2.out" }, 2.788);
+
+    window.__timelines["s2"] = tl;
+  </script>
+</template>

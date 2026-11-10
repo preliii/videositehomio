@@ -1,0 +1,2 @@
+# Homio · Crăciun · stil neon (19 s)
+Video fără audio, stil inspirat din reclama Dedeman (neon roșu, text cromat, glitch). Iconițe desenate în SVG (fără poze de produse). Timpi pe replicile din voce/script-neon-craciun.md: scena 1 0–1,6 s · categorii 1,6–5,2 · „de la 11 lei” 5,2–7,8 · „40+ în stoc” 7,8–10,4 · transport 10,4–13,4 · comandă online 13,4–16,6 · final 16,6–19. Regenerare: python3 build.py, apoi npx hyperframes render.
