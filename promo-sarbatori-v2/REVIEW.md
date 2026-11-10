@@ -9,3 +9,7 @@
 **Nimeni nu a verificat:** sunetul nu a fost ascultat. Muzica și efectele sunt sintetizate (originale, fără drepturi de autor), deci calitatea e necunoscută. `assets/audio/mix.wav` se poate înlocui cu o piesă din biblioteca TikTok/Meta, păstrând 24 s.
 
 **Cele mai slabe puncte:** decupajul statuetelor are mici goluri (barba la 30 cm, marginea hainei la 90 cm); montajul de 8 produse are 0,5 s pe produs, deci prețul se citește doar de la 360 px în sus dacă privitorul e atent; hook-ul are avertismentul `line_unread` (prețul stă 1,4 s) păstrat deliberat pentru ritm.
+
+
+## v4 (25,6 s, 150 BPM)
+Refăcut după feedback: produse mari și toate vizibile (v3 pierdea al treilea brad), etichete de preț lângă produs, fără text peste text (verificat cadru cu cadru la 0,4 s), montaj cu 6 produse × 0,8 s, melodie nouă (I-V-vi-IV, clopoțel, bas cu sidechain, tobe, riser și drop la 22,4 s). Muzica a fost verificată doar prin spectrogramă și niveluri, nu ascultată.

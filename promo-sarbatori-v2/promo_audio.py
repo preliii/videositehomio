@@ -1,10 +1,11 @@
-"""Muzică (120 BPM, originală, sintetizată) + efecte sincronizate cu events.json. Scrie assets/audio/mix.wav (44,1 kHz, stereo)."""
-import json, subprocess, sys, wave
+"""Muzică originală (150 BPM, do major, I-V-vi-IV) + efecte sincronizate cu events.json -> assets/audio/mix.wav
+Aranjament pe măsuri de 1,6 s: 0 hook · 1-8 capitole · 9-11 montaj · 12 pauză · 13 build · 14 drop · 15 final."""
+import json, subprocess, wave
 import numpy as np
 
-SR = 44100; BPM = 120; BEAT = 60 / BPM
-EVJ = json.load(open('events.json')); DUR = EVJ['dur']; N = int(SR * DUR)
-rng = np.random.default_rng(3)
+SR = 44100
+EVJ = json.load(open('events.json')); BPM = EVJ['bpm']; BEAT = EVJ['beat']; BAR = EVJ['bar']; DUR = EVJ['dur']; N = int(SR * DUR)
+rng = np.random.default_rng(11)
 
 def buf(): return np.zeros((N, 2), np.float32)
 def tt(d): return np.arange(int(d * SR), dtype=np.float64) / SR
@@ -31,102 +32,134 @@ def glide(f0, f1, d, curve=1.0):
     return np.sin(2 * np.pi * np.cumsum(f) / SR)
 def norm(x, peak=1.0): return x / (np.max(np.abs(x)) + 1e-9) * peak
 
-def ping(f, d=.7, bright=1.0):
-    t = tt(d); x = np.sin(2 * np.pi * f * t) + .35 * bright * np.sin(2 * np.pi * f * 2.76 * t) * np.exp(-t * 14) + .2 * np.sin(2 * np.pi * f * 5.4 * t) * np.exp(-t * 30)
-    return x * np.exp(-t * 5.5) * env(d, .002, d, 1)
-def pluck(m, d=.35):
-    t = tt(d); f = midi(m); x = sum(np.sin(2 * np.pi * f * k * t) / k ** 1.3 for k in (1, 2, 3, 4)) * np.exp(-t * 9)
-    return x * env(d, .002, d, 1)
-def thump(f0=130, f1=38, d=.6):
-    x = glide(f0, f1, d, .35) * np.exp(-tt(d) * 6); x[:int(.004 * SR)] += noise(.004)[:int(.004 * SR)] * .5; return x
-def kick(): return thump(150, 46, .30) * .95
+# ───────── instrumente ─────────
+def bell(m, d=.6, bright=1.0):          # clopoțel FM, curat
+    f = midi(m); t = tt(d); idx = 2.2 * bright * np.exp(-t * 7)
+    x = np.sin(2 * np.pi * f * t + idx * np.sin(2 * np.pi * f * 3.5 * t)) + .25 * np.sin(2 * np.pi * f * 2 * t) * np.exp(-t * 9)
+    return x * np.exp(-t * 5.2) * env(d, .002, d, 1)
+def stab(m, d=.3):                        # acord scurt, cald
+    f = midi(m); t = tt(d); x = np.zeros_like(t)
+    for det in (-.006, .006): x += sum(np.sin(2 * np.pi * f * (1 + det) * k * t) / k ** 1.4 for k in (1, 2, 3, 4, 5))
+    return fftf(x, None, 2600) * np.exp(-t * 11) * env(d, .004, d, 1)
+def pad(m, d):                            # nota lungă, moale
+    f = midi(m); t = tt(d); x = np.zeros_like(t)
+    for det in (-.004, .004): x += sum(np.sin(2 * np.pi * f * (1 + det) * k * t) / k ** 1.6 for k in (1, 2, 3))
+    return fftf(x, None, 1500) * np.minimum(t / .25, 1) * np.clip((d - t) / .3, 0, 1)
+def bassn(m, d):
+    f = midi(m); t = tt(d); x = np.sin(2 * np.pi * f * t * (1 + .06 * np.exp(-t * 40))) + .3 * np.sin(2 * np.pi * 2 * f * t)
+    return x * env(d, .006, d, 1.2)
+def kick():
+    t = tt(.34); x = np.sin(2 * np.pi * np.cumsum(46 + 120 * np.exp(-t * 30)) / SR) * np.exp(-t * 9)
+    x[:int(.003 * SR)] += .6; return x
 def clap():
-    n = fftf(noise(.2), 900, 6000) * env(.2, .002, .2, 3)
-    for k in (.012, .024): n[int(k * SR):int(k * SR) + 600] += rng.standard_normal(600) * .7
-    return n
-def hat(d=.05): return fftf(noise(d), 7000, 16000) * env(d, .001, d, 2)
-def shaker(d=.08): return fftf(noise(d), 5500, 14000) * env(d, .004, d, 2)
-def bass(m, d, amp=.34):
-    t = tt(d); f = midi(m); x = np.sin(2 * np.pi * f * t) + .35 * np.sin(2 * np.pi * 2 * f * t); return x * amp * env(d, .01, d, 1.3)
-def whoosh(d, f0=300, f1=5000, shape=.5):
-    K = 14; n = int(d * SR); out = np.zeros(n); base = noise(d)
-    for k in range(K):
-        fc = f0 * (f1 / f0) ** (k / (K - 1)); y = fftf(base, fc / 1.5, fc * 1.5); c = k / (K - 1)
-        out += y * np.exp(-((np.arange(n) / n - c) ** 2) / (2 * .12 ** 2))
-    t = np.arange(n) / n; return norm(out * np.sin(np.pi * np.clip(t ** shape, 0, 1)) ** 1.5, .9)
-def riser(d, f0=200, f1=6500):
-    n = int(d * SR); t = np.arange(n) / n; return (whoosh(d, f0, f1, 1.0) * .8 + glide(f0, f1, d, 2.0) * .35) * (t ** 1.6)
-def sparkle(d=.9, n=12, lo=76, hi=100):
-    out = np.zeros(int(d * SR))
-    for _ in range(n):
-        t0 = rng.uniform(0, d * .7); p = ping(midi(int(rng.integers(lo, hi))), .35); i = int(t0 * SR); out[i:i + len(p)] += p[:len(out) - i] * rng.uniform(.25, .7)
-    return norm(out, .8)
-def pop(f=520, d=.09): return glide(f * .6, f * 1.5, d) * env(d, .002, d, 2)
+    x = np.zeros(int(.26 * SR))
+    for k, g in ((0, .9), (.011, .8), (.022, .7)):
+        n = fftf(noise(.2), 900, 6500) * env(.2, .001, .2, 4); i = int(k * SR); x[i:i + len(n)] += n[:len(x) - i] * g
+    return x
+def hat(d=.045): return fftf(noise(d), 7500, 16000) * env(d, .001, d, 2)
+def ohat(d=.16): return fftf(noise(d), 6500, 15000) * env(d, .002, d, 1.4)
+def shaker(d=.07): return fftf(noise(d), 5000, 12000) * env(d, .004, d, 2)
 def snare():
-    a = fftf(noise(.2), 1200, 9000) * env(.2, .002, .2, 2.2) * .9
-    b = glide(220, 160, .12) * env(.12, .001, .12, 2) * .4
+    a = fftf(noise(.2), 1400, 9000) * env(.2, .002, .2, 2.2) * .9; b = glide(230, 170, .12) * env(.12, .001, .12, 2) * .4
     a[:len(b)] += b[:len(a)]; return a
+def crash(d=1.2): return fftf(noise(d), 3500, 16000) * env(d, .003, d, 2.2)
 
-BASS = dict(C=36, Am=33, F=29, G=31)
-TRI = dict(C=(60, 64, 67), Am=(57, 60, 64), F=(53, 57, 60), G=(55, 59, 62))
-MEL = dict(C=[76, 76, 79, 81, 79, 76, 74, 72], Am=[81, 79, 76, 79, 81, 84, 81, 79], F=[77, 77, 81, 84, 81, 77, 76, 74], G=[79, 79, 83, 86, 83, 79, 77, 74])
-M0, M1 = EVJ['montage']; BUILD = EVJ['build']; DROP = EVJ['drop']
-# secțiuni: 120 BPM până la montaj, 150 BPM în montaj (2 bătăi = 0,8 s = o carte), apoi 120 BPM
-BARS = [(i * 2.0, .5, c, 'drive') for i, c in enumerate(['C', 'Am', 'F', 'G', 'C', 'Am'])]
-BARS += [(M0 + i * 1.6, .4, c, 'montage') for i, c in enumerate(['F', 'G', 'C', 'Am'])]
-BARS += [(M1, .5, 'F', 'break'), (BUILD, .5, 'G', 'build'), (DROP, .5, 'C', 'drive'), (DROP + 2.0, .5, 'C', 'final')]
+def ir(rt=1.1):
+    n = int(rt * SR); t = np.arange(n) / SR; x = noise(rt) * np.exp(-t * 4.2); x = fftf(x, 300, 6500); x[:int(.012 * SR)] *= np.linspace(0, 1, int(.012 * SR)); return norm(x, .1)
+IR = ir()
+def reverb(b, wet=.16):
+    out = np.zeros_like(b); L = len(b) + len(IR); n = 1 << (L - 1).bit_length(); H = np.fft.rfft(IR, n)
+    for c in (0, 1): out[:, c] = np.fft.irfft(np.fft.rfft(b[:, c], n) * H, n)[:len(b)]
+    return b + out * wet
+
+# ───────── armonie și melodie (I–V–vi–IV) ─────────
+CH = dict(C=dict(root=36, tri=(60, 64, 67)), G=dict(root=31, tri=(59, 62, 67)), Am=dict(root=33, tri=(57, 60, 64)), F=dict(root=29, tri=(57, 60, 65)))
+MEL = dict(C=[(0, 76, .5), (.5, 79, .5), (1, 81, 1), (2, 79, .5), (2.5, 76, .5), (3, 74, 1)],
+           G=[(0, 74, .5), (.5, 76, .5), (1, 79, 1.5), (2.5, 76, .5), (3, 74, 1)],
+           Am=[(0, 72, .5), (.5, 76, .5), (1, 81, 1), (2, 79, .5), (2.5, 76, .5), (3, 72, 1)],
+           F=[(0, 77, .5), (.5, 81, .5), (1, 84, 1), (2, 81, .5), (2.5, 77, .5), (3, 76, 1)])
+PROG = ['C', 'G', 'Am', 'F'] * 3 + ['Am', 'F', 'C', 'C']      # 16 măsuri
+def mode(b): return 'hook' if b == 0 else 'chap' if b <= 8 else 'montage' if b <= 11 else 'break' if b == 12 else 'build' if b == 13 else 'drop' if b == 14 else 'final'
 
 def build_music():
-    m = buf()
-    for t0, beat, ch, mode in BARS:
-        drive = mode in ('drive', 'montage', 'final'); eighth = beat / 2
-        for k in range(8):
-            t = t0 + k * eighth
-            put(m, shaker(), t, .16 + .1 * (k % 2 == 0), (-1) ** k * .4)
-            if drive and k % 2 == 1: put(m, hat(), t, .13)
-            if mode == 'montage': put(m, hat(.04), t + eighth / 2, .11)
-            if mode != 'final': put(m, ping(midi(MEL[ch][k]), .5), t, .2 if mode != 'break' else .24, (-1) ** k * .3)
-            if drive and k % 2 == 0: put(m, bass(BASS[ch] + (12 if k in (4, 6) else 0), beat * .9), t, 1.0)
-            if mode == 'break' and k in (0, 4): put(m, bass(BASS[ch], beat * 1.8, .26), t, 1.0)
-            if (drive or mode == 'break') and k % 2 == 1:
-                for n in TRI[ch]: put(m, pluck(n + (0 if drive else 12)), t, .16 if drive else .12, (n % 3 - 1) * .3)
-        if drive:
-            for q in range(4): put(m, kick(), t0 + q * beat, .6)
-            for q in (1, 3): put(m, clap(), t0 + q * beat, .3)
-        if mode == 'build':   # rulou de toba mică până la „drop”
-            for k in range(16): put(m, snare(), t0 + k * beat / 2 * 1.0 / 2 * 2 / 2, .1 + .35 * (k / 15) ** 1.5)
-    # final: acord lung de do major cu arpegiu
-    t0 = DROP + 2.0
-    for i, n in enumerate((72, 76, 79, 84, 88, 91)): put(m, ping(midi(n), 1.8, .6), t0 + i * .07, .2, (i - 2.5) * .25)
-    for n in (48, 60, 64, 67): put(m, pluck(n, .9), t0, .2)
-    # pauză scurtă imediat înainte de „drop”, ca să lovească mai tare
-    g = np.ones(N, np.float32); a, b = int((DROP - .14) * SR), int(DROP * SR); g[a:b] = np.linspace(1, 0, b - a)
-    m *= g[:, None]
-    tail = np.ones(N, np.float32); k0 = int((DUR - 1.2) * SR); tail[k0:] = np.linspace(1, 0, N - k0)
-    return m * tail[:, None]
+    drums, harm, lead = buf(), buf(), buf(); kicks = []
+    for b in range(16):
+        t0 = b * BAR; ch = PROG[b]; md = mode(b); c = CH[ch]
+        full = md in ('hook', 'chap', 'montage', 'drop', 'final')
+        # tobe
+        if full:
+            for q in range(4):
+                put(drums, kick(), t0 + q * BEAT, .5); kicks.append(t0 + q * BEAT)
+            for q in (1, 3): put(drums, clap(), t0 + q * BEAT, .5)
+            for q in (.5, 1.5, 2.5, 3.5): put(drums, hat(), t0 + q * BEAT, .24)
+            for q in range(8): put(drums, shaker(), t0 + (q * .5 + .25) * BEAT, .09)
+            if md == 'montage':
+                for q in range(8): put(drums, hat(.03), t0 + (q * .5 + .25) * BEAT, .09)
+            if b == 11:                                   # fill înainte de pauză
+                for k in range(8): put(drums, snare(), t0 + (2 + k * .25) * BEAT, .12 + .26 * k / 7)
+            if b in (4, 8): put(drums, ohat(), t0 + 3.5 * BEAT, .22)
+        if md == 'build':                                 # rulou de toba mică
+            for k in range(16): put(drums, snare(), t0 + k * BEAT / 4, .08 + .4 * (k / 15) ** 1.6)
+            for q in range(4): put(drums, hat(), t0 + q * BEAT + BEAT / 2, .12)
+        # bas
+        if full:
+            for pos, ln, ofs in ((0, .85, 12), (1.5, .35, 12), (2, .85, 12), (3, .35, 24)):
+                put(harm, bassn(c['root'] + ofs - 12, ln * BEAT), t0 + pos * BEAT, .3)
+        elif md == 'break':
+            put(harm, bassn(c['root'], 3.2 * BEAT), t0, .2)
+        # acorduri
+        if full:
+            for pos in (.5, 1.5, 2.5):
+                for n in c['tri']: put(harm, stab(n), t0 + pos * BEAT, .22, (n % 3 - 1) * .35)
+        else:
+            for n in c['tri']: put(harm, pad(n + (0 if md == 'break' else 12), 4 * BEAT), t0, .06, (n % 3 - 1) * .35)
+        # melodie (clopoțel)
+        hi = 12 if (5 <= b <= 8 or b == 14) else 0
+        if md != 'final':
+            for pos, n, ln in MEL[ch]:
+                g = .34 if md in ('hook', 'chap', 'montage', 'drop') else .16
+                put(lead, bell(n + hi, .55, 1.0 if md != 'break' else .6), t0 + pos * BEAT, g, ((n % 5) - 2) * .15)
+        if md == 'break':      # arpegiu ușor
+            for k in range(8): put(lead, bell(c['tri'][k % 3] + 24, .4, .5), t0 + k * BEAT / 2, .07, (k % 3 - 1) * .4)
+    # final: acord lung, arpegiu
+    tf = 15 * BAR
+    for i, n in enumerate((72, 76, 79, 84, 88)): put(lead, bell(n, 1.6, .8), tf + i * .06, .2, (i - 2) * .3)
+    for n in (48, 60, 64, 67): put(harm, stab(n, .9), tf, .2)
+    # sidechain: bas/acorduri se retrag la fiecare lovitură de kick
+    duck = np.ones(N, np.float32)
+    for tk in kicks:
+        i = int(tk * SR); L = int(.22 * SR); j = min(N, i + L)
+        if j > i: duck[i:j] = np.minimum(duck[i:j], 1 - .55 * np.exp(-np.arange(j - i) / SR / .07))
+    harm *= duck[:, None]
+    # ecou pe melodie, reverb general
+    echo = buf(); d = int(BEAT * .75 * SR); echo[d:] = lead[:-d] * .32
+    lead = lead + echo
+    bus = drums + harm + lead; bus = reverb(bus, .17)
+    # pauza de o clipă înainte de drop, ca să lovească mai tare
+    g = np.ones(N, np.float32); a, bb = int((EVJ['drop'] - .1) * SR), int(EVJ['drop'] * SR); g[a:bb] = np.linspace(1, .05, bb - a); bus *= g[:, None]
+    tail = np.ones(N, np.float32); k0 = int((DUR - 1.0) * SR); tail[k0:] = np.linspace(1, 0, N - k0)
+    return np.tanh(bus * 1.1) * tail[:, None]
 
 def build_sfx():
-    s = buf()
+    s = buf(); BUILD, DROP = EVJ['build'], EVJ['drop']
     for t, kind in EVJ['events']:
-        if t >= DUR: continue
+        if t >= DUR - .05: continue
         if kind == 'slam':
-            put(s, thump(110, 32, .7), t, .85); put(s, fftf(noise(.5), 400, 7000) * env(.5, .003, .5, 3) * .6, t, .5); put(s, whoosh(.25, 4000, 500), t - .08, .3)
+            put(s, kick() * .8, t, .5); put(s, fftf(noise(.45), 400, 7500) * env(.45, .003, .45, 3), t, .28)
         elif kind == 'pop':
-            put(s, pop(520 + 60 * int(rng.integers(0, 4))), t, .5, float(rng.uniform(-.5, .5))); put(s, fftf(noise(.1), 800, 4000) * env(.1, .002, .1, 2), t, .22)
+            f = 520 + 70 * int(rng.integers(0, 4)); put(s, glide(f * .6, f * 1.5, .09) * env(.09, .002, .09, 2), t, .32, float(rng.uniform(-.4, .4)))
         elif kind == 'tag':
-            put(s, fftf(noise(.18), 2500, 9000) * env(.18, .003, .18, 2), t, .28); put(s, ping(midi(88 + int(rng.integers(0, 3) * 2)), .35, .5), t + .03, .16)
+            put(s, fftf(noise(.16), 2800, 9500) * env(.16, .003, .16, 2), t, .16)
         elif kind == 'whoosh':
-            put(s, whoosh(.32, 400, 5500), t, .4, float(rng.uniform(-.4, .4)))
+            put(s, fftf(noise(.34), 500, 6000) * env(.34, .14, .2, 1.2), t - .05, .22)
         elif kind == 'hit':
-            put(s, thump(130, 40, .35), t, .6); put(s, snare(), t, .35); put(s, fftf(noise(.14), 1500, 8000) * env(.14, .002, .14, 3), t, .2)
-        elif kind == 'thump':
-            put(s, thump(120, 40, .4), t, .6)
+            put(s, snare(), t, .22)
         elif kind == 'conf':
-            put(s, fftf(noise(.45), 1800, 9000) * env(.45, .004, .45, 2.2), t, .35); put(s, sparkle(.9, 14), t + .03, .35)
-    # riser înainte de „drop”-ul de la 20,0 s și impact mare
-    put(s, riser(2.0, 200, 8000), BUILD, .6)
-    put(s, thump(100, 28, 1.2), DROP, 1.0); put(s, fftf(noise(.9), 300, 9000) * env(.9, .004, .9, 2.4), DROP, .55); put(s, sparkle(1.4, 22), DROP + .02, .5)
-    for k, n in enumerate((84, 88, 91, 96)): put(s, ping(midi(n), 1.5), DROP + .02 + k * .03, .3, (k - 1.5) * .35)
+            put(s, fftf(noise(.4), 2200, 10000) * env(.4, .004, .4, 2.4), t, .2)
+    # riser + impact la drop
+    n = int(2 * BAR * SR); r = fftf(noise(2 * BAR), 300, 9000) * (np.arange(n) / n) ** 2; put(s, norm(r, .9), BUILD, .35)
+    put(s, kick() * 1.1, DROP, .5); put(s, crash(1.6), DROP, .5)
+    for k, nn in enumerate((84, 88, 91, 96)): put(s, bell(nn, 1.4), DROP + .02 + k * .03, .14, (k - 1.5) * .35)
     return s
 
 def write(p, b):
@@ -136,7 +169,7 @@ def write(p, b):
 if __name__ == '__main__':
     mus = build_music(); sfx = build_sfx()
     for nm, b in (('music', mus), ('sfx', sfx)):
-        print(nm, 'peak', float(np.abs(b).max()), 'rms dB', 20 * np.log10(np.sqrt(np.mean(b ** 2)) + 1e-9)); write(f'/tmp/promo_{nm}.wav', b)
+        print(nm, 'peak %.2f' % float(np.abs(b).max()), 'rms %.1f dB' % (20 * np.log10(np.sqrt(np.mean(b ** 2)) + 1e-9))); write(f'/tmp/promo_{nm}.wav', b)
     subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', '/tmp/promo_music.wav', '-i', '/tmp/promo_sfx.wav', '-filter_complex',
-                    '[0:a]volume=-5dB[m];[1:a]volume=-3dB[x];[m][x]amix=inputs=2:normalize=0,alimiter=limit=0.95,loudnorm=I=-14:TP=-2.2:LRA=9[o]', '-map', '[o]', '-ar', '44100', '-ac', '2', 'assets/audio/mix.wav'], check=True)
+                    '[0:a]volume=-1dB[m];[1:a]volume=-2dB[x];[m][x]amix=inputs=2:normalize=0,alimiter=limit=0.95,loudnorm=I=-14:TP=-2.2:LRA=9[o]', '-map', '[o]', '-ar', '44100', '-ac', '2', 'assets/audio/mix.wav'], check=True)
     print('mix.wav gata')

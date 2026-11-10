@@ -1,0 +1,112 @@
+<template>
+  <style>
+    @font-face { font-family: 'Anton'; font-weight: 400; src: url('assets/fonts/anton-latin-400-normal.woff2') format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122; }
+    @font-face { font-family: 'Anton'; font-weight: 400; src: url('assets/fonts/anton-latin-ext-400-normal.woff2') format('woff2'); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1E00-1E9F,U+2020,U+20A0-20AB,U+20AD-20C0; }
+    @font-face { font-family: 'Fredoka'; font-weight: 700; src: url('assets/fonts/fredoka-latin-700-normal.woff2') format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122; }
+    @font-face { font-family: 'Fredoka'; font-weight: 700; src: url('assets/fonts/fredoka-latin-ext-700-normal.woff2') format('woff2'); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1E00-1E9F,U+2020,U+20A0-20AB,U+20AD-20C0; }
+
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    .world { position: absolute; inset: 0; background: var(--bg); color: var(--ink); }
+    .stage { position: absolute; inset: 0; }
+    .pat { position: absolute; inset: 0; }
+    .grain { position: absolute; inset: 0; opacity: .06; mix-blend-mode: multiply; background-image: url('assets/img/grain.png'); pointer-events: none; }
+    .abs { position: absolute; }
+    .snow { position: absolute; color: rgba(255,255,255,.16); }
+    .title { position: absolute; left: 70px; font-family: 'Anton', sans-serif; font-weight: 400; text-transform: uppercase; line-height: 1.02; white-space: nowrap; z-index: 6; }
+    .subt { position: absolute; left: 74px; font-family: 'Fredoka', sans-serif; font-weight: 700; z-index: 6; white-space: nowrap; }
+    .stk { position: absolute; filter: drop-shadow(12px 16px 0 rgba(0,0,0,.28)); z-index: 3; }
+    .stk img { display: block; width: 100%; height: auto; }
+    .mt { position: absolute; width: 300px; height: 200px; z-index: 5; transform-origin: 0 0; }
+    .mt .sw { position: absolute; inset: 0; transform-origin: 50% 0; filter: drop-shadow(6px 8px 0 rgba(0,0,0,.25)); }
+    .mt .st { position: absolute; left: 148px; top: 0; width: 5px; height: 44px; background: #D7263D; }
+    .mt .tg { position: absolute; left: 0; top: 36px; width: 300px; height: 164px; background: #F4C86E; clip-path: polygon(0 34px, 34px 0, calc(100% - 34px) 0, 100% 34px, 100% 100%, 0 100%); }
+    .mt .hl { position: absolute; left: 134px; top: 46px; width: 28px; height: 28px; border-radius: 50%; background: var(--bg); box-shadow: inset 0 0 0 5px #C99A4E; }
+    .mt .pr { position: absolute; left: 0; right: 0; top: 78px; text-align: center; font-family: 'Anton'; font-size: 92px; line-height: 1; color: #B01C2E; white-space: nowrap; }
+    .mt .pr small { font-family: 'Fredoka'; font-weight: 700; font-size: 38px; color: #6B4A1F; margin-left: 8px; }
+    .badge { position: absolute; z-index: 7; width: 250px; height: 250px; }
+    .badge .bg { position: absolute; inset: 0; background: #138A4B; border-radius: 50%; box-shadow: inset 0 0 0 10px #FFC93C, 8px 10px 0 rgba(0,0,0,.28); }
+    .badge .tx { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Anton'; color: #fff; line-height: .95; text-align: center; }
+    .badge .tx b { font-weight: 400; font-size: 76px; } .badge .tx i { font-style: normal; font-size: 40px; font-family: 'Fredoka'; font-weight: 700; }
+    .cf { position: absolute; display: block; z-index: 8; }
+    .bunt { position: absolute; left: 0; top: 0; width: 1080px; height: 230px; z-index: 2; }
+
+  </style>
+  <div id="root" data-composition-id="s6-montaj" data-width="1080" data-height="1920">
+    <div id="s6-montaj-world" class="world" style="--bg:#D7263D;--ink:#fff">
+      <div class="pat" style=""></div>
+      <div id="s6-montaj-stage" class="stage">
+<div id="s6-montaj-k0" class="abs" style="inset:0;background:#D7263D;color:#fff;z-index:10"><div class="abs" style="inset:0;background: radial-gradient(circle, rgba(255,255,255,.13) 9px, transparent 10px) 0 0 / 66px 66px;"></div>
+      <div id="s6-montaj-k0-nm" class="subt" style="top:282px;left:70px;font-size:54px;color:#fff">Brad artificial 180 cm</div>
+      <div id="s6-montaj-k0-st" class="stk" style="left:385px;top:300px;width:350px;rotate:-5deg;z-index:3"><img id="s6-montaj-k0-img" src="assets/img/7746.png" alt="" /></div>
+      <div id="s6-montaj-k0-pr" class="title" data-layout-allow-overlap style="top:1030px;left:64px;font-size:280px;color:#fff;line-height:1;z-index:6">239<span style="font-size:100px;margin-left:12px">LEI</span></div>
+      <div class="abs" style="right:60px;top:1130px;z-index:6;background:#138A4B;color:#fff;font-family:Anton;font-size:50px;padding:8px 24px;border-radius:12px;box-shadow:6px 8px 0 rgba(0,0,0,.25)">ÎN STOC</div></div><div id="s6-montaj-k1" class="abs" style="inset:0;background:#FFC93C;color:#0B3D2E;z-index:11"><div class="abs" style="inset:0;background: repeating-linear-gradient(-45deg, rgba(0,0,0,.07) 0 46px, transparent 46px 92px);"></div>
+      <div id="s6-montaj-k1-nm" class="subt" style="top:282px;left:70px;font-size:54px;color:#0B3D2E">Set 24 de globuri</div>
+      <div id="s6-montaj-k1-st" class="stk" style="left:297px;top:320px;width:526px;rotate:4deg;z-index:3"><img id="s6-montaj-k1-img" src="assets/img/7774.png" alt="" /></div>
+      <div id="s6-montaj-k1-pr" class="title" data-layout-allow-overlap style="top:1030px;left:64px;font-size:280px;color:#0B3D2E;line-height:1;z-index:6">55<span style="font-size:100px;margin-left:12px">LEI</span></div>
+      <div class="abs" style="right:60px;top:1130px;z-index:6;background:#138A4B;color:#fff;font-family:Anton;font-size:50px;padding:8px 24px;border-radius:12px;box-shadow:6px 8px 0 rgba(0,0,0,.25)">ÎN STOC</div></div><div id="s6-montaj-k2" class="abs" style="inset:0;background:#0F7C8C;color:#fff;z-index:12"><div class="abs" style="inset:0;background: linear-gradient(45deg, rgba(255,255,255,.1) 25%, transparent 25%, transparent 75%, rgba(255,255,255,.1) 75%) 0 0 / 90px 90px, linear-gradient(45deg, rgba(255,255,255,.1) 25%, transparent 25%, transparent 75%, rgba(255,255,255,.1) 75%) 45px 45px / 90px 90px;"></div>
+      <div id="s6-montaj-k2-nm" class="subt" style="top:282px;left:70px;font-size:54px;color:#fff">Ghirlandă LED 270 cm</div>
+      <div id="s6-montaj-k2-st" class="stk" style="left:-310px;top:580px;width:1700px;rotate:-8deg;z-index:3"><img id="s6-montaj-k2-img" src="assets/img/7805.png" alt="" /></div>
+      <div id="s6-montaj-k2-pr" class="title" data-layout-allow-overlap style="top:1030px;left:64px;font-size:280px;color:#fff;line-height:1;z-index:6">195<span style="font-size:100px;margin-left:12px">LEI</span></div>
+      <div class="abs" style="right:60px;top:1130px;z-index:6;background:#138A4B;color:#fff;font-family:Anton;font-size:50px;padding:8px 24px;border-radius:12px;box-shadow:6px 8px 0 rgba(0,0,0,.25)">ÎN STOC</div></div><div id="s6-montaj-k3" class="abs" style="inset:0;background:#138A4B;color:#fff;z-index:13"><div class="abs" style="inset:0;background: radial-gradient(circle, rgba(255,255,255,.13) 9px, transparent 10px) 0 0 / 66px 66px;"></div>
+      <div id="s6-montaj-k3-nm" class="subt" style="top:282px;left:70px;font-size:54px;color:#fff">Moș Crăciun auriu</div>
+      <div id="s6-montaj-k3-st" class="stk" style="left:85px;top:380px;width:949px;rotate:3deg;z-index:3"><img id="s6-montaj-k3-img" src="assets/img/7842.png" alt="" /></div>
+      <div id="s6-montaj-k3-pr" class="title" data-layout-allow-overlap style="top:1030px;left:64px;font-size:280px;color:#fff;line-height:1;z-index:6">119<span style="font-size:100px;margin-left:12px">LEI</span></div>
+      <div class="abs" style="right:60px;top:1130px;z-index:6;background:#138A4B;color:#fff;font-family:Anton;font-size:50px;padding:8px 24px;border-radius:12px;box-shadow:6px 8px 0 rgba(0,0,0,.25)">ÎN STOC</div></div><div id="s6-montaj-k4" class="abs" style="inset:0;background:#2457D6;color:#fff;z-index:14"><div class="abs" style="inset:0;background: repeating-linear-gradient(-45deg, rgba(0,0,0,.07) 0 46px, transparent 46px 92px);"></div>
+      <div id="s6-montaj-k4-nm" class="subt" style="top:282px;left:70px;font-size:54px;color:#fff">Set 60 de globuri aurii</div>
+      <div id="s6-montaj-k4-st" class="stk" style="left:336px;top:300px;width:448px;rotate:-4deg;z-index:3"><img id="s6-montaj-k4-img" src="assets/img/7772.png" alt="" /></div>
+      <div id="s6-montaj-k4-pr" class="title" data-layout-allow-overlap style="top:1030px;left:64px;font-size:280px;color:#fff;line-height:1;z-index:6">109<span style="font-size:100px;margin-left:12px">LEI</span></div>
+      <div class="abs" style="right:60px;top:1130px;z-index:6;background:#138A4B;color:#fff;font-family:Anton;font-size:50px;padding:8px 24px;border-radius:12px;box-shadow:6px 8px 0 rgba(0,0,0,.25)">ÎN STOC</div></div><div id="s6-montaj-k5" class="abs" style="inset:0;background:#E8457F;color:#fff;z-index:15"><div class="abs" style="inset:0;background: linear-gradient(45deg, rgba(255,255,255,.1) 25%, transparent 25%, transparent 75%, rgba(255,255,255,.1) 75%) 0 0 / 90px 90px, linear-gradient(45deg, rgba(255,255,255,.1) 25%, transparent 25%, transparent 75%, rgba(255,255,255,.1) 75%) 45px 45px / 90px 90px;"></div>
+      <div id="s6-montaj-k5-nm" class="subt" style="top:282px;left:70px;font-size:54px;color:#fff">Set 22 de globuri</div>
+      <div id="s6-montaj-k5-st" class="stk" style="left:248px;top:310px;width:624px;rotate:5deg;z-index:3"><img id="s6-montaj-k5-img" src="assets/img/7775.png" alt="" /></div>
+      <div id="s6-montaj-k5-pr" class="title" data-layout-allow-overlap style="top:1030px;left:64px;font-size:280px;color:#fff;line-height:1;z-index:6">79<span style="font-size:100px;margin-left:12px">LEI</span></div>
+      <div class="abs" style="right:60px;top:1130px;z-index:6;background:#138A4B;color:#fff;font-family:Anton;font-size:50px;padding:8px 24px;border-radius:12px;box-shadow:6px 8px 0 rgba(0,0,0,.25)">ÎN STOC</div></div>
+      </div>
+      <div class="grain"></div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+
+    const OFF = 0.25, B = 0.4;
+    const T = k => OFF + k * B;
+    const pop = (sel, t, r0, r1, s0) => tl.fromTo(sel, { scale: s0 || 0.15, rotation: r0, y: 100, opacity: 0 }, { scale: 1, rotation: r1, y: 0, opacity: 1, duration: 0.4, ease: "back.out(2.2)" }, t);
+    const slam = (sel, t, r, vis) => tl.fromTo(sel, { scale: vis ? 1.12 : 1.8, rotation: vis ? r * 0.3 : r, opacity: vis ? 1 : 0, filter: vis ? "blur(0px)" : "blur(12px)" }, { scale: 1, rotation: 0, opacity: 1, filter: "blur(0px)", duration: 0.24, ease: "expo.out" }, t);
+    const swingTag = (sel, t, a) => tl.fromTo(sel, { rotation: a, opacity: 0 }, { rotation: 0, opacity: 1, duration: 1.4, ease: "elastic.out(1, 0.35)" }, t);
+    const shake = (t, a) => {
+      const st = "#s6-montaj-stage";
+      tl.to(st, { x: a, y: -a * 0.6, duration: 0.04, ease: "power1.out" }, t).to(st, { x: -a * 0.7, y: a * 0.5, duration: 0.05 }, t + 0.04)
+        .to(st, { x: a * 0.35, y: -a * 0.2, duration: 0.05 }, t + 0.09).to(st, { x: 0, y: 0, duration: 0.08 }, t + 0.14);
+    };
+    const flags = (t) => tl.fromTo(".s6-montaj-fl", { scaleY: 0 }, { scaleY: 1, duration: 0.35, ease: "back.out(2)", stagger: 0.035 }, t);
+
+    tl.fromTo("#s6-montaj-world", { clipPath: "inset(50% 50% 50% 50% round 90px)" }, { clipPath: "inset(0% 0% 0% 0% round 0px)", duration: 0.25, ease: "power3.inOut" }, 0);
+    const C = i => OFF + 0.8 * i;
+    tl.fromTo("#s6-montaj-k0", { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.25, ease: "power3.inOut" }, 0);
+    tl.fromTo("#s6-montaj-k0-img", { scale: 1.3, rotation: -10, opacity: 1 }, { scale: 1, rotation: 0, duration: 0.3, ease: "expo.out" }, C(0));
+    tl.fromTo("#s6-montaj-k0-pr", { scale: 1.6, x: -60, opacity: 1, filter: "blur(10px)" }, { scale: 1, x: 0, filter: "blur(0px)", duration: 0.26, ease: "expo.out", transformOrigin: "0% 50%" }, C(0) + 0.04);
+    tl.fromTo("#s6-montaj-k0-nm", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.18, ease: "power3.out" }, C(0) + 0.06);
+    tl.fromTo("#s6-montaj-k1", { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.14, ease: "power3.out" }, C(1) - 0.07);
+    tl.fromTo("#s6-montaj-k1-img", { scale: 1.3, rotation: 8, opacity: 1 }, { scale: 1, rotation: 0, duration: 0.3, ease: "expo.out" }, C(1));
+    tl.fromTo("#s6-montaj-k1-pr", { scale: 1.6, x: -60, opacity: 1, filter: "blur(10px)" }, { scale: 1, x: 0, filter: "blur(0px)", duration: 0.26, ease: "expo.out", transformOrigin: "0% 50%" }, C(1) + 0.04);
+    tl.fromTo("#s6-montaj-k1-nm", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.18, ease: "power3.out" }, C(1) + 0.06);
+    tl.fromTo("#s6-montaj-k2", { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.14, ease: "power3.out" }, C(2) - 0.07);
+    tl.fromTo("#s6-montaj-k2-img", { scale: 1.3, rotation: -16, opacity: 1 }, { scale: 1, rotation: 0, duration: 0.3, ease: "expo.out" }, C(2));
+    tl.fromTo("#s6-montaj-k2-pr", { scale: 1.6, x: -60, opacity: 1, filter: "blur(10px)" }, { scale: 1, x: 0, filter: "blur(0px)", duration: 0.26, ease: "expo.out", transformOrigin: "0% 50%" }, C(2) + 0.04);
+    tl.fromTo("#s6-montaj-k2-nm", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.18, ease: "power3.out" }, C(2) + 0.06);
+    tl.fromTo("#s6-montaj-k3", { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.14, ease: "power3.out" }, C(3) - 0.07);
+    tl.fromTo("#s6-montaj-k3-img", { scale: 1.3, rotation: 6, opacity: 1 }, { scale: 1, rotation: 0, duration: 0.3, ease: "expo.out" }, C(3));
+    tl.fromTo("#s6-montaj-k3-pr", { scale: 1.6, x: -60, opacity: 1, filter: "blur(10px)" }, { scale: 1, x: 0, filter: "blur(0px)", duration: 0.26, ease: "expo.out", transformOrigin: "0% 50%" }, C(3) + 0.04);
+    tl.fromTo("#s6-montaj-k3-nm", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.18, ease: "power3.out" }, C(3) + 0.06);
+    tl.fromTo("#s6-montaj-k4", { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.14, ease: "power3.out" }, C(4) - 0.07);
+    tl.fromTo("#s6-montaj-k4-img", { scale: 1.3, rotation: -8, opacity: 1 }, { scale: 1, rotation: 0, duration: 0.3, ease: "expo.out" }, C(4));
+    tl.fromTo("#s6-montaj-k4-pr", { scale: 1.6, x: -60, opacity: 1, filter: "blur(10px)" }, { scale: 1, x: 0, filter: "blur(0px)", duration: 0.26, ease: "expo.out", transformOrigin: "0% 50%" }, C(4) + 0.04);
+    tl.fromTo("#s6-montaj-k4-nm", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.18, ease: "power3.out" }, C(4) + 0.06);
+    tl.fromTo("#s6-montaj-k5", { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.14, ease: "power3.out" }, C(5) - 0.07);
+    tl.fromTo("#s6-montaj-k5-img", { scale: 1.3, rotation: 10, opacity: 1 }, { scale: 1, rotation: 0, duration: 0.3, ease: "expo.out" }, C(5));
+    tl.fromTo("#s6-montaj-k5-pr", { scale: 1.6, x: -60, opacity: 1, filter: "blur(10px)" }, { scale: 1, x: 0, filter: "blur(0px)", duration: 0.26, ease: "expo.out", transformOrigin: "0% 50%" }, C(5) + 0.04);
+    tl.fromTo("#s6-montaj-k5-nm", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.18, ease: "power3.out" }, C(5) + 0.06);
+    shake(C(0), 12); shake(C(1), 8); shake(C(2), 12); shake(C(3), 8); shake(C(4), 12); shake(C(5), 8);
+
+    window.__timelines["s6-montaj"] = tl;
+  </script>
+</template>
