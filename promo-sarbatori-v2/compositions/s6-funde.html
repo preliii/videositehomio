@@ -1,0 +1,114 @@
+<template>
+  <style>
+    @font-face { font-family: 'Anton'; font-weight: 400; src: url('assets/fonts/anton-latin-400-normal.woff2') format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122; }
+    @font-face { font-family: 'Anton'; font-weight: 400; src: url('assets/fonts/anton-latin-ext-400-normal.woff2') format('woff2'); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1E00-1E9F,U+2020,U+20A0-20AB,U+20AD-20C0; }
+    @font-face { font-family: 'Fredoka'; font-weight: 700; src: url('assets/fonts/fredoka-latin-700-normal.woff2') format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122; }
+    @font-face { font-family: 'Fredoka'; font-weight: 700; src: url('assets/fonts/fredoka-latin-ext-700-normal.woff2') format('woff2'); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1E00-1E9F,U+2020,U+20A0-20AB,U+20AD-20C0; }
+
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    .world { position: absolute; inset: 0; background: var(--bg); color: var(--ink); }
+    .stage { position: absolute; inset: 0; }
+    .pat { position: absolute; inset: 0; }
+    .grain { position: absolute; inset: 0; opacity: .06; mix-blend-mode: multiply; background-image: url('assets/img/grain.png'); pointer-events: none; }
+    .abs { position: absolute; }
+    .snow { position: absolute; color: rgba(255,255,255,.16); }
+    .title { position: absolute; left: 70px; font-family: 'Anton', sans-serif; font-weight: 400; text-transform: uppercase; line-height: 1.02; white-space: nowrap; z-index: 6; }
+    .subt { position: absolute; left: 74px; font-family: 'Fredoka', sans-serif; font-weight: 700; z-index: 6; white-space: nowrap; }
+    .stk { position: absolute; filter: drop-shadow(12px 16px 0 rgba(0,0,0,.28)); z-index: 3; }
+    .stk img { display: block; width: 100%; height: auto; }
+    .mt { position: absolute; width: 300px; height: 200px; z-index: 5; transform-origin: 0 0; }
+    .mt .sw { position: absolute; inset: 0; transform-origin: 50% 0; filter: drop-shadow(6px 8px 0 rgba(0,0,0,.25)); }
+    .mt .st { position: absolute; left: 148px; top: 0; width: 5px; height: 44px; background: #D7263D; }
+    .mt .tg { position: absolute; left: 0; top: 36px; width: 300px; height: 164px; background: #F4C86E; clip-path: polygon(0 34px, 34px 0, calc(100% - 34px) 0, 100% 34px, 100% 100%, 0 100%); }
+    .mt .hl { position: absolute; left: 134px; top: 46px; width: 28px; height: 28px; border-radius: 50%; background: var(--bg); box-shadow: inset 0 0 0 5px #C99A4E; }
+    .mt .pr { position: absolute; left: 0; right: 0; top: 78px; text-align: center; font-family: 'Anton'; font-size: 92px; line-height: 1; color: #B01C2E; white-space: nowrap; }
+    .mt .pr small { font-family: 'Fredoka'; font-weight: 700; font-size: 38px; color: #6B4A1F; margin-left: 8px; }
+    .badge { position: absolute; z-index: 7; width: 250px; height: 250px; }
+    .badge .bg { position: absolute; inset: 0; background: #138A4B; border-radius: 50%; box-shadow: inset 0 0 0 10px #FFC93C, 8px 10px 0 rgba(0,0,0,.28); }
+    .badge .tx { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Anton'; color: #fff; line-height: .95; text-align: center; }
+    .badge .tx b { font-weight: 400; font-size: 76px; } .badge .tx i { font-style: normal; font-size: 40px; font-family: 'Fredoka'; font-weight: 700; }
+    .cf { position: absolute; display: block; z-index: 8; }
+    .bunt { position: absolute; left: 0; top: 0; width: 1080px; height: 230px; z-index: 2; }
+
+  </style>
+  <div id="root" data-composition-id="s6-funde" data-width="1080" data-height="1920">
+    <div id="s6-funde-world" class="world" style="--bg:#2457D6;--ink:#fff">
+      <div class="pat" style="background: linear-gradient(45deg, rgba(255,255,255,.1) 25%, transparent 25%, transparent 75%, rgba(255,255,255,.1) 75%) 0 0 / 90px 90px, linear-gradient(45deg, rgba(255,255,255,.1) 25%, transparent 25%, transparent 75%, rgba(255,255,255,.1) 75%) 45px 45px / 90px 90px;"></div>
+      <div id="s6-funde-stage" class="stage">
+<svg id="s6-funde-bunt" class="bunt" data-layout-allow-overflow viewBox="0 0 1080 230"><path d="M-20,34 Q540,150 1100,34" fill="none" stroke="#3b2a1a" stroke-width="5"/><polygon class="s6-funde-fl" points="-6,51 86,51 40,155" fill="#E8457F" style="transform-box:fill-box;transform-origin:50% 0"/><polygon class="s6-funde-fl" points="119,85 211,85 165,189" fill="#FFC93C" style="transform-box:fill-box;transform-origin:50% 0"/><polygon class="s6-funde-fl" points="244,109 336,109 290,213" fill="#D7263D" style="transform-box:fill-box;transform-origin:50% 0"/><polygon class="s6-funde-fl" points="369,124 461,124 415,228" fill="#fff" style="transform-box:fill-box;transform-origin:50% 0"/><polygon class="s6-funde-fl" points="494,128 586,128 540,232" fill="#138A4B" style="transform-box:fill-box;transform-origin:50% 0"/><polygon class="s6-funde-fl" points="619,124 711,124 665,228" fill="#E8457F" style="transform-box:fill-box;transform-origin:50% 0"/><polygon class="s6-funde-fl" points="744,109 836,109 790,213" fill="#FFC93C" style="transform-box:fill-box;transform-origin:50% 0"/><polygon class="s6-funde-fl" points="869,85 961,85 915,189" fill="#D7263D" style="transform-box:fill-box;transform-origin:50% 0"/><polygon class="s6-funde-fl" points="994,51 1086,51 1040,155" fill="#fff" style="transform-box:fill-box;transform-origin:50% 0"/></svg><svg id="s6-funde-sf0" class="snow" style="left:-100px;top:330px;width:460px;height:460px;rotate:5deg" viewBox="-52 -52 104 104"><path d="M0,0 L0.0,-46.0 M0.0,-22.0 L-9.2,-29.7 M0.0,-22.0 L9.2,-29.7 M0.0,-34.0 L-6.9,-39.8 M0.0,-34.0 L6.9,-39.8 M0,0 L39.8,-23.0 M19.1,-11.0 L21.1,-22.8 M19.1,-11.0 L30.3,-6.9 M29.4,-17.0 L31.0,-25.9 M29.4,-17.0 L37.9,-13.9 M0,0 L39.8,23.0 M19.1,11.0 L30.3,6.9 M19.1,11.0 L21.1,22.8 M29.4,17.0 L37.9,13.9 M29.4,17.0 L31.0,25.9 M0,0 L0.0,46.0 M0.0,22.0 L9.2,29.7 M0.0,22.0 L-9.2,29.7 M0.0,34.0 L6.9,39.8 M0.0,34.0 L-6.9,39.8 M0,0 L-39.8,23.0 M-19.1,11.0 L-21.1,22.8 M-19.1,11.0 L-30.3,6.9 M-29.4,17.0 L-31.0,25.9 M-29.4,17.0 L-37.9,13.9 M0,0 L-39.8,-23.0 M-19.1,-11.0 L-30.3,-6.9 M-19.1,-11.0 L-21.1,-22.8 M-29.4,-17.0 L-37.9,-13.9 M-29.4,-17.0 L-31.0,-25.9" fill="none" stroke="currentColor" stroke-width="5.5" stroke-linecap="round"/></svg><svg id="s6-funde-sf1" class="snow" style="left:700px;top:1040px;width:480px;height:480px;rotate:18deg" viewBox="-52 -52 104 104"><path d="M0,0 L0.0,-46.0 M0.0,-22.0 L-9.2,-29.7 M0.0,-22.0 L9.2,-29.7 M0.0,-34.0 L-6.9,-39.8 M0.0,-34.0 L6.9,-39.8 M0,0 L39.8,-23.0 M19.1,-11.0 L21.1,-22.8 M19.1,-11.0 L30.3,-6.9 M29.4,-17.0 L31.0,-25.9 M29.4,-17.0 L37.9,-13.9 M0,0 L39.8,23.0 M19.1,11.0 L30.3,6.9 M19.1,11.0 L21.1,22.8 M29.4,17.0 L37.9,13.9 M29.4,17.0 L31.0,25.9 M0,0 L0.0,46.0 M0.0,22.0 L9.2,29.7 M0.0,22.0 L-9.2,29.7 M0.0,34.0 L6.9,39.8 M0.0,34.0 L-6.9,39.8 M0,0 L-39.8,23.0 M-19.1,11.0 L-21.1,22.8 M-19.1,11.0 L-30.3,6.9 M-29.4,17.0 L-31.0,25.9 M-29.4,17.0 L-37.9,13.9 M0,0 L-39.8,-23.0 M-19.1,-11.0 L-30.3,-6.9 M-19.1,-11.0 L-21.1,-22.8 M-29.4,-17.0 L-37.9,-13.9 M-29.4,-17.0 L-31.0,-25.9" fill="none" stroke="currentColor" stroke-width="5.5" stroke-linecap="round"/></svg><div id="s6-funde-h" class="title" style="top:262px;font-size:250px;color:#fff;">FUNDE</div><div id="s6-funde-sub" class="subt" style="top:510px;font-size:64px;color:#FFC93C">ȘI CLOPOȚEI</div><div id="s6-funde-a" class="stk" style="left:75px;top:670px;width:350px;rotate:-8deg"><img id="s6-funde-a-img" src="assets/img/7784.png" alt="" /></div><div id="s6-funde-b" class="stk" style="left:473px;top:635px;width:374px;rotate:7deg"><img id="s6-funde-b-img" src="assets/img/7799.png" alt="" /></div><div id="s6-funde-c3" class="stk" style="left:173px;top:1005px;width:314px;rotate:6deg"><img id="s6-funde-c3-img" src="assets/img/7783.png" alt="" /></div><div id="s6-funde-d" class="stk" style="left:638px;top:885px;width:325px;rotate:-5deg"><img id="s6-funde-d-img" src="assets/img/7795.png" alt="" /></div><div id="s6-funde-p1" class="mt" style="left:168px;top:1015px;scale:0.55;rotate:-5deg"><div class="sw" id="s6-funde-p1-sw"><div class="st"></div><div class="tg"><i class="hl"></i></div><div class="pr">17<small>LEI</small></div></div></div><div id="s6-funde-p2" class="mt" style="left:578px;top:995px;scale:0.55;rotate:5deg"><div class="sw" id="s6-funde-p2-sw"><div class="st"></div><div class="tg"><i class="hl"></i></div><div class="pr">11<small>LEI</small></div></div></div><div id="s6-funde-p3" class="mt" style="left:258px;top:1255px;scale:0.55;rotate:4deg"><div class="sw" id="s6-funde-p3-sw"><div class="st"></div><div class="tg"><i class="hl"></i></div><div class="pr">25<small>LEI</small></div></div></div><div id="s6-funde-p4" class="mt" style="left:718px;top:1275px;scale:0.55;rotate:-4deg"><div class="sw" id="s6-funde-p4-sw"><div class="st"></div><div class="tg"><i class="hl"></i></div><div class="pr">69<small>LEI</small></div></div></div><div id="s6-funde-bd" class="badge" style="left:790px;top:280px"><div class="bg"></div><div class="tx"><b>ÎN</b><i>STOC</i></div></div><i id="s6-funde-c0" class="cf" style="left:540px;top:700px;width:29px;height:10px;background:#D7263D;opacity:0"></i><i id="s6-funde-c1" class="cf" style="left:540px;top:700px;width:14px;height:15px;background:#E8457F;opacity:0"></i><i id="s6-funde-c2" class="cf" style="left:540px;top:700px;width:24px;height:8px;background:#FFC93C;opacity:0"></i><i id="s6-funde-c3" class="cf" style="left:540px;top:700px;width:27px;height:10px;background:#fff;opacity:0"></i><i id="s6-funde-c4" class="cf" style="left:540px;top:700px;width:24px;height:15px;background:#D7263D;opacity:0"></i><i id="s6-funde-c5" class="cf" style="left:540px;top:700px;width:19px;height:12px;background:#E8457F;opacity:0"></i><i id="s6-funde-c6" class="cf" style="left:540px;top:700px;width:29px;height:8px;background:#FFC93C;opacity:0"></i><i id="s6-funde-c7" class="cf" style="left:540px;top:700px;width:19px;height:9px;background:#fff;opacity:0"></i><i id="s6-funde-c8" class="cf" style="left:540px;top:700px;width:25px;height:13px;background:#D7263D;opacity:0"></i><i id="s6-funde-c9" class="cf" style="left:540px;top:700px;width:18px;height:9px;background:#E8457F;opacity:0"></i><i id="s6-funde-c10" class="cf" style="left:540px;top:700px;width:27px;height:8px;background:#FFC93C;opacity:0"></i><i id="s6-funde-c11" class="cf" style="left:540px;top:700px;width:19px;height:16px;background:#fff;opacity:0"></i><i id="s6-funde-c12" class="cf" style="left:540px;top:700px;width:19px;height:9px;background:#D7263D;opacity:0"></i><i id="s6-funde-c13" class="cf" style="left:540px;top:700px;width:28px;height:14px;background:#E8457F;opacity:0"></i><i id="s6-funde-c14" class="cf" style="left:540px;top:700px;width:19px;height:14px;background:#FFC93C;opacity:0"></i><i id="s6-funde-c15" class="cf" style="left:540px;top:700px;width:22px;height:9px;background:#fff;opacity:0"></i><i id="s6-funde-c16" class="cf" style="left:540px;top:700px;width:19px;height:15px;background:#D7263D;opacity:0"></i><i id="s6-funde-c17" class="cf" style="left:540px;top:700px;width:26px;height:16px;background:#E8457F;opacity:0"></i><i id="s6-funde-c18" class="cf" style="left:540px;top:700px;width:24px;height:15px;background:#FFC93C;opacity:0"></i><i id="s6-funde-c19" class="cf" style="left:540px;top:700px;width:15px;height:15px;background:#fff;opacity:0"></i><i id="s6-funde-c20" class="cf" style="left:540px;top:700px;width:22px;height:15px;background:#D7263D;opacity:0"></i><i id="s6-funde-c21" class="cf" style="left:540px;top:700px;width:18px;height:13px;background:#E8457F;opacity:0"></i>
+      </div>
+      <div class="grain"></div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+
+    const OFF = 0.25, B = 0.5;
+    const T = k => OFF + k * B;
+    const pop = (sel, t, r0, r1, s0) => tl.fromTo(sel, { scale: s0 || 0.15, rotation: r0, y: 100, opacity: 0 }, { scale: 1, rotation: r1, y: 0, opacity: 1, duration: 0.4, ease: "back.out(2.2)" }, t);
+    const slam = (sel, t, r, vis) => tl.fromTo(sel, { scale: vis ? 1.12 : 1.8, rotation: vis ? r * 0.3 : r, opacity: vis ? 1 : 0, filter: vis ? "blur(0px)" : "blur(12px)" }, { scale: 1, rotation: 0, opacity: 1, filter: "blur(0px)", duration: 0.24, ease: "expo.out" }, t);
+    const swingTag = (sel, t, a) => tl.fromTo(sel, { rotation: a, opacity: 0 }, { rotation: 0, opacity: 1, duration: 1.4, ease: "elastic.out(1, 0.35)" }, t);
+    const shake = (t, a) => {
+      const st = "#s6-funde-stage";
+      tl.to(st, { x: a, y: -a * 0.6, duration: 0.04, ease: "power1.out" }, t).to(st, { x: -a * 0.7, y: a * 0.5, duration: 0.05 }, t + 0.04)
+        .to(st, { x: a * 0.35, y: -a * 0.2, duration: 0.05 }, t + 0.09).to(st, { x: 0, y: 0, duration: 0.08 }, t + 0.14);
+    };
+    const flags = (t) => tl.fromTo(".s6-funde-fl", { scaleY: 0 }, { scaleY: 1, duration: 0.35, ease: "back.out(2)", stagger: 0.035 }, t);
+
+    tl.fromTo("#s6-funde-world", { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.25, ease: "power3.inOut" }, 0);
+
+    flags(T(0)); slam("#s6-funde-h", T(0), -6); tl.fromTo("#s6-funde-sub", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.25, ease: "power3.out" }, T(0.8));
+ tl.fromTo("#s6-funde-bd", { scale: 0.1, rotation: -32, opacity: 0 }, { scale: 1, rotation: 8, opacity: 1, duration: 0.45, ease: "back.out(2.4)" }, T(0.5));
+
+    pop("#s6-funde-a-img", T(1), -16, 0); pop("#s6-funde-p1", T(1.1), 12, -5); pop("#s6-funde-b-img", T(2), 16, 0); pop("#s6-funde-p2", T(2.1), -12, 5);
+    pop("#s6-funde-c3-img", T(2.5), -14, 0); pop("#s6-funde-p3", T(2.6), 10, 4); pop("#s6-funde-d-img", T(3), 14, 0); pop("#s6-funde-p4", T(3.1), -10, -4);
+    tl.fromTo("#s6-funde-c0", {x:0,y:0,rotation:0,scale:.3,opacity:1}, {x:-427,y:-267,rotation:-194,scale:1,opacity:1,duration:.55,ease:"power3.out"}, 0.250);
+tl.to("#s6-funde-c0", {y:76,rotation:-310,opacity:0,duration:.8,ease:"power1.in"}, 0.800);
+tl.fromTo("#s6-funde-c1", {x:0,y:0,rotation:0,scale:.3,opacity:1}, {x:-127,y:-13,rotation:-42,scale:1,opacity:1,duration:.55,ease:"power3.out"}, 0.250);
+tl.to("#s6-funde-c1", {y:501,rotation:-67,opacity:0,duration:.8,ease:"power1.in"}, 0.800);
+tl.fromTo("#s6-funde-c2", {x:0,y:0,rotation:0,scale:.3,opacity:1}, {x:326,y:-345,rotation:146,scale:1,opacity:1,duration:.55,ease:"power3.out"}, 0.250);
+tl.to("#s6-funde-c2", {y:2,rotation:233,opacity:0,duration:.8,ease:"power1.in"}, 0.800);
+tl.fromTo("#s6-funde-c3", {x:0,y:0,rotation:0,scale:.3,opacity:1}, {x:221,y:43,rotation:438,scale:1,opacity:1,duration:.55,ease:"power3.out"}, 0.250);
+tl.to("#s6-funde-c3", {y:495,rotation:701,opacity:0,duration:.8,ease:"power1.in"}, 0.800);
+tl.fromTo("#s6-funde-c4", {x:0,y:0,rotation:0,scale:.3,opacity:1}, {x:387,y:-182,rotation:282,scale:1,opacity:1,duration:.55,ease:"power3.out"}, 0.250);
+tl.to("#s6-funde-c4", {y:242,rotation:451,opacity:0,duration:.8,ease:"power1.in"}, 0.800);
+tl.fromTo("#s6-funde-c5", {x:0,y:0,rotation:0,scale:.3,opacity:1}, {x:-228,y:-39,rotation:-345,scale:1,opacity:1,duration:.55,ease:"power3.out"}, 0.250);
+tl.to("#s6-funde-c5", {y:362,rotation:-552,opacity:0,duration:.8,ease:"power1.in"}, 0.800);
+tl.fromTo("#s6-funde-c6", {x:0,y:0,rotation:0,scale:.3,opacity:1}, {x:-205,y:-181,rotation:-207,scale:1,opacity:1,duration:.55,ease:"power3.out"}, 0.250);
+tl.to("#s6-funde-c6", {y:80,rotation:-331,opacity:0,duration:.8,ease:"power1.in"}, 0.800);
+tl.fromTo("#s6-funde-c7", {x:0,y:0,rotation:0,scale:.3,opacity:1}, {x:-414,y:-71,rotation:-115,scale:1,opacity:1,duration:.55,ease:"power3.out"}, 0.250);
+tl.to("#s6-funde-c7", {y:219,rotation:-184,opacity:0,duration:.8,ease:"power1.in"}, 0.800);
+tl.fromTo("#s6-funde-c8", {x:0,y:0,rotation:0,scale:.3,opacity:1}, {x:340,y:-86,rotation:-84,scale:1,opacity:1,duration:.55,ease:"power3.out"}, 0.250);
+tl.to("#s6-funde-c8", {y:278,rotation:-134,opacity:0,duration:.8,ease:"power1.in"}, 0.800);
+tl.fromTo("#s6-funde-c9", {x:0,y:0,rotation:0,scale:.3,opacity:1}, {x:-170,y:-32,rotation:201,scale:1,opacity:1,duration:.55,ease:"power3.out"}, 0.250);
+tl.to("#s6-funde-c9", {y:396,rotation:322,opacity:0,duration:.8,ease:"power1.in"}, 0.800);
+tl.fromTo("#s6-funde-c10", {x:0,y:0,rotation:0,scale:.3,opacity:1}, {x:295,y:-206,rotation:-320,scale:1,opacity:1,duration:.55,ease:"power3.out"}, 0.250);
+tl.to("#s6-funde-c10", {y:151,rotation:-512,opacity:0,duration:.8,ease:"power1.in"}, 0.800);
+tl.fromTo("#s6-funde-c11", {x:0,y:0,rotation:0,scale:.3,opacity:1}, {x:-326,y:-83,rotation:401,scale:1,opacity:1,duration:.55,ease:"power3.out"}, 0.250);
+tl.to("#s6-funde-c11", {y:362,rotation:642,opacity:0,duration:.8,ease:"power1.in"}, 0.800);
+tl.fromTo("#s6-funde-c12", {x:0,y:0,rotation:0,scale:.3,opacity:1}, {x:-336,y:-357,rotation:-283,scale:1,opacity:1,duration:.55,ease:"power3.out"}, 0.250);
+tl.to("#s6-funde-c12", {y:-43,rotation:-452,opacity:0,duration:.8,ease:"power1.in"}, 0.800);
+tl.fromTo("#s6-funde-c13", {x:0,y:0,rotation:0,scale:.3,opacity:1}, {x:-88,y:11,rotation:392,scale:1,opacity:1,duration:.55,ease:"power3.out"}, 0.250);
+tl.to("#s6-funde-c13", {y:318,rotation:627,opacity:0,duration:.8,ease:"power1.in"}, 0.800);
+tl.fromTo("#s6-funde-c14", {x:0,y:0,rotation:0,scale:.3,opacity:1}, {x:-280,y:-81,rotation:454,scale:1,opacity:1,duration:.55,ease:"power3.out"}, 0.250);
+tl.to("#s6-funde-c14", {y:218,rotation:726,opacity:0,duration:.8,ease:"power1.in"}, 0.800);
+tl.fromTo("#s6-funde-c15", {x:0,y:0,rotation:0,scale:.3,opacity:1}, {x:237,y:-398,rotation:-387,scale:1,opacity:1,duration:.55,ease:"power3.out"}, 0.250);
+tl.to("#s6-funde-c15", {y:-110,rotation:-619,opacity:0,duration:.8,ease:"power1.in"}, 0.800);
+tl.fromTo("#s6-funde-c16", {x:0,y:0,rotation:0,scale:.3,opacity:1}, {x:197,y:-347,rotation:-70,scale:1,opacity:1,duration:.55,ease:"power3.out"}, 0.250);
+tl.to("#s6-funde-c16", {y:26,rotation:-112,opacity:0,duration:.8,ease:"power1.in"}, 0.800);
+tl.fromTo("#s6-funde-c17", {x:0,y:0,rotation:0,scale:.3,opacity:1}, {x:94,y:-481,rotation:331,scale:1,opacity:1,duration:.55,ease:"power3.out"}, 0.250);
+tl.to("#s6-funde-c17", {y:4,rotation:529,opacity:0,duration:.8,ease:"power1.in"}, 0.800);
+tl.fromTo("#s6-funde-c18", {x:0,y:0,rotation:0,scale:.3,opacity:1}, {x:71,y:32,rotation:152,scale:1,opacity:1,duration:.55,ease:"power3.out"}, 0.250);
+tl.to("#s6-funde-c18", {y:450,rotation:244,opacity:0,duration:.8,ease:"power1.in"}, 0.800);
+tl.fromTo("#s6-funde-c19", {x:0,y:0,rotation:0,scale:.3,opacity:1}, {x:-185,y:81,rotation:349,scale:1,opacity:1,duration:.55,ease:"power3.out"}, 0.250);
+tl.to("#s6-funde-c19", {y:543,rotation:558,opacity:0,duration:.8,ease:"power1.in"}, 0.800);
+tl.fromTo("#s6-funde-c20", {x:0,y:0,rotation:0,scale:.3,opacity:1}, {x:-179,y:-512,rotation:67,scale:1,opacity:1,duration:.55,ease:"power3.out"}, 0.250);
+tl.to("#s6-funde-c20", {y:-179,rotation:107,opacity:0,duration:.8,ease:"power1.in"}, 0.800);
+tl.fromTo("#s6-funde-c21", {x:0,y:0,rotation:0,scale:.3,opacity:1}, {x:-154,y:170,rotation:460,scale:1,opacity:1,duration:.55,ease:"power3.out"}, 0.250);
+tl.to("#s6-funde-c21", {y:476,rotation:736,opacity:0,duration:.8,ease:"power1.in"}, 0.800);
+
+    shake(T(0), 14); shake(T(2), 8); shake(T(3), 10);
+
+    window.__timelines["s6-funde"] = tl;
+  </script>
+</template>
