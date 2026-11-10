@@ -4,7 +4,7 @@ from string import Template
 
 BEAT = 0.5
 FPS = 30
-DUR = 24.0
+DUR = 26.4
 RED, GREEN, GOLD, TEAL, BLUE, PINK, ORANGE = '#D7263D', '#138A4B', '#FFC93C', '#0F7C8C', '#2457D6', '#E8457F', '#FF8A2A'
 DARK = '#0B3D2E'
 M = json.load(open('assets/products.json'))
@@ -302,7 +302,7 @@ scene(sid, BLUE, '#fff', S0, 2.0, body, js, 'left', pat=pattern('diamonds'))
 E(S0, 0, 'slam'); E(S0, .5, 'pop'); E(S0, 1, 'pop'); E(S0, 1.1, 'tag'); E(S0, 2, 'pop'); E(S0, 2.1, 'tag'); E(S0, 2.5, 'pop'); E(S0, 3, 'pop'); E(S0, .75, 'conf')
 
 # ───────────────────────── S7 MONTAJ RAPID (2 măsuri, 8 cărți, câte una pe bătaie) ─────────────────────────
-sid = 's7-montaj'; S0 = 12.0
+sid = 's7-montaj'; S0 = 12.0; CARD = 0.8
 cards = [('7746', 'Brad 180 cm', '239', RED, '#fff', 800), ('7774', 'Set 24 globuri', '55', GOLD, DARK, 760), ('7805', 'Ghirlandă LED 270 cm', '195', TEAL, '#fff', 0),
          ('7842', 'Moș Crăciun auriu', '119', GREEN, '#fff', 560), ('7772', 'Set 60 globuri aurii', '109', BLUE, '#fff', 800), ('7775', 'Set 22 globuri', '79', PINK, '#fff', 780),
          ('7768', '6 clopoței metalici', '25', ORANGE, DARK, 470), ('7780', 'Fundă cu cozi', '85', RED, '#fff', 820)]
@@ -322,18 +322,17 @@ for i, (pid, nm, pr, bg, ink, hh) in enumerate(cards):
       <div class="abs" style="right:70px;top:292px;z-index:6;background:#138A4B;color:#fff;font-family:Anton;font-size:46px;padding:6px 22px;border-radius:10px;box-shadow:6px 8px 0 rgba(0,0,0,.25)">ÎN STOC</div></div>"""
     d = ['left', 'right', 'up', 'left', 'right', 'up', 'left', 'right'][i]
     clip = {'left': ('inset(0% 0% 0% 100%)', 'inset(0% 0% 0% 0%)'), 'right': ('inset(0% 100% 0% 0%)', 'inset(0% 0% 0% 0%)'), 'up': ('inset(100% 0% 0% 0%)', 'inset(0% 0% 0% 0%)')}[d]
-    t = f'T({i})' if i else '0.0'
     if i == 0: js += f'    tl.fromTo("#{sid}-k0", {{ clipPath: "inset(0% 0% 0% 100%)" }}, {{ clipPath: "inset(0% 0% 0% 0%)", duration: 0.25, ease: "power3.inOut" }}, 0);\n'
-    else: js += f'    tl.fromTo("#{sid}-k{i}", {{ clipPath: "{clip[0]}" }}, {{ clipPath: "{clip[1]}", duration: 0.14, ease: "power3.out" }}, T({i}) - 0.07);\n'
-    js += f'    tl.fromTo("#{sid}-k{i}-img", {{ scale: 1.35, rotation: {rot*2}, opacity: 1 }}, {{ scale: 1, rotation: 0, duration: 0.3, ease: "expo.out" }}, T({i}));\n'
-    js += f'    tl.fromTo("#{sid}-k{i}-pr", {{ scale: 1.7, x: -60, opacity: 1, filter: "blur(10px)" }}, {{ scale: 1, x: 0, filter: "blur(0px)", duration: 0.26, ease: "expo.out", transformOrigin: "0% 50%" }}, T({i}) + 0.04);\n'
-    js += f'    tl.fromTo("#{sid}-k{i}-nm", {{ opacity: 0, y: 24 }}, {{ opacity: 1, y: 0, duration: 0.18, ease: "power3.out" }}, T({i}) + 0.08);\n'
-    E(S0, i, 'hit')
-js += '    ' + ' '.join(f'shake(T({i}), {12 if i % 2 == 0 else 8});' for i in range(8)) + '\n'
-scene(sid, RED, '#fff', S0, 4.0, body, js, 'diag', pat='')
+    else: js += f'    tl.fromTo("#{sid}-k{i}", {{ clipPath: "{clip[0]}" }}, {{ clipPath: "{clip[1]}", duration: 0.14, ease: "power3.out" }}, C({i}) - 0.07);\n'
+    js += f'    tl.fromTo("#{sid}-k{i}-img", {{ scale: 1.35, rotation: {rot*2}, opacity: 1 }}, {{ scale: 1, rotation: 0, duration: 0.3, ease: "expo.out" }}, C({i}));\n'
+    js += f'    tl.fromTo("#{sid}-k{i}-pr", {{ scale: 1.7, x: -60, opacity: 1, filter: "blur(10px)" }}, {{ scale: 1, x: 0, filter: "blur(0px)", duration: 0.26, ease: "expo.out", transformOrigin: "0% 50%" }}, C({i}) + 0.04);\n'
+    js += f'    tl.fromTo("#{sid}-k{i}-nm", {{ opacity: 0, y: 24 }}, {{ opacity: 1, y: 0, duration: 0.18, ease: "power3.out" }}, C({i}) + 0.08);\n'
+    E(S0, i * CARD / BEAT, 'hit')
+js = '    const C = i => OFF + 0.8 * i;\n' + js + '    ' + ' '.join(f'shake(C({i}), {12 if i % 2 == 0 else 8});' for i in range(8)) + '\n'
+scene(sid, RED, '#fff', S0, 8 * CARD, body, js, 'diag', pat='')
 
 # ───────────────────────── S8 TRANSPORT GRATUIT ─────────────────────────
-sid = 's8-transport'; S0 = 16.0
+sid = 's8-transport'; S0 = 18.4
 cf_h, cf_j = confetti(sid, 'c', 22, 81, 540, 900, [RED, GREEN, '#fff', BLUE], 0.25 + 1.0)
 css8 = """
     .star { position: absolute; z-index: 7; width: 520px; height: 520px; }
@@ -363,7 +362,7 @@ scene(sid, GOLD, DARK, S0, 2.0, body, js, 'circle', (540, 1000), extra_css=css8,
 E(S0, 0, 'slam'); E(S0, 1, 'slam'); E(S0, 2, 'pop'); E(S0, 2.5, 'whoosh'); E(S0, 3.2, 'thump'); E(S0, 2, 'conf')
 
 # ───────────────────────── S9 LIVRARE 24 H ─────────────────────────
-sid = 's9-livrare'; S0 = 18.0
+sid = 's9-livrare'; S0 = 20.4
 cf_h, cf_j = confetti(sid, 'c', 20, 91, 540, 760, [GOLD, '#fff', ORANGE, PINK], 0.25 + 0.5)
 css9 = """
     .van { position: absolute; left: 0; top: 1080px; width: 640px; height: 300px; z-index: 5; }
@@ -397,7 +396,7 @@ scene(sid, BLUE, '#fff', S0, 2.0, body, js, 'up', extra_css=css9, pat=pattern('d
 E(S0, 0, 'slam'); E(S0, .5, 'slam'); E(S0, 2, 'whoosh'); E(S0, 2.9, 'thump'); E(S0, 1, 'conf')
 
 # ───────────────────────── S10 FINAL (2 măsuri) ─────────────────────────
-sid = 's10-final'; S0 = 20.0
+sid = 's10-final'; S0 = 22.4
 c1h, c1j = confetti(sid, 'a', 28, 101, 540, 520, [GOLD, '#fff', GREEN, BLUE, ORANGE, PINK], 0.25, 640)
 c2h, c2j = confetti(sid, 'b', 22, 102, 300, 1000, [GOLD, '#fff', GREEN, PINK], 0.25 + 1.0, 520)
 c3h, c3j = confetti(sid, 'c', 22, 103, 800, 1000, [GOLD, '#fff', BLUE, ORANGE], 0.25 + 2.0, 520)
@@ -455,5 +454,5 @@ open('index.html', 'w').write(f"""<!doctype html>
   </body>
 </html>
 """)
-json.dump(dict(bpm=120, beat=BEAT, events=sorted(EV), scenes=SCENES, dur=DUR), open('events.json', 'w'), indent=1)
+json.dump(dict(bpm=120, beat=BEAT, events=sorted(EV), scenes=SCENES, dur=DUR, montage=[12.0, 12.0 + 8 * CARD], build=20.4, drop=22.4), open('events.json', 'w'), indent=1)
 print('ok', len(SCENES), 'scene;', len(EV), 'evenimente')

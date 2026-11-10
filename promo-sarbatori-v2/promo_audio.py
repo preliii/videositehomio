@@ -67,45 +67,41 @@ def snare():
     b = glide(220, 160, .12) * env(.12, .001, .12, 2) * .4
     a[:len(b)] += b[:len(a)]; return a
 
-CHORD = ['C', 'Am', 'F', 'G', 'C', 'Am', 'F', 'G', 'Am', 'F', 'C', 'C']
 BASS = dict(C=36, Am=33, F=29, G=31)
 TRI = dict(C=(60, 64, 67), Am=(57, 60, 64), F=(53, 57, 60), G=(55, 59, 62))
 MEL = dict(C=[76, 76, 79, 81, 79, 76, 74, 72], Am=[81, 79, 76, 79, 81, 84, 81, 79], F=[77, 77, 81, 84, 81, 77, 76, 74], G=[79, 79, 83, 86, 83, 79, 77, 74])
+M0, M1 = EVJ['montage']; BUILD = EVJ['build']; DROP = EVJ['drop']
+# secțiuni: 120 BPM până la montaj, 150 BPM în montaj (2 bătăi = 0,8 s = o carte), apoi 120 BPM
+BARS = [(i * 2.0, .5, c, 'drive') for i, c in enumerate(['C', 'Am', 'F', 'G', 'C', 'Am'])]
+BARS += [(M0 + i * 1.6, .4, c, 'montage') for i, c in enumerate(['F', 'G', 'C', 'Am'])]
+BARS += [(M1, .5, 'F', 'break'), (BUILD, .5, 'G', 'build'), (DROP, .5, 'C', 'drive'), (DROP + 2.0, .5, 'C', 'final')]
 
 def build_music():
     m = buf()
-    for bar in range(12):
-        t0 = bar * 4 * BEAT; ch = CHORD[bar]
-        drive = bar in (0, 1, 2, 3, 4, 5, 6, 7, 10, 11); breakdown = bar in (8, 9)
-        last = bar == 11
+    for t0, beat, ch, mode in BARS:
+        drive = mode in ('drive', 'montage', 'final'); eighth = beat / 2
         for k in range(8):
-            t = t0 + k * BEAT / 2
-            # clopoței de sanie (în toată piesa) și hi-hat
+            t = t0 + k * eighth
             put(m, shaker(), t, .16 + .1 * (k % 2 == 0), (-1) ** k * .4)
             if drive and k % 2 == 1: put(m, hat(), t, .13)
-            if bar in (6, 7): put(m, hat(.04), t + BEAT / 4, .11)
-            # melodie (glockenspiel), mai discretă în pauză
-            note = MEL[ch][k]
-            if not last: put(m, ping(midi(note), .5), t, .2 if not breakdown else .24, (-1) ** k * .3)
-            # bas
-            if drive and k % 2 == 0: put(m, bass(BASS[ch] + (12 if k in (4, 6) else 0), BEAT * .9), t, 1.0)
-            if breakdown and k in (0, 4): put(m, bass(BASS[ch], BEAT * 1.8, .26), t, 1.0)
-            # acorduri pe contratimpi
-            if (drive or breakdown) and k % 2 == 1:
+            if mode == 'montage': put(m, hat(.04), t + eighth / 2, .11)
+            if mode != 'final': put(m, ping(midi(MEL[ch][k]), .5), t, .2 if mode != 'break' else .24, (-1) ** k * .3)
+            if drive and k % 2 == 0: put(m, bass(BASS[ch] + (12 if k in (4, 6) else 0), beat * .9), t, 1.0)
+            if mode == 'break' and k in (0, 4): put(m, bass(BASS[ch], beat * 1.8, .26), t, 1.0)
+            if (drive or mode == 'break') and k % 2 == 1:
                 for n in TRI[ch]: put(m, pluck(n + (0 if drive else 12)), t, .16 if drive else .12, (n % 3 - 1) * .3)
         if drive:
-            for q in (0, 1, 2, 3): put(m, kick(), t0 + q * BEAT, .6)
-            for q in (1, 3): put(m, clap(), t0 + q * BEAT, .3)
-        if bar == 9:   # tensiune: rulou de toba mică până la 20,0 s
-            for k in range(16): put(m, snare(), t0 + k * BEAT / 4, .1 + .35 * (k / 15) ** 1.5)
+            for q in range(4): put(m, kick(), t0 + q * beat, .6)
+            for q in (1, 3): put(m, clap(), t0 + q * beat, .3)
+        if mode == 'build':   # rulou de toba mică până la „drop”
+            for k in range(16): put(m, snare(), t0 + k * beat / 2 * 1.0 / 2 * 2 / 2, .1 + .35 * (k / 15) ** 1.5)
     # final: acord lung de do major cu arpegiu
-    t0 = 22.0
+    t0 = DROP + 2.0
     for i, n in enumerate((72, 76, 79, 84, 88, 91)): put(m, ping(midi(n), 1.8, .6), t0 + i * .07, .2, (i - 2.5) * .25)
     for n in (48, 60, 64, 67): put(m, pluck(n, .9), t0, .2)
-    # pauză scurtă (taie muzica) imediat înainte de „drop” la 20,0 s ca să lovească mai tare
-    g = np.ones(N, np.float32); a, b = int(19.86 * SR), int(20.0 * SR); g[a:b] = np.linspace(1, 0, b - a)
+    # pauză scurtă imediat înainte de „drop”, ca să lovească mai tare
+    g = np.ones(N, np.float32); a, b = int((DROP - .14) * SR), int(DROP * SR); g[a:b] = np.linspace(1, 0, b - a)
     m *= g[:, None]
-    # coadă
     tail = np.ones(N, np.float32); k0 = int((DUR - 1.2) * SR); tail[k0:] = np.linspace(1, 0, N - k0)
     return m * tail[:, None]
 
@@ -128,9 +124,9 @@ def build_sfx():
         elif kind == 'conf':
             put(s, fftf(noise(.45), 1800, 9000) * env(.45, .004, .45, 2.2), t, .35); put(s, sparkle(.9, 14), t + .03, .35)
     # riser înainte de „drop”-ul de la 20,0 s și impact mare
-    put(s, riser(2.0, 200, 8000), 18.0, .6)
-    put(s, thump(100, 28, 1.2), 20.0, 1.0); put(s, fftf(noise(.9), 300, 9000) * env(.9, .004, .9, 2.4), 20.0, .55); put(s, sparkle(1.4, 22), 20.02, .5)
-    for k, n in enumerate((84, 88, 91, 96)): put(s, ping(midi(n), 1.5), 20.02 + k * .03, .3, (k - 1.5) * .35)
+    put(s, riser(2.0, 200, 8000), BUILD, .6)
+    put(s, thump(100, 28, 1.2), DROP, 1.0); put(s, fftf(noise(.9), 300, 9000) * env(.9, .004, .9, 2.4), DROP, .55); put(s, sparkle(1.4, 22), DROP + .02, .5)
+    for k, n in enumerate((84, 88, 91, 96)): put(s, ping(midi(n), 1.5), DROP + .02 + k * .03, .3, (k - 1.5) * .35)
     return s
 
 def write(p, b):
@@ -142,5 +138,5 @@ if __name__ == '__main__':
     for nm, b in (('music', mus), ('sfx', sfx)):
         print(nm, 'peak', float(np.abs(b).max()), 'rms dB', 20 * np.log10(np.sqrt(np.mean(b ** 2)) + 1e-9)); write(f'/tmp/promo_{nm}.wav', b)
     subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', '/tmp/promo_music.wav', '-i', '/tmp/promo_sfx.wav', '-filter_complex',
-                    '[0:a]volume=-5dB[m];[1:a]volume=-3dB[x];[m][x]amix=inputs=2:normalize=0,alimiter=limit=0.95,loudnorm=I=-14:TP=-1.5:LRA=9[o]', '-map', '[o]', '-ar', '44100', '-ac', '2', 'assets/audio/mix.wav'], check=True)
+                    '[0:a]volume=-5dB[m];[1:a]volume=-3dB[x];[m][x]amix=inputs=2:normalize=0,alimiter=limit=0.95,loudnorm=I=-14:TP=-2.2:LRA=9[o]', '-map', '[o]', '-ar', '44100', '-ac', '2', 'assets/audio/mix.wav'], check=True)
     print('mix.wav gata')
