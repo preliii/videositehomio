@@ -268,7 +268,7 @@ scene(sid, BLUE, '#fff', S0, 2 * BAR, body, js, 'left', pat=pattern('diamonds'))
 # ───────────────────────── S6 MONTAJ RAPID (3 măsuri, 6 cărți × 0,8 s = 2 bătăi) ─────────────────────────
 sid = 's6-montaj'; S0 = 9 * BAR; CARD = 2 * BEAT
 cards = [('7746', 'Brad artificial 180 cm', '239', RED, '#fff', 640), ('7774', 'Set 24 de globuri', '55', GOLD, DARK, 620), ('7805', 'Ghirlandă LED 270 cm', '195', TEAL, '#fff', 0),
-         ('7842', 'Moș Crăciun auriu', '119', GREEN, '#fff', 520), ('7772', 'Set 60 de globuri aurii', '109', BLUE, '#fff', 640), ('7775', 'Set 22 de globuri', '79', PINK, '#fff', 620)]
+         ('7842', 'Moș Crăciun auriu', '119', GREEN, '#fff', 500), ('7772', 'Set 60 de globuri aurii', '109', BLUE, '#fff', 600), ('7775', 'Set 22 de globuri', '79', PINK, '#fff', 560)]
 body = ''; js = '    const C = i => OFF + 0.8 * i;\n'
 pats = [pattern('dots'), pattern('stripes'), pattern('diamonds')]
 for i, (pid, nm, pr, bg, ink, hh) in enumerate(cards):
@@ -281,7 +281,7 @@ for i, (pid, nm, pr, bg, ink, hh) in enumerate(cards):
       <div id="{sid}-k{i}-nm" class="subt" style="top:282px;left:70px;font-size:54px;color:{ink}">{nm}</div>
       <div id="{sid}-k{i}-st" class="stk" style="left:{cx-w/2:.0f}px;top:{cy-hh/2:.0f}px;width:{w:.0f}px;rotate:{rot}deg;z-index:3"><img id="{sid}-k{i}-img" src="assets/img/{pid}.png" alt="" /></div>
       <div id="{sid}-k{i}-pr" class="title" data-layout-allow-overlap style="top:1030px;left:64px;font-size:280px;color:{ink};line-height:1;z-index:6">{pr}<span style="font-size:100px;margin-left:12px">LEI</span></div>
-      <div class="abs" style="right:60px;top:1130px;z-index:6;background:#138A4B;color:#fff;font-family:Anton;font-size:50px;padding:8px 24px;border-radius:12px;box-shadow:6px 8px 0 rgba(0,0,0,.25)">ÎN STOC</div></div>"""
+      <div class="abs" style="right:60px;top:1130px;z-index:6;background:#FFC93C;color:#0B3D2E;font-family:Anton;font-size:50px;padding:8px 24px;border-radius:12px;box-shadow:6px 8px 0 rgba(0,0,0,.25)">ÎN STOC</div></div>"""
     d = ['left', 'right', 'up', 'left', 'right', 'up'][i]
     clip = {'left': ('inset(0% 0% 0% 100%)', 'inset(0% 0% 0% 0%)'), 'right': ('inset(0% 100% 0% 0%)', 'inset(0% 0% 0% 0%)'), 'up': ('inset(100% 0% 0% 0%)', 'inset(0% 0% 0% 0%)')}[d]
     if i == 0: js += f'    tl.fromTo("#{sid}-k0", {{ clipPath: "inset(0% 0% 0% 100%)" }}, {{ clipPath: "inset(0% 0% 0% 0%)", duration: 0.25, ease: "power3.inOut" }}, 0);\n'

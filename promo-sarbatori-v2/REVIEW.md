@@ -19,3 +19,6 @@ Transport și livrare: câte 3,2 s (2 măsuri), mașina mărită (×1,4); etiche
 
 ## v6
 Decupaje refăcute cu GrabCut (OpenCV): margini curate, fără halou alb, gol transparent în funde, fără baza albă la brazi. Etichetele de preț din capitolele cu 4 produse stau mai sus, ca să acopere mai puțin produsul. Script: cutout2.py.
+
+## v7
+Produsele cu alb/transparență (statuete Moș Crăciun, globuri în cutie de plastic) sunt fotografii întregi pe card cu colțuri rotunjite (cards.py), nu decupaje. Eticheta ÎN STOC din montaj e aurie, lizibilă pe orice fundal.
